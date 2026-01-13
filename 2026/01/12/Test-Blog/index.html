@@ -468,8 +468,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-01-12 21:09:32</span>
-            <span class="mobile">2026-01-12 21:09:32</span>
+            <span class="desktop">2026-01-13 11:35</span>
+            <span class="mobile">2026-01-13 11:35</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -540,7 +540,7 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<p>测试用博客文章<br>Keurone 2026.1.12</p>
+			<p>测试及总结用博客文章<br>Keurone 2026.1.12</p>
 <p>搭建参考<a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/392994381" >网址<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 <span id="more"></span>
 
@@ -556,6 +556,53 @@
 
 <h2 id="2-代码高亮测试"><a href="#2-代码高亮测试" class="headerlink" title="2. 代码高亮测试"></a>2. 代码高亮测试</h2><div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 <h2 id="3-主题的使用"><a href="#3-主题的使用" class="headerlink" title="3. 主题的使用"></a>3. 主题的使用</h2><p>使用的是<a class="link"   target="_blank" rel="noopener" href="https://redefine.ohevan.com/" >redefine<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>关于 归档(archives) 分类(categories) 标签(tags)<br>我是参考<a class="link"   target="_blank" rel="noopener" href="https://redefine-docs.ohevan.com/zh/page_templates/categories" >这里<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>先执行以下命令：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure></div>
+<p>然后，打开这个页面的 Markdown 文件（source&#x2F;categories&#x2F;index.md），编辑 Front Matter，添加 template: categories，即可。</p>
+<div class="code-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">分类（你自定义的标题）</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2023</span><span class="string">/5/14</span> <span class="number">11</span><span class="string">:45:14</span></span><br><span class="line"><span class="attr">template:</span> <span class="string">categories</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure></div>
+<p>仅需要这些内容就够了</p>
+<p>对于 archives、tags 同理，只需要将上面全部的 categories（命令、路径、md中的内容）替换为 archives、tags 即可</p>
+<h2 id="4-评论"><a href="#4-评论" class="headerlink" title="4. 评论"></a>4. 评论</h2><p>这地方折腾了我好久。<br>先说结果，最终我使用了 giscus ，参考了这篇博客<a class="link"   target="_blank" rel="noopener" href="https://jachinzhang1.github.io/2025/02/04/hexo%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/" >Jachin’s Blog: hexo博客添加评论系统<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>就我个人而言，一开始我尝试 Waline，但是屡屡不顺：</p>
+<ol>
+<li>LeanCloud 停止服务，不再允许注册新账号</li>
+<li>部署Waline于Vercel，并使用mongodb作为数据库。但是部署中迟迟没有反应，一开始是 初始化失败，不过按照官方配置后，可以初始化，不过问题变成了<code>500 ResourceRequest timeout</code>。这个地方我整了好一会儿整不出个所以然来。<blockquote>
+<p>我不确定是不是，因为我没有网页开发的经验：<br>首先，它的配置文件是<br>    <div class="code-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">think-mongo:</span></span><br><span class="line"> 	<span class="attr">specifier:</span> <span class="string">^2.2.1</span></span><br><span class="line"> 	<span class="attr">version:</span> <span class="number">2.2</span><span class="number">.1</span></span><br></pre></td></tr></table></figure></div><br>但是如果你在我撰写这篇博文的当下去看 MONDO_DB 的 cluster 下的 drivers，会发现最低都比 2.2.1 高<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/12/hello-world/NGO_DB_connect_driver_vision.png"
+                      alt="MONGO_DB_connect_driver_vision.png"
+                ><br>至少一瞬间我是束手无策了（摊手</p>
+</blockquote>
+</li>
+</ol>
+<p>后来我发现这篇博客<a class="link"   target="_blank" rel="noopener" href="https://jachinzhang1.github.io/2025/02/04/hexo%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/" >Jachin’s Blog: hexo博客添加评论系统<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，很快啊，很快就搞定了（落泪</p>
+<p>在 <a class="link"   target="_blank" rel="noopener" href="https://giscus.app/zh-CN" >https://giscus.app/zh-CN<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 网站完成配置后（里面有配置信息的，不要以为是什么介绍网页），参考如图所示的地方，将对应的内容填写至 _config.redefine.yml 配置文件即可。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/12/hello-world/giscus.png"
+                      alt="启用giscus.png"
+                ><br>填写的位置参考如下</p>
+<div class="code-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">comment:</span></span><br><span class="line">  <span class="comment"># Whether to enable comment</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Comment system</span></span><br><span class="line">  <span class="attr">system:</span> <span class="string">giscus</span> <span class="comment"># waline, gitalk, twikoo, giscus</span></span><br><span class="line">  <span class="attr">config:</span></span><br><span class="line">      <span class="comment">#...(略过)</span></span><br><span class="line">      <span class="attr">giscus:</span></span><br><span class="line">      <span class="attr">repo:</span> <span class="comment"># Github repository name e.g. EvanNotFound/hexo-theme-redefine</span></span><br><span class="line">      <span class="attr">repo_id:</span> <span class="comment"># Github repository id</span></span><br><span class="line">      <span class="attr">category:</span> <span class="comment"># Github discussion category</span></span><br><span class="line">      <span class="attr">category_id:</span> <span class="comment"># Github discussion category id</span></span><br><span class="line">      <span class="attr">mapping:</span>  <span class="comment"># Which value to use as the unique identifier for the page. e.g. pathname, url, title, og:title. DO NOT USE og:title WITH PJAX ENABLED since pjax will not update og:title when the page changes</span></span><br><span class="line">      <span class="attr">strict:</span> <span class="number">0</span> <span class="comment"># Whether to enable strict mode. e.g. 0, 1</span></span><br><span class="line">      <span class="attr">reactions_enabled:</span> <span class="number">1</span> <span class="comment"># Whether to enable reactions. e.g. 0, 1</span></span><br><span class="line">      <span class="attr">emit_metadata:</span> <span class="number">0</span> <span class="comment"># Whether to emit metadata. e.g. 0, 1</span></span><br><span class="line">      <span class="attr">lang:</span> <span class="string">zh-CN</span> <span class="comment"># Giscus language. e.g. en, zh-CN, zh-TW</span></span><br><span class="line">      <span class="attr">input_position:</span> <span class="string">top</span> <span class="comment"># Place the comment box above/below the comments. e.g. top, bottom</span></span><br><span class="line">      <span class="attr">loading:</span> <span class="string">lazy</span> <span class="comment"># Load the comments lazily</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="5-图片显示"><a href="#5-图片显示" class="headerlink" title="5. 图片显示"></a>5. 图片显示</h2><ol>
+<li><p>配置修改<br>首先，在站点根目录 <code>_config.yml</code> 中，开启</p>
+<div class="code-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></div>
+<p>这样每次用 hexo new “文章名” 时，会自动创建一个同名文件夹。</p>
+<blockquote>
+<p>如果你已经创建了文章也不要紧，自己创建一个文件夹也一样</p>
+</blockquote>
+</li>
+<li><p>引用图片<br>把图片（如 test.jpg）拖进 my-post&#x2F; 文件夹：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span>/_posts/my-post/</span><br><span class="line">└── test.jpg</span><br></pre></td></tr></table></figure></div>
+<p>接着，你在 my-post.md 中写：</p>
+<div class="code-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">你的图片简介</span>](<span class="link">test.jpg</span>)</span><br></pre></td></tr></table></figure></div>
+<p>即可</p>
+<blockquote>
+<p>注意，图片路径会自动解析的！不用额外考虑路径问题</p>
+</blockquote>
+</li>
+</ol>
 
 		</div>
 
@@ -570,7 +617,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-01-12 21:09:32
+                    :</strong> 2026-01-13 11:00:35
             </li>
         
         <li>
@@ -687,7 +734,7 @@
 	<div class="post-toc">
 		<div class="toc-title">目录</div>
 		<div class="page-title">Test Blog</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83%E6%90%AD%E5%BB%BA%E7%BD%91%E5%9D%80"><span class="nav-text">1. 参考搭建网址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE%E6%B5%8B%E8%AF%95"><span class="nav-text">2. 代码高亮测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%B8%BB%E9%A2%98%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">3. 主题的使用</span></a></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83%E6%90%AD%E5%BB%BA%E7%BD%91%E5%9D%80"><span class="nav-text">1. 参考搭建网址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE%E6%B5%8B%E8%AF%95"><span class="nav-text">2. 代码高亮测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%B8%BB%E9%A2%98%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">3. 主题的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E8%AF%84%E8%AE%BA"><span class="nav-text">4. 评论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA"><span class="nav-text">5. 图片显示</span></a></li></ol>
 
 	</div>
 </div>
