@@ -523,6 +523,14 @@
 
     
     
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>939 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 分钟</span>
+        </span>
     
     
         <span class="article-pv article-meta-item">
@@ -570,7 +578,7 @@
 <p>我不确定是不是，因为我没有网页开发的经验：<br>首先，它的配置文件是<br>    <div class="code-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">think-mongo:</span></span><br><span class="line"> 	<span class="attr">specifier:</span> <span class="string">^2.2.1</span></span><br><span class="line"> 	<span class="attr">version:</span> <span class="number">2.2</span><span class="number">.1</span></span><br></pre></td></tr></table></figure></div><br>但是如果你在我撰写这篇博文的当下去看 MONDO_DB 的 cluster 下的 drivers，会发现最低都比 2.2.1 高<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/12/hello-world/NGO_DB_connect_driver_vision.png"
+                     data-src="/2026/01/12/Test-Blog/MONGO_DB_connect_driver_vision.png"
                       alt="MONGO_DB_connect_driver_vision.png"
                 ><br>至少一瞬间我是束手无策了（摊手</p>
 </blockquote>
@@ -580,7 +588,7 @@
 <p>在 <a class="link"   target="_blank" rel="noopener" href="https://giscus.app/zh-CN" >https://giscus.app/zh-CN<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 网站完成配置后（里面有配置信息的，不要以为是什么介绍网页），参考如图所示的地方，将对应的内容填写至 _config.redefine.yml 配置文件即可。<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/12/hello-world/giscus.png"
+                     data-src="/2026/01/12/Test-Blog/%E5%90%AF%E7%94%A8giscus.png"
                       alt="启用giscus.png"
                 ><br>填写的位置参考如下</p>
 <div class="code-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">comment:</span></span><br><span class="line">  <span class="comment"># Whether to enable comment</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Comment system</span></span><br><span class="line">  <span class="attr">system:</span> <span class="string">giscus</span> <span class="comment"># waline, gitalk, twikoo, giscus</span></span><br><span class="line">  <span class="attr">config:</span></span><br><span class="line">      <span class="comment">#...(略过)</span></span><br><span class="line">      <span class="attr">giscus:</span></span><br><span class="line">      <span class="attr">repo:</span> <span class="comment"># Github repository name e.g. EvanNotFound/hexo-theme-redefine</span></span><br><span class="line">      <span class="attr">repo_id:</span> <span class="comment"># Github repository id</span></span><br><span class="line">      <span class="attr">category:</span> <span class="comment"># Github discussion category</span></span><br><span class="line">      <span class="attr">category_id:</span> <span class="comment"># Github discussion category id</span></span><br><span class="line">      <span class="attr">mapping:</span>  <span class="comment"># Which value to use as the unique identifier for the page. e.g. pathname, url, title, og:title. DO NOT USE og:title WITH PJAX ENABLED since pjax will not update og:title when the page changes</span></span><br><span class="line">      <span class="attr">strict:</span> <span class="number">0</span> <span class="comment"># Whether to enable strict mode. e.g. 0, 1</span></span><br><span class="line">      <span class="attr">reactions_enabled:</span> <span class="number">1</span> <span class="comment"># Whether to enable reactions. e.g. 0, 1</span></span><br><span class="line">      <span class="attr">emit_metadata:</span> <span class="number">0</span> <span class="comment"># Whether to emit metadata. e.g. 0, 1</span></span><br><span class="line">      <span class="attr">lang:</span> <span class="string">zh-CN</span> <span class="comment"># Giscus language. e.g. en, zh-CN, zh-TW</span></span><br><span class="line">      <span class="attr">input_position:</span> <span class="string">top</span> <span class="comment"># Place the comment box above/below the comments. e.g. top, bottom</span></span><br><span class="line">      <span class="attr">loading:</span> <span class="string">lazy</span> <span class="comment"># Load the comments lazily</span></span><br></pre></td></tr></table></figure></div>
@@ -763,6 +771,10 @@
                     <span>
                         共撰写了 2 篇文章
                     </span>
+                    
+                        <span>
+                            共 1k 字
+                        </span>
                     
                 </p>
             
