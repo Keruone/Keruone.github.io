@@ -572,8 +572,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-01-14 14:04:54</span>
-            <span class="mobile">2026-01-14 14:04:54</span>
+            <span class="desktop">2026-01-14 14:19</span>
+            <span class="mobile">2026-01-14 14:19</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -625,7 +625,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.9k 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2k 字</span>
         </span>
     
     
@@ -651,6 +651,25 @@
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
 			<p>题目：704.二分查找 27.移除元素 977.有序数组的平方</p>
 <span id="more"></span>
+<hr>
+<h2 id="学习链接汇总："><a href="#学习链接汇总：" class="headerlink" title="学习链接汇总："></a>学习链接汇总：</h2><ul>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/binary-search/submissions/691206009/" >leetcode 704. 二分查找<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0704.%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE.html#%E6%80%9D%E8%B7%AF" >对应的卡哥解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+</ul>
+</li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-element/submissions/691219268/" >leetcode 27. 移除元素<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0027.%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0.html#%E6%80%9D%E8%B7%AF" >对应的卡哥解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+</ul>
+</li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/squares-of-a-sorted-array/description/" >leetcode 977. 有序数组的平方<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0977.%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E5%B9%B3%E6%96%B9.html#%E6%80%9D%E8%B7%AF" >对应的卡哥解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+</ul>
+</li>
+</ul>
+<hr>
 <h2 id="704-二分查找"><a href="#704-二分查找" class="headerlink" title="704. 二分查找"></a>704. 二分查找</h2><h3 id="1-初版代码"><a href="#1-初版代码" class="headerlink" title="1. 初版代码"></a>1. 初版代码</h3><p>在分析案例代码前，请先允许我对自己的思路做一剖析：</p>
 <ul>
 <li>首先，对于复杂度为 <code>O(logn)</code> 的要求，说白了就是让实际运行的次数与长度呈<code>log</code>关系，那么对应的方法其实就是二分法，因为对于产固定为<code>l</code>的数组，实际检查次数约为<code>log2(l)</code></li>
@@ -695,6 +714,7 @@
 </li>
 <li>此外，在按照上述设置更新范围后，你可以确保每次运行后，区间肯定会<strong>压缩</strong>，最终肯定会压缩完整个数组，不需要考虑是否会出现有遗漏的情况</li>
 </ul>
+<p>最终时间复杂度：O(logn)<br>最终空间复杂度：O(1)</p>
 <div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123; <span class="comment">// 引用vector</span></span><br><span class="line">        <span class="type">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> right = nums.<span class="built_in">size</span>();    <span class="comment">// 左闭右开</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt; right)&#123;</span><br><span class="line">            <span class="type">int</span> middle = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[middle] == target) <span class="keyword">return</span> middle;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(nums[middle] &lt; target) left = middle + <span class="number">1</span>;    <span class="comment">// 左闭右开，而此时 middle 已经判断过不是了，没有必要再包含在内，所以此处为 + 1</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(nums[middle] &gt; target) right = middle;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
 <hr>
 <h2 id="27-移除元素"><a href="#27-移除元素" class="headerlink" title="27. 移除元素"></a>27. 移除元素</h2><h3 id="1-初版代码-1"><a href="#1-初版代码-1" class="headerlink" title="1. 初版代码"></a>1. 初版代码</h3><p>首先是我的思路分析：</p>
@@ -722,6 +742,7 @@
 <li>本题中快慢指针之间的相差的数值，其实都是垃圾堆，无人在意的数值，但是这个长度会跟着我们设定的规则逐渐拉长，最终停留的长度就恰好是我们需要剔除的<code>val</code>总数了</li>
 <li>直接赋值在代码层面会更加简单移动，且不像交换般复杂也不需要有大量的判断条件（对比我的代码）。</li>
 </ul>
+<p>最终时间复杂度：O(n)<br>最终空间复杂度：O(1)</p>
 <div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> fast_index = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> slow_index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(; fast_index &lt; nums.<span class="built_in">size</span>(); fast_index++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[fast_index] != val)</span><br><span class="line">                nums[slow_index++] = nums[fast_index];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow_index;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
 <hr>
 <h2 id="977-有序数的平方"><a href="#977-有序数的平方" class="headerlink" title="977. 有序数的平方"></a>977. 有序数的平方</h2><p>由于我的初版思路就已经和卡哥案例的思路相近，故只有初版提交，没有再次提交。<br>最开始我是考虑过原地操作，但是这样一来，很难在仅仅一次完整数组的循环中完成排序，感觉至少一次半的循环。</p>
@@ -739,6 +760,7 @@
 </ul>
 </li>
 </ul>
+<p>最终时间复杂度：O(n)<br>最终空间复杂度：O(n)</p>
 <div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">sortedSquares</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 非递减，及后元素&gt;=前元素</span></span><br><span class="line">        <span class="comment">// 思路：首尾指针, 左闭右闭</span></span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">ret</span><span class="params">(nums.size())</span></span>;</span><br><span class="line">        <span class="type">int</span> index_front = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> index_back = nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> index_ret = nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(index_back&gt;=index_front)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[index_front] * nums[index_front] &gt;= nums[index_back] * nums[index_back])&#123;</span><br><span class="line">                ret[index_ret--] = nums[index_front] * nums[index_front];</span><br><span class="line">                index_front++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                ret[index_ret--] = nums[index_back] * nums[index_back];</span><br><span class="line">                index_back--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
 		</div>
 
@@ -753,7 +775,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-01-14 14:04:54
+                    :</strong> 2026-01-14 14:19:00
             </li>
         
         <li>
@@ -874,7 +896,7 @@
 	<div class="post-toc">
 		<div class="toc-title">目录</div>
 		<div class="page-title">代码随想录算法训练营第一天</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#704-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-text">704. 二分查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9D%E7%89%88%E4%BB%A3%E7%A0%81"><span class="nav-text">1. 初版代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%88%E7%89%88%E4%BB%A3%E7%A0%81"><span class="nav-text">2. 终版代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#27-%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0"><span class="nav-text">27. 移除元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9D%E7%89%88%E4%BB%A3%E7%A0%81-1"><span class="nav-text">1. 初版代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%88%E7%89%88%E4%BB%A3%E7%A0%81-1"><span class="nav-text">2. 终版代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#977-%E6%9C%89%E5%BA%8F%E6%95%B0%E7%9A%84%E5%B9%B3%E6%96%B9"><span class="nav-text">977. 有序数的平方</span></a></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E9%93%BE%E6%8E%A5%E6%B1%87%E6%80%BB%EF%BC%9A"><span class="nav-text">学习链接汇总：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#704-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-text">704. 二分查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9D%E7%89%88%E4%BB%A3%E7%A0%81"><span class="nav-text">1. 初版代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%88%E7%89%88%E4%BB%A3%E7%A0%81"><span class="nav-text">2. 终版代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#27-%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0"><span class="nav-text">27. 移除元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9D%E7%89%88%E4%BB%A3%E7%A0%81-1"><span class="nav-text">1. 初版代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%88%E7%89%88%E4%BB%A3%E7%A0%81-1"><span class="nav-text">2. 终版代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#977-%E6%9C%89%E5%BA%8F%E6%95%B0%E7%9A%84%E5%B9%B3%E6%96%B9"><span class="nav-text">977. 有序数的平方</span></a></li></ol>
 
 	</div>
 </div>
@@ -905,7 +927,7 @@
                     </span>
                     
                         <span>
-                            共 2.9k 字
+                            共 3k 字
                         </span>
                     
                 </p>
