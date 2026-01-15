@@ -123,7 +123,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://Keruone.github.io/2026/01/14/algorithm-training-camp-day1/"/>
+    <link rel="canonical" href="https://Keruone.github.io/2026/01/14/algorithm-training-camp-day2/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -140,7 +140,7 @@
     
     <title>
         
-            代码随想录算法训练营第1天 | Keruone&#39;s 个人小记
+            代码随想录算法训练营第2天 | Keruone&#39;s 个人小记
         
     </title>
 
@@ -544,7 +544,7 @@
 		<div class="article-title relative w-full">
 			
 			<div class="w-full flex items-center pt-6 justify-start">
-				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">代码随想录算法训练营第1天</h1>
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">代码随想录算法训练营第2天</h1>
 			</div>
 			
 		</div>
@@ -565,15 +565,15 @@
 					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2026-01-14 11:45:31</span>
-        <span class="mobile">2026-01-14 11:45:31</span>
+        <span class="desktop">2026-01-14 19:16:18</span>
+        <span class="mobile">2026-01-14 19:16:18</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-01-15 12:24:28</span>
-            <span class="mobile">2026-01-15 12:24:28</span>
+            <span class="desktop">2026-01-15 12:26:56</span>
+            <span class="mobile">2026-01-15 12:26:56</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -625,12 +625,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2k 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.9k 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>7 分钟</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>12 分钟</span>
         </span>
     
     
@@ -649,137 +649,192 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<p>题目：704.二分查找 27.移除元素 977.有序数组的平方</p>
+			<p>题目：<br>leetcode：209.长度最小的子数组 59.螺旋矩阵II<br>kamacoder：58.区间和 44.开发商购买土地<br>（ps.<em>暴力求解通通略过不提</em>）</p>
 <span id="more"></span>
 <hr>
-<h2 id="学习链接汇总："><a href="#学习链接汇总：" class="headerlink" title="学习链接汇总："></a>学习链接汇总：</h2><ul>
-<li><p><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/binary-search/submissions/691206009/" >leetcode 704. 二分查找<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h2 id="题目解答及分析"><a href="#题目解答及分析" class="headerlink" title="题目解答及分析"></a>题目解答及分析</h2><h3 id="209-长度最小的子数组"><a href="#209-长度最小的子数组" class="headerlink" title="209. 长度最小的子数组"></a>209. 长度最小的子数组</h3><blockquote>
+<p>题目链接：<a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-size-subarray-sum/" >https://leetcode.cn/problems/minimum-size-subarray-sum/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>文章讲解：<a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0209.%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84.html" >https://programmercarl.com/0209.%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84.html<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>视频讲解：<a class="link"   target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1tZ4y1q7XE" >https://www.bilibili.com/video/BV1tZ4y1q7XE<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</blockquote>
+<h4 id="1-初始思路"><a href="#1-初始思路" class="headerlink" title="1. 初始思路"></a>1. 初始思路</h4><p>惯例先分析自己的初始思路：<br>这道题其实挺明确的，就是滑动窗口，即：</p>
 <ul>
-<li><a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0704.%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE.html#%E6%80%9D%E8%B7%AF" >对应的卡哥解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
-</ul>
+<li><ol>
+<li>通过<strong>两个索引</strong>，框定一定的范围，记作窗口</li>
+</ol>
 </li>
-<li><p><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-element/submissions/691219268/" >leetcode 27. 移除元素<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<li><ol start="2">
+<li>两个索引有各自的<strong>更新条件</strong>，最终效果使得窗口会左右移动，范围可能变大变小</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>但是更新条件是服务于行为的，所以我们要先规划理想的<strong>索引行为</strong></li>
+</ol>
+</li>
+</ul>
+<p>那做完上述简单的分析后，我们就要开始明确我们的两个索引的具体行为了:</p>
 <ul>
-<li><a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0027.%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0.html#%E6%80%9D%E8%B7%AF" >对应的卡哥解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
-</ul>
+<li><ol>
+<li>范围为<strong>左闭右闭</strong></li>
+</ol>
 </li>
-<li><p><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/squares-of-a-sorted-array/description/" >leetcode 977. 有序数组的平方<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<li><ol start="2">
+<li>记左侧索引为<code>index_slow</code>，记右边索引为<code>index_fast</code></li>
+</ol>
+</li>
+<li><ol start="3">
+<li>由于初始情况不一定满足target要求，所以我们要先去尽可能的<strong>包含新的数据</strong>，以扩充自己的<code>sum</code></li>
+</ol>
 <ul>
-<li><a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0977.%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E5%B9%B3%E6%96%B9.html#%E6%80%9D%E8%B7%AF" >对应的卡哥解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li>对此，我们定义了第 <strong>1</strong> 条规则：<u><strong><code>index_fast</code>要向右移动，直到满足<code>sum</code>超过<code>target</code></strong></u>（因为此时条件已经满足，就无需再向右移动了）</li>
 </ul>
 </li>
-</ul>
-<hr>
-<h2 id="704-二分查找"><a href="#704-二分查找" class="headerlink" title="704. 二分查找"></a>704. 二分查找</h2><h3 id="1-初版代码"><a href="#1-初版代码" class="headerlink" title="1. 初版代码"></a>1. 初版代码</h3><p>在分析案例代码前，请先允许我对自己的思路做一剖析：</p>
+<li><ol start="4">
+<li>直到某一时刻，<code>sum</code>超过了<code>target</code>，此时我们会很自然的联想 “能不能尝试删除左侧的元素试试看，有没有更短的数组满足条件呢” 。</li>
+</ol>
 <ul>
-<li>首先，对于复杂度为 <code>O(logn)</code> 的要求，说白了就是让实际运行的次数与长度呈<code>log</code>关系，那么对应的方法其实就是二分法，因为对于产固定为<code>l</code>的数组，实际检查次数约为<code>log2(l)</code></li>
-<li>那么其实思路就很简单了：<ul>
-<li>初始化范围</li>
-<li>检测中间值</li>
-<li>更新范围</li>
-</ul>
-</li>
-<li>对此，我的初始方法如下：<ul>
-<li>若 target 比当前值小，那么进一步压缩上界，并对半分</li>
-<li>若 target 比当前值大，那么向上取中间索引</li>
-</ul>
-</li>
-<li>虽然 leetcode 过了，但其实有一个<strong>小瑕疵</strong>是没有发现的：<ul>
-<li>代码中索引向大运动时，是没有压缩下界的，<strong>不是严格意义的二分法</strong></li>
-</ul>
-</li>
-</ul>
-<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123; <span class="comment">// 引用vector</span></span><br><span class="line">        <span class="type">int</span> index_max = nums.<span class="built_in">size</span>() - <span class="number">1</span>;     <span class="comment">// 计算数组最大索引</span></span><br><span class="line">        <span class="type">int</span> index = index_max / <span class="number">2</span>;           <span class="comment">// 判断开始索引</span></span><br><span class="line">        <span class="type">int</span> index_pre = index_max;</span><br><span class="line">        <span class="keyword">do</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[index] &gt; target)&#123;</span><br><span class="line">                index_pre = index;</span><br><span class="line">                index = index / <span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (nums[index] &lt; target)&#123;</span><br><span class="line">                index = (index + index_pre + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (nums[index] == target) <span class="keyword">return</span> index;</span><br><span class="line">        &#125;<span class="keyword">while</span>(index != index_pre);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
-<h3 id="2-终版代码"><a href="#2-终版代码" class="headerlink" title="2. 终版代码"></a>2. 终版代码</h3><p>在通过 leetcode 的第一次提交后，参考了代码随想录二分查找的代码对代码进行了修改。<br>关于基础的原理分析就不过多赘述，卡哥已经足够详细了，详见<a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/%E6%95%B0%E7%BB%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80.html" >此处<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>。</p>
-<p>在此，我就提一提我自己的感悟吧：</p>
-<ul>
-<li>像卡哥所言，其实核心就是对<strong>区间的规范</strong>和对应的<strong>执行区间更新的细节</strong></li>
-<li>那像终版，首先关于<strong>区间</strong>：<ul>
-<li>我是选择了<strong>左闭右开</strong><ul>
-<li>这意味着你的<strong>左</strong>边界数值<strong>应该</strong>纳入当前的判断中，即该数值也存在可能性为 <code>target</code></li>
-<li>这意味着你的<strong>右</strong>边界数值<strong>不应</strong>纳入当前的判断中，即该数值不可能为 <code>target</code></li>
-<li>综上两点，你也应该意识到，当左边界和右边界重合时，其实跟我面的假设矛盾的，不可能一个数值同时有希望却没希望为 <code>target</code>，所以该推出了</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>再是关于<strong>更新的细节</strong>：<ul>
-<li>首先每次用于数值比较的数值都是 <code>left</code> 和 <code>right</code> 的中间索引<code>middle</code>对应的值</li>
-<li>若不退出，那么说明索引 <code>middle</code> 对应的数值不是 <code>target</code>，此时，根据上面选择的<strong>区间</strong>，就有不同的执行细节了。对此，我已左闭右开区间为例：<ul>
-<li>对于左边界，由于它<strong>应给</strong>被纳入判断范围，但是索引 <code>middle</code> 对应的是范围外的数值，无需考虑，所以 <code>left = middle + 1</code></li>
-<li>对于右边界，由于它<strong>不应</strong>被纳入判断范围，恰好索引 <code>middle</code> 对应的是范围外的数值，无需考虑，所以 <code>right = middle</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>此外，在按照上述设置更新范围后，你可以确保每次运行后，区间肯定会<strong>压缩</strong>，最终肯定会压缩完整个数组，不需要考虑是否会出现有遗漏的情况</li>
-</ul>
-<p>最终时间复杂度：O(logn)<br>最终空间复杂度：O(1)</p>
-<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123; <span class="comment">// 引用vector</span></span><br><span class="line">        <span class="type">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> right = nums.<span class="built_in">size</span>();    <span class="comment">// 左闭右开</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt; right)&#123;</span><br><span class="line">            <span class="type">int</span> middle = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[middle] == target) <span class="keyword">return</span> middle;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(nums[middle] &lt; target) left = middle + <span class="number">1</span>;    <span class="comment">// 左闭右开，而此时 middle 已经判断过不是了，没有必要再包含在内，所以此处为 + 1</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(nums[middle] &gt; target) right = middle;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
-<hr>
-<h2 id="27-移除元素"><a href="#27-移除元素" class="headerlink" title="27. 移除元素"></a>27. 移除元素</h2><h3 id="1-初版代码-1"><a href="#1-初版代码-1" class="headerlink" title="1. 初版代码"></a>1. 初版代码</h3><p>首先是我的思路分析：</p>
-<ul>
-<li>我所考虑到的也是双指针的方法，不过一开始我并没有考虑到快慢指针（虽然归根结底本质相似）</li>
-<li>一个指针(<code>index</code>)用于浏览整个数组，用于判断数值是否应该被剔除</li>
-<li>另一个指针(<code>index_wait_to_change</code>)用于标记<strong>最靠前</strong>的应被剔除的数值，若没有应该被剔除的数据，则<strong>紧跟</strong><code>index</code>。</li>
-<li>剔除的实际方法：<ul>
-<li><strong>交换</strong>，将后方该保留的数值和前方应剔除的数值交换</li>
-</ul>
-</li>
-<li>剔除的条件：<ul>
-<li>两个指针<strong>不重叠</strong>，因为若重叠想剔除也没有合适的数值交换</li>
-<li><code>index</code>找到了应保留的数值<blockquote>
-<p>但其实最后转过头来想，这本质就是 <strong>快慢指针</strong> ，硬要说的话就是我的代码不像快慢指针赋值次数多，但是其实我的代码判断的次数也多。</p>
+<li>对此，我们定义了第 <strong>2</strong> 条规则：<u><strong><code>index_slow</code>在满足<code>sum</code>超过<code>target</code>时，尝试向右移动，<em>直到不满足条件</em></strong></u>（这样可以跳出局部最优解，反倒去寻找全局最优解）<blockquote>
+<ol>
+<li>其实这个地方一开始我思路卡住了，我最早限定了<code>index_slow</code>应该移动不打破满足<code>target</code>的条件。但是这样的话会导致只能获得<u>局部最优解</u>。</li>
+<li>后来粗看了两眼卡哥的解析后相通了，<code>index_slow</code>移动就该使得不满足条件，这样结束移动时，剩下的范围内的sum就不满足条件，这样，我们的<code>index_fast</code>就又有动力向前了。</li>
+</ol>
 </blockquote>
 </li>
 </ul>
 </li>
 </ul>
-<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> index_wait_to_change = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> index = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> temp;</span><br><span class="line">        <span class="type">int</span> size = nums.<span class="built_in">size</span>();  <span class="comment">// 左闭右开</span></span><br><span class="line">        <span class="keyword">for</span>(; index &lt; size; index ++)&#123;</span><br><span class="line">            <span class="keyword">if</span>((nums[index] != val) &amp;&amp; (index_wait_to_change != index))&#123;</span><br><span class="line">                <span class="comment">// 如果当前 index 不是目标数值，检查是否有交换的必要 </span></span><br><span class="line">                <span class="comment">// 如果当前 index 与 index_wait_to_change 数值一样：</span></span><br><span class="line">                <span class="comment">//     说明没有</span></span><br><span class="line">                temp = nums[index];</span><br><span class="line">                nums[index] = nums[index_wait_to_change];</span><br><span class="line">                nums[index_wait_to_change] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(nums[index_wait_to_change] != val)&#123;</span><br><span class="line">                <span class="comment">// 不是目标数值就继续前进，否则停下等待交换</span></span><br><span class="line">                index_wait_to_change++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> index_wait_to_change;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
-<h3 id="2-终版代码-1"><a href="#2-终版代码-1" class="headerlink" title="2. 终版代码"></a>2. 终版代码</h3><p>在通过 leetcode 的第一次提交后，参考了代码随想录移除元素的代码对代码进行了修改。<br>关于基础的原理分析就不过多赘述，卡哥已经足够详细了，详见<a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0027.%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0.html#%E6%80%9D%E8%B7%AF" >此处<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
-<p>接着还是我的个人感悟：</p>
+<p>至此，我们索引的具体行为就定义完毕了。<br>最后，将其翻译为代码语言即可。<em>（具体执行细节，如判断条件等，略）</em></p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> index_fast = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> index_slow = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> sum_now = <span class="number">0</span>;    </span><br><span class="line">        <span class="type">int</span> len_min = nums.<span class="built_in">size</span>()<span class="number">+1</span>;</span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> len_now (index_fast - index_slow + 1)</span></span><br><span class="line">        <span class="keyword">while</span>(index_fast &lt; nums.<span class="built_in">size</span>())&#123;</span><br><span class="line">            sum_now += nums[index_fast];</span><br><span class="line">            <span class="keyword">if</span> (sum_now &gt;= target)&#123;</span><br><span class="line">                <span class="comment">// 当满足最条件时，此时的数组无论前后加入新的数组都肯定会变的更长</span></span><br><span class="line">                <span class="keyword">while</span>(sum_now &gt;= target &amp;&amp; index_slow &lt;= index_fast)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(len_now == <span class="number">1</span>)    </span><br><span class="line">                        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span>(len_min &gt; len_now)  </span><br><span class="line">                        len_min = len_now;</span><br><span class="line">                    sum_now -= nums[index_slow];</span><br><span class="line">                    index_slow++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            index_fast++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> len_min &lt;= nums.<span class="built_in">size</span>() ? len_min : <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<h4 id="2-最终代码"><a href="#2-最终代码" class="headerlink" title="2. 最终代码"></a>2. 最终代码</h4><p>思路大体在一开始已经确认下来了，也没有过多更改，不过此时再详细看了看卡哥的代码，优化了一下结构和各种判断条件:</p>
 <ul>
-<li>本题中快慢指针之间的相差的数值，其实都是垃圾堆，无人在意的数值，但是这个长度会跟着我们设定的规则逐渐拉长，最终停留的长度就恰好是我们需要剔除的<code>val</code>总数了</li>
-<li>直接赋值在代码层面会更加简单移动，且不像交换般复杂也不需要有大量的判断条件（对比我的代码）。</li>
+<li>判断条件和while合并</li>
+<li>while转for</li>
+<li>合并len为1时候的判断</li>
+<li>省略对index_slow&lt;&#x3D;index_fast的条件</li>
 </ul>
-<p>最终时间复杂度：O(n)<br>最终空间复杂度：O(1)</p>
-<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> fast_index = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> slow_index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(; fast_index &lt; nums.<span class="built_in">size</span>(); fast_index++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[fast_index] != val)</span><br><span class="line">                nums[slow_index++] = nums[fast_index];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow_index;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<p>得到最终代码如下</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> index_fast = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> index_slow = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> sum_now = <span class="number">0</span>;    </span><br><span class="line">        <span class="type">int</span> len_min = nums.<span class="built_in">size</span>()<span class="number">+1</span>;</span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> len_now (index_fast - index_slow + 1)</span></span><br><span class="line">        <span class="keyword">for</span>(; index_fast &lt; nums.<span class="built_in">size</span>(); index_fast++)&#123;</span><br><span class="line">            sum_now += nums[index_fast];</span><br><span class="line">            <span class="keyword">while</span>(sum_now &gt;= target)&#123;</span><br><span class="line">                len_min = len_now &lt; len_min ? len_now : len_min;</span><br><span class="line">                sum_now -= nums[index_slow++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> len_min &lt;= nums.<span class="built_in">size</span>() ? len_min : <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+
 <hr>
-<h2 id="977-有序数的平方"><a href="#977-有序数的平方" class="headerlink" title="977. 有序数的平方"></a>977. 有序数的平方</h2><p>由于我的初版思路就已经和卡哥案例的思路相近，故只有初版提交，没有再次提交。<br>最开始我是考虑过原地操作，但是这样一来，很难在仅仅一次完整数组的循环中完成排序，感觉至少一次半的循环。</p>
-<p>我的最终思路：</p>
+<h3 id="59-螺旋矩阵II"><a href="#59-螺旋矩阵II" class="headerlink" title="59.螺旋矩阵II"></a>59.螺旋矩阵II</h3><blockquote>
+<p>题目链接：<a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/spiral-matrix-ii/" >https://leetcode.cn/problems/spiral-matrix-ii/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>文章讲解：<a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0059.%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II.html" >https://programmercarl.com/0059.%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II.html<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>视频讲解：<a class="link"   target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1SL4y1N7mV/" >https://www.bilibili.com/video/BV1SL4y1N7mV/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</blockquote>
+<blockquote>
+<p>此题有点特殊，不像前面的练习某种特定方法。所以比较<strong>开放</strong>。只要你的逻辑是成立的，说得通的，就是可以接受的。</p>
+<p>比起说是考察具体知识点，不如说是考察你的问题拆分能力。<br>（不过不得不说，这道题我的思路多少有些<em><strong>另类</strong></em>）</p>
+</blockquote>
+<h4 id="1-我的思路"><a href="#1-我的思路" class="headerlink" title="1. 我的思路"></a>1. 我的思路</h4><p>像我前面小字提及，此处跟多的是问题拆分的思路问题，所以本题我将侧重于我的思路介绍。<br>题目要求是螺旋填充，那其实说白了，就是一直贴着墙移动，到达边界更换个朝向，继续移动。重复上述流程直到结束。</p>
+<p>具体行为拆分如下：</p>
 <ul>
-<li>首先，可以发现这个排序的本质，是把一个<strong>先递减，后递增</strong>的数组排成<strong>递增</strong>的数组</li>
-<li>但是显然，找到谷值并不容易，需要有半个循环，所以从<strong>峰值</strong>开始考虑，对应的ret数组也从末端开始考虑</li>
-<li>然后，创建两个索引 <code>index_front</code> <code>index_back</code>，其中索引所包含的所有数值，均表示需要考虑的数值，即<strong>左闭右闭</strong></li>
-<li>显然，最大的数值尽在区间的两端</li>
-<li>所以最终流程：<ul>
-<li>比较左右端大小</li>
-<li>较大的一端平方数值赋值至ret最后，更新ret指针</li>
-<li>更新区间，将刚刚的大端剔除</li>
-<li>循环上述流程直至两个索引相遇并错开</li>
+<li>定义 4 个朝向，每次移动，仅会尝试向当前方向移动<ul>
+<li>定义 <strong>4</strong> 个朝向</li>
+<li>定义 <strong>坐标更新（移动）</strong> 函数，会根据当前朝向执行不同的更新方式</li>
+</ul>
+</li>
+<li>有<strong>检测边界</strong>的策略<ul>
+<li>定义 <strong>4</strong> 个边界索引，此处采用左闭右闭，以方便使用<u>等号</u>判断</li>
+<li>根据不同的<strong>朝向</strong>，以<strong>不同的边界</strong>来<strong>与坐标比较</strong></li>
+</ul>
+</li>
+<li>有到达边界后<strong>改变朝向</strong>的实现<ul>
+<li>通过取模运算更改当前定义的朝向：<code>toward = ((toward+1)%4);</code></li>
+</ul>
+</li>
+<li>有<strong>更新边界</strong>的策略<ul>
+<li><strong>以向右移动举例</strong>，当你移动到最右侧时，其实是<strong>最上面一行都填充满了数值</strong>，所以此时应该更新的是<strong>上边界</strong></li>
+<li>所以得到更新策略：当<strong>检测到边界</strong>时，更新<strong>前一个</strong>朝向的边界</li>
+</ul>
+</li>
+<li>结束条件<ul>
+<li>当 n 为奇数时，最终边界会<strong>互相重叠</strong>：相等时仍然要填充数值</li>
+<li>故，结束条件应为不满足<code>limit_down &gt;= limit_up &amp;&amp; limit_right &gt;= limit_left</code></li>
 </ul>
 </li>
 </ul>
-<p>最终时间复杂度：O(n)<br>最终空间复杂度：O(n)</p>
-<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">sortedSquares</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 非递减，及后元素&gt;=前元素</span></span><br><span class="line">        <span class="comment">// 思路：首尾指针, 左闭右闭</span></span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">ret</span><span class="params">(nums.size())</span></span>;</span><br><span class="line">        <span class="type">int</span> index_front = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> index_back = nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> index_ret = nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(index_back&gt;=index_front)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[index_front] * nums[index_front] &gt;= nums[index_back] * nums[index_back])&#123;</span><br><span class="line">                ret[index_ret--] = nums[index_front] * nums[index_front];</span><br><span class="line">                index_front++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                ret[index_ret--] = nums[index_back] * nums[index_back];</span><br><span class="line">                index_back--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<p>至此，思路分析结束。<br>最终执行流程就是：赋值 -&gt; 检测边界( -&gt; 改变朝向 -&gt; 更新边界) -&gt; 更新坐标</p>
+<blockquote>
+<p>考虑到可读性，所以做了较多的 宏定义<br>真正循环体就一点点代码</p>
+</blockquote>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">generateMatrix</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">matrix</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n));</span><br><span class="line">        <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> limit_up = <span class="number">0</span>, limit_down = n - <span class="number">1</span>, limit_left = <span class="number">0</span>, limit_right = n - <span class="number">1</span>;</span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> toward_right    0</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> toward_down     1</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> toward_left     2</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> toward_up       3</span></span><br><span class="line">        <span class="type">int</span> toward = toward_right;</span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> index_update()         (toward == toward_right ? j++ :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_down  ? i++ :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_left  ? j-- :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_up    ? i-- : 0)</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> limit_update()         (toward == toward_right ? limit_up++ :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_down  ? limit_right-- :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_left  ? limit_down-- :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_up    ? limit_left++ : 0)</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> boundary_detection()   (toward == toward_right ? j == limit_right :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_down  ? i == limit_down :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_left  ? j == limit_left :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_up    ? i == limit_up : 0)</span></span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(limit_down &gt;= limit_up &amp;&amp; limit_right &gt;= limit_left)&#123;</span><br><span class="line">            matrix[i][j] = cnt++;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">boundary_detection</span>())&#123;</span><br><span class="line">                <span class="built_in">limit_update</span>();</span><br><span class="line">                toward = ((toward<span class="number">+1</span>)%<span class="number">4</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">index_update</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> matrix;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p><strong>vector 数组创建介绍：</strong><br>在代码中，有<code>vector&lt;vector&lt;int&gt;&gt; matrix(n, vector&lt;int&gt;(n));</code><br>由于我以前没有用过 vector ，所以如何使用vector创建数组其实废了我点时间：</p>
+<ul>
+<li>vector&lt;类型&gt; 对象(元素数, 初始值)</li>
+<li>而其中初始值可以是 <strong>填充构造函数<code>vector&lt;T&gt;(size_type n, const T&amp; val)</code></strong><blockquote>
+<p>这里还涉及一些运算符重载，不过略过了</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<h4 id="2-卡哥思路"><a href="#2-卡哥思路" class="headerlink" title="2. 卡哥思路"></a>2. 卡哥思路</h4><p>卡哥的思路是将螺旋拆成一个个同心环，每次大循环填充一个圈（通过4个for循环实现）</p>
+<p>其中每次填充圈的循环时，卡哥使用了左闭右开：</p>
+<ul>
+<li>此时每次小循环结束后，都会<strong>留一个空位</strong>，恰好可以作为<strong>下一个朝向</strong>循环的左闭右开的<strong>左闭</strong>。</li>
+<li>而到最后一次时，由于左闭右开的<strong>右开</strong>，使得<strong>不会覆盖当前圈的初始位置</strong>。</li>
+</ul>
+<p>至此，<strong>根据左闭右开原则可以很好的绘制完一个完整的圈</strong>，然后不断迭代即可。</p>
+<p>详细可以参考<a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0059.%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II.html#%E6%80%9D%E8%B7%AF" >这里<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<hr>
+<h3 id="58-区间和"><a href="#58-区间和" class="headerlink" title="58. 区间和"></a>58. 区间和</h3><blockquote>
+<p>文章讲解：<a class="link"   target="_blank" rel="noopener" href="https://www.programmercarl.com/kamacoder/0058.%E5%8C%BA%E9%97%B4%E5%92%8C.html" >https://www.programmercarl.com/kamacoder/0058.%E5%8C%BA%E9%97%B4%E5%92%8C.html<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> </p>
+</blockquote>
+<p>这题其实本身没什么好说的，代码比较简单。<br>不过这里蕴含的一种想法比较重要：</p>
+<ul>
+<li><strong>前缀和</strong>：可以在循环的过程中，不使用累加，而使用前一个数值与当前值求和</li>
+<li>$$\text{sum}(i) &#x3D; \text{sum}(i-1) + \text{data}(i)$$</li>
+</ul>
+<p>而这一步，可以和初始读取数据的循环直接融为一体，直接少了1个大循环和繁琐的累加</p>
+<p>最后求 索引a 到 索引b 之间的元素和，只要简单的<strong>减法</strong>就可以立马得到了</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">array</span><span class="params">(n)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;temp);</span><br><span class="line">    array[<span class="number">0</span>] = temp;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;temp);</span><br><span class="line">        array[i] = array[i<span class="number">-1</span>] + temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;i, &amp;j)!=EOF)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, array[j] - (i == <span class="number">0</span> ? <span class="number">0</span> : array[i<span class="number">-1</span>]));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h3 id="44-开发商购买土地"><a href="#44-开发商购买土地" class="headerlink" title="44. 开发商购买土地"></a>44. 开发商购买土地</h3><blockquote>
+<p>文章讲解：<a class="link"   target="_blank" rel="noopener" href="https://www.programmercarl.com/kamacoder/0044.%E5%BC%80%E5%8F%91%E5%95%86%E8%B4%AD%E4%B9%B0%E5%9C%9F%E5%9C%B0.html" >https://www.programmercarl.com/kamacoder/0044.%E5%BC%80%E5%8F%91%E5%95%86%E8%B4%AD%E4%B9%B0%E5%9C%9F%E5%9C%B0.html<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</blockquote>
+<p>在前文 58.区间和 的基础上，这个就比较容易想通了：</p>
+<ul>
+<li>首先根据题目意思，可以得知，每次判断都是纵向或横向求和<ul>
+<li>所以在读取矩阵中，可以一并将横向和纵向的求和先计算出来。</li>
+</ul>
+</li>
+<li>然后其实就两个前缀和：一个纵向的，一个横向的<ul>
+<li>所以再处理得到两个前缀和一遍后续运算</li>
+</ul>
+</li>
+<li>当前缀和获取完毕后，就是不断的循环比较差异了</li>
+</ul>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;climits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> m, n;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;m, &amp;n);</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">matrix_row_sum</span><span class="params">(m, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">matrix_col_sum</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; m; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; n; j++)&#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;temp);</span><br><span class="line">            matrix_row_sum[i] += temp;</span><br><span class="line">            matrix_col_sum[j] += temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算区间和</span></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt;m; i++)&#123;</span><br><span class="line">        matrix_row_sum[i] += matrix_row_sum[i - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(j = <span class="number">1</span>; j &lt;n; j++)&#123;</span><br><span class="line">        matrix_col_sum[j] += matrix_col_sum[j - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断最小差</span></span><br><span class="line">    <span class="type">int</span> diff = INT_MAX;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt; m; i++)&#123;</span><br><span class="line">        diff = <span class="built_in">min</span>(diff, <span class="built_in">abs</span>(matrix_row_sum[m<span class="number">-1</span>] - <span class="number">2</span> * matrix_row_sum[i<span class="number">-1</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(j = <span class="number">1</span>; j &lt; n; j++)&#123;</span><br><span class="line">        diff = <span class="built_in">min</span>(diff, <span class="built_in">abs</span>(matrix_col_sum[n<span class="number">-1</span>] - <span class="number">2</span> * matrix_col_sum[j<span class="number">-1</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, diff);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<hr>
+<h2 id="数组总结"><a href="#数组总结" class="headerlink" title="数组总结"></a>数组总结</h2><h3 id="1-根基：先明确区间规则，再落地所有细节"><a href="#1-根基：先明确区间规则，再落地所有细节" class="headerlink" title="1. 根基：先明确区间规则，再落地所有细节"></a>1. 根基：先明确区间规则，再落地所有细节</h3><p>这是数组处理的<strong>核心前提</strong>，优先级最高——必须先严格定义区间模式（如左闭右开 <code>[left, right)</code>、左闭右闭 <code>[left, right]</code>），后续所有逻辑都围绕这个规则展开：</p>
+<ul>
+<li>判定条件（如循环终止条件 <code>left &lt; right</code> 还是 <code>left &lt;= right</code>）</li>
+<li>指针更新逻辑（如 <code>right = mid</code> 还是 <code>right = mid - 1</code>）</li>
+<li>边界值处理（如是否包含首尾元素、空数组&#x2F;单元素数组的兼容）</li>
+</ul>
+<p>一旦区间规则固定，所有执行细节都有了统一标准，能彻底避免因边界模糊导致的越界、漏判等问题，做到逻辑自洽、临危不乱。这是数组问题最基础也最关键的能力。</p>
+<h3 id="2-提升技巧"><a href="#2-提升技巧" class="headerlink" title="2. 提升技巧"></a>2. 提升技巧</h3><p>在明确区间规则的基础上，搭配以下高频方案，可高效解决绝大多数数组问题：</p>
+<ol>
+<li>二分查找：适用于<strong>有序数组</strong>的查找、边界定位（如找目标值第一个&#x2F;最后一个出现位置），核心是用区间规则约束指针移动，降低时间复杂度至 O(log n)；</li>
+<li>双指针（含快慢指针）：解决数组修改类问题（如移除元素、去重）、滑动窗口类问题（如子数组和&#x2F;长度约束），通过快慢指针分流“有效元素”与“无效元素”，或左右指针双向逼近，实现 O(n) 时间复杂度；</li>
+<li>前缀和：快速求解<strong>区间和问题</strong>（如子数组和等于目标值、区间平均&#x2F;最值），通过预处理前缀和数组，将单次区间和查询从 O(n) 优化至 O(1)，大幅提升效率。</li>
+</ol>
+
 		</div>
 
 		
 		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
 			<div class="article-copyright-info-container">
     <ul>
-        <li><strong>标题:</strong> 代码随想录算法训练营第1天</li>
+        <li><strong>标题:</strong> 代码随想录算法训练营第2天</li>
         <li><strong>作者:</strong> Keruone</li>
         <li><strong>创建于
-                :</strong> 2026-01-14 11:45:31</li>
+                :</strong> 2026-01-14 19:16:18</li>
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-01-15 12:24:28
+                    :</strong> 2026-01-15 12:26:56
             </li>
         
         <li>
-            <strong>链接:</strong> https://keruone.github.io/2026/01/14/Algorithm-Training-Camp-day1/
+            <strong>链接:</strong> https://keruone.github.io/2026/01/14/Algorithm-Training-Camp-day2/
         </li>
         <li>
             <strong>
@@ -816,23 +871,11 @@
 		
 		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
 			
-			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="prev" rel="prev" href="/2026/01/14/Algorithm-Training-Camp-day2/">
-					<span class="left arrow-icon flex justify-center items-center">
-						<i class="fa-solid fa-chevron-left"></i>
-					</span>
-					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item truncate max-w-48">代码随想录算法训练营第2天</span>
-						<span class="post-nav-item">上一篇</span>
-					</span>
-				</a>
-			</div>
-			
 			
 			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="next" rel="next" href="/2026/01/12/Test-Blog/">
+				<a class="next" rel="next" href="/2026/01/14/Algorithm-Training-Camp-day1/">
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item truncate max-w-48">Test Blog</span>
+						<span class="post-nav-title-item truncate max-w-48">代码随想录算法训练营第1天</span>
 						<span class="post-nav-item">下一篇</span>
 					</span>
 					<span class="right arrow-icon flex justify-center items-center">
@@ -907,8 +950,8 @@
 		<div class="post-toc-wrap">
 	<div class="post-toc">
 		<div class="toc-title">目录</div>
-		<div class="page-title">代码随想录算法训练营第1天</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E9%93%BE%E6%8E%A5%E6%B1%87%E6%80%BB%EF%BC%9A"><span class="nav-text">学习链接汇总：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#704-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-text">704. 二分查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9D%E7%89%88%E4%BB%A3%E7%A0%81"><span class="nav-text">1. 初版代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%88%E7%89%88%E4%BB%A3%E7%A0%81"><span class="nav-text">2. 终版代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#27-%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0"><span class="nav-text">27. 移除元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9D%E7%89%88%E4%BB%A3%E7%A0%81-1"><span class="nav-text">1. 初版代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%88%E7%89%88%E4%BB%A3%E7%A0%81-1"><span class="nav-text">2. 终版代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#977-%E6%9C%89%E5%BA%8F%E6%95%B0%E7%9A%84%E5%B9%B3%E6%96%B9"><span class="nav-text">977. 有序数的平方</span></a></li></ol>
+		<div class="page-title">代码随想录算法训练营第2天</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E8%A7%A3%E7%AD%94%E5%8F%8A%E5%88%86%E6%9E%90"><span class="nav-text">题目解答及分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84"><span class="nav-text">209. 长度最小的子数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#59-%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II"><span class="nav-text">59.螺旋矩阵II</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#58-%E5%8C%BA%E9%97%B4%E5%92%8C"><span class="nav-text">58. 区间和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#44-%E5%BC%80%E5%8F%91%E5%95%86%E8%B4%AD%E4%B9%B0%E5%9C%9F%E5%9C%B0"><span class="nav-text">44. 开发商购买土地</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%80%BB%E7%BB%93"><span class="nav-text">数组总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A0%B9%E5%9F%BA%EF%BC%9A%E5%85%88%E6%98%8E%E7%A1%AE%E5%8C%BA%E9%97%B4%E8%A7%84%E5%88%99%EF%BC%8C%E5%86%8D%E8%90%BD%E5%9C%B0%E6%89%80%E6%9C%89%E7%BB%86%E8%8A%82"><span class="nav-text">1. 根基：先明确区间规则，再落地所有细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8F%90%E5%8D%87%E6%8A%80%E5%B7%A7"><span class="nav-text">2. 提升技巧</span></a></li></ol></li></ol>
 
 	</div>
 </div>
