@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo, 技术博客, 学习总结, Tech Blog, Notes">
+    
+    <meta name="author" content="Keruone">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://Keruone.github.io/2026/01/14/algorithm/algorithm-training-camp-day2/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/keruone-blog-logo.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/keruone-blog-logo.jpg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/keruone-blog-logo.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            代码随想录算法训练营第2天-数组2 | Keruone&#39;s 个人小记
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"keruone.github.io","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":false,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Keruone's blog","subtitle":{"text":["一边想着一定要做点什么，另一边却烦恼着做点什么好，甚至担心什么都没干就这么长大了。 ——K-ON"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":"enable","version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"links":{"path":"/links","icon":"fa-solid fa-link"},"About":{"icon":"fa-regular fa-user","submenus":{"Github":"https://github.com/Keruone/Keruone.github.io","Blog":"https://blog.keruone.cn"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"原博客 blog.keruone.cn","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2026/1/12 13:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Keruone&#39;s 个人小记
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/links"
+                                        >
+                                    <i class="fa-solid fa-link fa-fw"></i>
+                                    链接
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.keruone.cn">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/links"
+                        >
+                            <span>
+                                链接
+                            </span>
+                            
+                                <i class="fa-solid fa-link fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.keruone.cn">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">59</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">代码随想录算法训练营第2天-数组2</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/keruone-myFavoritePhoto.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Keruone</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-01-14 19:16:18</span>
+        <span class="mobile">2026-01-14 19:16:18</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-05-18 11:38:21</span>
+            <span class="mobile">2026-05-18 11:38:21</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%8D%9A%E5%AE%A2/">学习博客</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%8D%9A%E5%AE%A2/%E7%AE%97%E6%B3%95%E8%AE%AD%E7%BB%83%E8%90%A5/">算法训练营</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3.2k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>13 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p>题目：<br>leetcode：209.长度最小的子数组 59.螺旋矩阵II<br>kamacoder：58.区间和 44.开发商购买土地<br>（ps.<em>暴力求解通通略过不提</em>）</p>
+<span id="more"></span>
+<hr>
+<h2 id="题目汇总"><a href="#题目汇总" class="headerlink" title="题目汇总"></a>题目汇总</h2><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>题目链接</th>
+<th>卡哥解析</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-size-subarray-sum/" >leetcode 209. 长度最小的子数组<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
+<td><a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0209.%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84.html" >对应解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
+</tr>
+<tr>
+<td>2</td>
+<td><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/spiral-matrix-ii/" >leetcode 59.螺旋矩阵II<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
+<td><a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0059.%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II.html" >对应解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
+</tr>
+<tr>
+<td>3</td>
+<td><a class="link"   target="_blank" rel="noopener" href="https://kamacoder.com/problempage.php?pid=1070" >kamacoder 58. 区间和<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
+<td><a class="link"   target="_blank" rel="noopener" href="https://www.programmercarl.com/kamacoder/0058.%E5%8C%BA%E9%97%B4%E5%92%8C.html" >对应解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
+</tr>
+<tr>
+<td>4</td>
+<td><a class="link"   target="_blank" rel="noopener" href="https://kamacoder.com/problempage.php?pid=1044" >kamacoder 44. 开发商购买土地<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
+<td><a class="link"   target="_blank" rel="noopener" href="https://www.programmercarl.com/kamacoder/0044.%E5%BC%80%E5%8F%91%E5%95%86%E8%B4%AD%E4%B9%B0%E5%9C%9F%E5%9C%B0.html" >对应解析<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="题目解答及分析"><a href="#题目解答及分析" class="headerlink" title="题目解答及分析"></a>题目解答及分析</h2><h3 id="209-长度最小的子数组"><a href="#209-长度最小的子数组" class="headerlink" title="209. 长度最小的子数组"></a>209. 长度最小的子数组</h3><blockquote>
+<p>题目链接：<a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-size-subarray-sum/" >https://leetcode.cn/problems/minimum-size-subarray-sum/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>文章讲解：<a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0209.%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84.html" >https://programmercarl.com/0209.%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84.html<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>视频讲解：<a class="link"   target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1tZ4y1q7XE" >https://www.bilibili.com/video/BV1tZ4y1q7XE<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</blockquote>
+<h4 id="1-初始思路"><a href="#1-初始思路" class="headerlink" title="1. 初始思路"></a>1. 初始思路</h4><p>惯例先分析自己的初始思路：<br>这道题其实挺明确的，就是滑动窗口，即：</p>
+<ul>
+<li><ol>
+<li>通过<strong>两个索引</strong>，框定一定的范围，记作窗口</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>两个索引有各自的<strong>更新条件</strong>，最终效果使得窗口会左右移动，范围可能变大变小</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>但是更新条件是服务于行为的，所以我们要先规划理想的<strong>索引行为</strong></li>
+</ol>
+</li>
+</ul>
+<p>那做完上述简单的分析后，我们就要开始明确我们的两个索引的具体行为了:</p>
+<ul>
+<li><ol>
+<li>范围为<strong>左闭右闭</strong></li>
+</ol>
+</li>
+<li><ol start="2">
+<li>记左侧索引为<code>index_slow</code>，记右边索引为<code>index_fast</code></li>
+</ol>
+</li>
+<li><ol start="3">
+<li>由于初始情况不一定满足target要求，所以我们要先去尽可能的<strong>包含新的数据</strong>，以扩充自己的<code>sum</code></li>
+</ol>
+<ul>
+<li>对此，我们定义了第 <strong>1</strong> 条规则：<u><strong><code>index_fast</code>要向右移动，直到满足<code>sum</code>超过<code>target</code></strong></u>（因为此时条件已经满足，就无需再向右移动了）</li>
+</ul>
+</li>
+<li><ol start="4">
+<li>直到某一时刻，<code>sum</code>超过了<code>target</code>，此时我们会很自然的联想 “能不能尝试删除左侧的元素试试看，有没有更短的数组满足条件呢” 。</li>
+</ol>
+<ul>
+<li>对此，我们定义了第 <strong>2</strong> 条规则：<u><strong><code>index_slow</code>在满足<code>sum</code>超过<code>target</code>时，尝试向右移动，<em>直到不满足条件</em></strong></u>（这样可以跳出局部最优解，反倒去寻找全局最优解）<blockquote>
+<ol>
+<li>其实这个地方一开始我思路卡住了，我最早限定了<code>index_slow</code>应该移动不打破满足<code>target</code>的条件。但是这样的话会导致只能获得<u>局部最优解</u>。</li>
+<li>后来粗看了两眼卡哥的解析后相通了，<code>index_slow</code>移动就该使得不满足条件，这样结束移动时，剩下的范围内的sum就不满足条件，这样，我们的<code>index_fast</code>就又有动力向前了。</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p>至此，我们索引的具体行为就定义完毕了。<br>最后，将其翻译为代码语言即可。<em>（具体执行细节，如判断条件等，略）</em></p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> index_fast = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> index_slow = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> sum_now = <span class="number">0</span>;    </span><br><span class="line">        <span class="type">int</span> len_min = nums.<span class="built_in">size</span>()<span class="number">+1</span>;</span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> len_now (index_fast - index_slow + 1)</span></span><br><span class="line">        <span class="keyword">while</span>(index_fast &lt; nums.<span class="built_in">size</span>())&#123;</span><br><span class="line">            sum_now += nums[index_fast];</span><br><span class="line">            <span class="keyword">if</span> (sum_now &gt;= target)&#123;</span><br><span class="line">                <span class="comment">// 当满足最条件时，此时的数组无论前后加入新的数组都肯定会变的更长</span></span><br><span class="line">                <span class="keyword">while</span>(sum_now &gt;= target &amp;&amp; index_slow &lt;= index_fast)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(len_now == <span class="number">1</span>)    </span><br><span class="line">                        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span>(len_min &gt; len_now)  </span><br><span class="line">                        len_min = len_now;</span><br><span class="line">                    sum_now -= nums[index_slow];</span><br><span class="line">                    index_slow++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            index_fast++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> len_min &lt;= nums.<span class="built_in">size</span>() ? len_min : <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<h4 id="2-最终代码"><a href="#2-最终代码" class="headerlink" title="2. 最终代码"></a>2. 最终代码</h4><p>思路大体在一开始已经确认下来了，也没有过多更改，不过此时再详细看了看卡哥的代码，优化了一下结构和各种判断条件:</p>
+<ul>
+<li>判断条件和while合并</li>
+<li>while转for</li>
+<li>合并len为1时候的判断</li>
+<li>省略对index_slow&lt;&#x3D;index_fast的条件</li>
+</ul>
+<p>得到最终代码如下</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> index_fast = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> index_slow = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> sum_now = <span class="number">0</span>;    </span><br><span class="line">        <span class="type">int</span> len_min = nums.<span class="built_in">size</span>()<span class="number">+1</span>;</span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> len_now (index_fast - index_slow + 1)</span></span><br><span class="line">        <span class="keyword">for</span>(; index_fast &lt; nums.<span class="built_in">size</span>(); index_fast++)&#123;</span><br><span class="line">            sum_now += nums[index_fast];</span><br><span class="line">            <span class="keyword">while</span>(sum_now &gt;= target)&#123;</span><br><span class="line">                len_min = len_now &lt; len_min ? len_now : len_min;</span><br><span class="line">                sum_now -= nums[index_slow++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> len_min &lt;= nums.<span class="built_in">size</span>() ? len_min : <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h3 id="59-螺旋矩阵II"><a href="#59-螺旋矩阵II" class="headerlink" title="59.螺旋矩阵II"></a>59.螺旋矩阵II</h3><blockquote>
+<p>题目链接：<a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/spiral-matrix-ii/" >https://leetcode.cn/problems/spiral-matrix-ii/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>文章讲解：<a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0059.%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II.html" >https://programmercarl.com/0059.%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II.html<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>视频讲解：<a class="link"   target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1SL4y1N7mV/" >https://www.bilibili.com/video/BV1SL4y1N7mV/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</blockquote>
+<blockquote>
+<p>此题有点特殊，不像前面的练习某种特定方法。所以比较<strong>开放</strong>。只要你的逻辑是成立的，说得通的，就是可以接受的。</p>
+<p>比起说是考察具体知识点，不如说是考察你的问题拆分能力。<br>（不过不得不说，这道题我的思路多少有些<em><strong>另类</strong></em>）</p>
+</blockquote>
+<h4 id="1-我的思路"><a href="#1-我的思路" class="headerlink" title="1. 我的思路"></a>1. 我的思路</h4><p>像我前面小字提及，此处跟多的是问题拆分的思路问题，所以本题我将侧重于我的思路介绍。<br>题目要求是螺旋填充，那其实说白了，就是一直贴着墙移动，到达边界更换个朝向，继续移动。重复上述流程直到结束。</p>
+<p>具体行为拆分如下：</p>
+<ul>
+<li>定义 4 个朝向，每次移动，仅会尝试向当前方向移动<ul>
+<li>定义 <strong>4</strong> 个朝向</li>
+<li>定义 <strong>坐标更新（移动）</strong> 函数，会根据当前朝向执行不同的更新方式</li>
+</ul>
+</li>
+<li>有<strong>检测边界</strong>的策略<ul>
+<li>定义 <strong>4</strong> 个边界索引，此处采用左闭右闭，以方便使用<u>等号</u>判断</li>
+<li>根据不同的<strong>朝向</strong>，以<strong>不同的边界</strong>来<strong>与坐标比较</strong></li>
+</ul>
+</li>
+<li>有到达边界后<strong>改变朝向</strong>的实现<ul>
+<li>通过取模运算更改当前定义的朝向：<code>toward = ((toward+1)%4);</code></li>
+</ul>
+</li>
+<li>有<strong>更新边界</strong>的策略<ul>
+<li><strong>以向右移动举例</strong>，当你移动到最右侧时，其实是<strong>最上面一行都填充满了数值</strong>，所以此时应该更新的是<strong>上边界</strong></li>
+<li>所以得到更新策略：当<strong>检测到边界</strong>时，更新<strong>前一个</strong>朝向的边界</li>
+</ul>
+</li>
+<li>结束条件<ul>
+<li>当 n 为奇数时，最终边界会<strong>互相重叠</strong>：相等时仍然要填充数值</li>
+<li>故，结束条件应为不满足<code>limit_down &gt;= limit_up &amp;&amp; limit_right &gt;= limit_left</code></li>
+</ul>
+</li>
+</ul>
+<p>至此，思路分析结束。<br>最终执行流程就是：赋值 -&gt; 检测边界( -&gt; 改变朝向 -&gt; 更新边界) -&gt; 更新坐标</p>
+<blockquote>
+<p>考虑到可读性，所以做了较多的 宏定义<br>真正循环体就一点点代码</p>
+</blockquote>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">generateMatrix</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">matrix</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n));</span><br><span class="line">        <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> limit_up = <span class="number">0</span>, limit_down = n - <span class="number">1</span>, limit_left = <span class="number">0</span>, limit_right = n - <span class="number">1</span>;</span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> toward_right    0</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> toward_down     1</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> toward_left     2</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> toward_up       3</span></span><br><span class="line">        <span class="type">int</span> toward = toward_right;</span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> index_update()         (toward == toward_right ? j++ :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_down  ? i++ :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_left  ? j-- :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_up    ? i-- : 0)</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> limit_update()         (toward == toward_right ? limit_up++ :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_down  ? limit_right-- :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_left  ? limit_down-- :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_up    ? limit_left++ : 0)</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> boundary_detection()   (toward == toward_right ? j == limit_right :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_down  ? i == limit_down :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_left  ? j == limit_left :\</span></span><br><span class="line"><span class="meta">                                        toward == toward_up    ? i == limit_up : 0)</span></span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(limit_down &gt;= limit_up &amp;&amp; limit_right &gt;= limit_left)&#123;</span><br><span class="line">            matrix[i][j] = cnt++;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">boundary_detection</span>())&#123;</span><br><span class="line">                <span class="built_in">limit_update</span>();</span><br><span class="line">                toward = ((toward<span class="number">+1</span>)%<span class="number">4</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">index_update</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> matrix;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p><strong>vector 数组创建介绍：</strong><br>在代码中，有<code>vector&lt;vector&lt;int&gt;&gt; matrix(n, vector&lt;int&gt;(n));</code><br>由于我以前没有用过 vector ，所以如何使用vector创建数组其实废了我点时间：</p>
+<ul>
+<li>vector&lt;类型&gt; 对象(元素数, 初始值)</li>
+<li>而其中初始值可以是 <strong>填充构造函数<code>vector&lt;T&gt;(size_type n, const T&amp; val)</code></strong><blockquote>
+<p>这里还涉及一些运算符重载，不过略过了</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<h4 id="2-卡哥思路"><a href="#2-卡哥思路" class="headerlink" title="2. 卡哥思路"></a>2. 卡哥思路</h4><p>卡哥的思路是将螺旋拆成一个个同心环，每次大循环填充一个圈（通过4个for循环实现）</p>
+<p>其中每次填充圈的循环时，卡哥使用了左闭右开：</p>
+<ul>
+<li>此时每次小循环结束后，都会<strong>留一个空位</strong>，恰好可以作为<strong>下一个朝向</strong>循环的左闭右开的<strong>左闭</strong>。</li>
+<li>而到最后一次时，由于左闭右开的<strong>右开</strong>，使得<strong>不会覆盖当前圈的初始位置</strong>。</li>
+</ul>
+<p>至此，<strong>根据左闭右开原则可以很好的绘制完一个完整的圈</strong>，然后不断迭代即可。</p>
+<p>详细可以参考<a class="link"   target="_blank" rel="noopener" href="https://programmercarl.com/0059.%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II.html#%E6%80%9D%E8%B7%AF" >这里<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<details> 
+<summary>根据卡哥思路实现的代码</summary>
+
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">generateMatrix</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        <span class="type">int</span> i, j;</span><br><span class="line">        <span class="type">int</span> start_x = <span class="number">0</span>, start_y = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> offset = <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> loop = n / <span class="number">2</span>;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">matrix</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n));</span><br><span class="line">        <span class="keyword">while</span>(loop--)&#123;</span><br><span class="line">            i = start_x;</span><br><span class="line">            j = start_y;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 循环1： Right：左闭右开</span></span><br><span class="line">            <span class="keyword">for</span>(; j &lt; n - offset; j++)&#123;</span><br><span class="line">                matrix[i][j] = cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 循环2： Down：左闭右开</span></span><br><span class="line">            <span class="keyword">for</span>(; i &lt; n - offset; i++)&#123;</span><br><span class="line">                matrix[i][j] = cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 循环1： left：左闭右开</span></span><br><span class="line">            <span class="keyword">for</span>(; j &gt; start_x; j--)&#123;</span><br><span class="line">                matrix[i][j] = cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 循环1： up：左闭右开</span></span><br><span class="line">            <span class="keyword">for</span>(; i &gt; start_y; i--)&#123;</span><br><span class="line">                matrix[i][j] = cnt++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            start_x++;</span><br><span class="line">            start_y++;</span><br><span class="line">            offset++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 但由于左闭右开，所以n为奇数时，中间是无法填充的，所以需要额外补偿</span></span><br><span class="line">        <span class="keyword">if</span>(n%<span class="number">2</span>)&#123;</span><br><span class="line">            matrix[n/<span class="number">2</span>][n/<span class="number">2</span>] = cnt;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> matrix;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+</details>
+
+<hr>
+<h3 id="58-区间和"><a href="#58-区间和" class="headerlink" title="58. 区间和"></a>58. 区间和</h3><blockquote>
+<p>文章讲解：<a class="link"   target="_blank" rel="noopener" href="https://www.programmercarl.com/kamacoder/0058.%E5%8C%BA%E9%97%B4%E5%92%8C.html" >https://www.programmercarl.com/kamacoder/0058.%E5%8C%BA%E9%97%B4%E5%92%8C.html<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> </p>
+</blockquote>
+<p>这题其实本身没什么好说的，代码比较简单。<br>不过这里蕴含的一种想法比较重要：</p>
+<ul>
+<li><strong>前缀和</strong>：可以在循环的过程中，不使用累加，而使用前一个数值与当前值求和</li>
+<li><code>sum(i) = sum(i-1) + data(i)</code><!-- - $$\text{sum}(i) = \text{sum}(i-1) + \text{data}(i)$$ --></li>
+</ul>
+<p>而这一步，可以和初始读取数据的循环直接融为一体，直接少了1个大循环和繁琐的累加</p>
+<p>最后求 索引a 到 索引b 之间的元素和，只要简单的<strong>减法</strong>就可以立马得到了</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">array</span><span class="params">(n)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;temp);</span><br><span class="line">    array[<span class="number">0</span>] = temp;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;temp);</span><br><span class="line">        array[i] = array[i<span class="number">-1</span>] + temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;i, &amp;j)!=EOF)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, array[j] - (i == <span class="number">0</span> ? <span class="number">0</span> : array[i<span class="number">-1</span>]));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h3 id="44-开发商购买土地"><a href="#44-开发商购买土地" class="headerlink" title="44. 开发商购买土地"></a>44. 开发商购买土地</h3><blockquote>
+<p>文章讲解：<a class="link"   target="_blank" rel="noopener" href="https://www.programmercarl.com/kamacoder/0044.%E5%BC%80%E5%8F%91%E5%95%86%E8%B4%AD%E4%B9%B0%E5%9C%9F%E5%9C%B0.html" >https://www.programmercarl.com/kamacoder/0044.%E5%BC%80%E5%8F%91%E5%95%86%E8%B4%AD%E4%B9%B0%E5%9C%9F%E5%9C%B0.html<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</blockquote>
+<p>在前文 58.区间和 的基础上，这个就比较容易想通了：</p>
+<ul>
+<li>首先根据题目意思，可以得知，每次判断都是纵向或横向求和<ul>
+<li>所以在读取矩阵中，可以一并将横向和纵向的求和先计算出来。</li>
+</ul>
+</li>
+<li>然后其实就两个前缀和：一个纵向的，一个横向的<ul>
+<li>所以再处理得到两个前缀和一遍后续运算</li>
+</ul>
+</li>
+<li>当前缀和获取完毕后，就是不断的循环比较差异了</li>
+</ul>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;climits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> m, n;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;m, &amp;n);</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">matrix_row_sum</span><span class="params">(m, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">matrix_col_sum</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; m; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; n; j++)&#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;temp);</span><br><span class="line">            matrix_row_sum[i] += temp;</span><br><span class="line">            matrix_col_sum[j] += temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算区间和</span></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt;m; i++)&#123;</span><br><span class="line">        matrix_row_sum[i] += matrix_row_sum[i - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(j = <span class="number">1</span>; j &lt;n; j++)&#123;</span><br><span class="line">        matrix_col_sum[j] += matrix_col_sum[j - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断最小差</span></span><br><span class="line">    <span class="type">int</span> diff = INT_MAX;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt; m; i++)&#123;</span><br><span class="line">        diff = <span class="built_in">min</span>(diff, <span class="built_in">abs</span>(matrix_row_sum[m<span class="number">-1</span>] - <span class="number">2</span> * matrix_row_sum[i<span class="number">-1</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(j = <span class="number">1</span>; j &lt; n; j++)&#123;</span><br><span class="line">        diff = <span class="built_in">min</span>(diff, <span class="built_in">abs</span>(matrix_col_sum[n<span class="number">-1</span>] - <span class="number">2</span> * matrix_col_sum[j<span class="number">-1</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, diff);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<hr>
+<h2 id="数组总结"><a href="#数组总结" class="headerlink" title="数组总结"></a>数组总结</h2><h3 id="1-根基：先明确区间规则，再落地所有细节"><a href="#1-根基：先明确区间规则，再落地所有细节" class="headerlink" title="1. 根基：先明确区间规则，再落地所有细节"></a>1. 根基：先明确区间规则，再落地所有细节</h3><p>这是数组处理的<strong>核心前提</strong>，优先级最高——必须先严格定义区间模式（如左闭右开 <code>[left, right)</code>、左闭右闭 <code>[left, right]</code>），后续所有逻辑都围绕这个规则展开：</p>
+<ul>
+<li>判定条件（如循环终止条件 <code>left &lt; right</code> 还是 <code>left &lt;= right</code>）</li>
+<li>指针更新逻辑（如 <code>right = mid</code> 还是 <code>right = mid - 1</code>）</li>
+<li>边界值处理（如是否包含首尾元素、空数组&#x2F;单元素数组的兼容）</li>
+</ul>
+<p>一旦区间规则固定，所有执行细节都有了统一标准，能彻底避免因边界模糊导致的越界、漏判等问题，做到逻辑自洽、临危不乱。这是数组问题最基础也最关键的能力。</p>
+<h3 id="2-提升技巧"><a href="#2-提升技巧" class="headerlink" title="2. 提升技巧"></a>2. 提升技巧</h3><p>在明确区间规则的基础上，搭配以下高频方案，可高效解决绝大多数数组问题：</p>
+<ol>
+<li>二分查找：适用于<strong>有序数组</strong>的查找、边界定位（如找目标值第一个&#x2F;最后一个出现位置），核心是用区间规则约束指针移动，降低时间复杂度至 O(log n)；</li>
+<li>双指针（含快慢指针）：解决数组修改类问题（如移除元素、去重）、滑动窗口类问题（如子数组和&#x2F;长度约束），通过快慢指针分流“有效元素”与“无效元素”，或左右指针双向逼近，实现 O(n) 时间复杂度；</li>
+<li>前缀和：快速求解<strong>区间和问题</strong>（如子数组和等于目标值、区间平均&#x2F;最值），通过预处理前缀和数组，将单次区间和查询从 O(n) 优化至 O(1)，大幅提升效率。</li>
+</ol>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> 代码随想录算法训练营第2天-数组2</li>
+        <li><strong>作者:</strong> Keruone</li>
+        <li><strong>创建于
+                :</strong> 2026-01-14 19:16:18</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2026-05-18 11:38:21
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://keruone.github.io/2026/01/14/algorithm/Algorithm-Training-Camp-day2/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2026/01/16/algorithm/Algorithm-Training-Camp-day3/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">代码随想录算法训练营第3天-链表1</span>
+						<span class="post-nav-item">上一篇</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2026/01/14/algorithm/Algorithm-Training-Camp-day1/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">代码随想录算法训练营第1天-数组1</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Keruone/Keruone.github.io',
+                'data-repo-id': 'R_kgDOQ4GXyQ',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDOQ4GXyc4C04nb',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'zh-CN',
+                'data-input-position': 'top',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">代码随想录算法训练营第2天-数组2</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%B1%87%E6%80%BB"><span class="nav-text">题目汇总</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E8%A7%A3%E7%AD%94%E5%8F%8A%E5%88%86%E6%9E%90"><span class="nav-text">题目解答及分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84"><span class="nav-text">209. 长度最小的子数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#59-%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II"><span class="nav-text">59.螺旋矩阵II</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#58-%E5%8C%BA%E9%97%B4%E5%92%8C"><span class="nav-text">58. 区间和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#44-%E5%BC%80%E5%8F%91%E5%95%86%E8%B4%AD%E4%B9%B0%E5%9C%9F%E5%9C%B0"><span class="nav-text">44. 开发商购买土地</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%80%BB%E7%BB%93"><span class="nav-text">数组总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A0%B9%E5%9F%BA%EF%BC%9A%E5%85%88%E6%98%8E%E7%A1%AE%E5%8C%BA%E9%97%B4%E8%A7%84%E5%88%99%EF%BC%8C%E5%86%8D%E8%90%BD%E5%9C%B0%E6%89%80%E6%9C%89%E7%BB%86%E8%8A%82"><span class="nav-text">1. 根基：先明确区间规则，再落地所有细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8F%90%E5%8D%87%E6%8A%80%E5%B7%A7"><span class="nav-text">2. 提升技巧</span></a></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2026</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Keruone</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 59 篇文章
+                    </span>
+                    
+                        <span>
+                            共 86.7k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+        
+<script src="/js/build/libs/mermaid.min.js"></script>
+
+    
+    
+<script src="/js/build/plugins/mermaid.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>
