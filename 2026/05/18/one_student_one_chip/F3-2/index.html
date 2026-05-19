@@ -572,8 +572,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-05-18 17:52:27</span>
-            <span class="mobile">2026-05-18 17:52:27</span>
+            <span class="desktop">2026-05-19 14:06:19</span>
+            <span class="mobile">2026-05-19 14:06:19</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -625,7 +625,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>375 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>349 字</span>
         </span>
     
     
@@ -656,9 +656,39 @@
 <h2 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h2><p>取反加一<br>补码符号位 可以视为 -2^(n-1)  为权重</p>
 <p>溢出</p>
 <h2 id="组合逻辑-时序逻辑"><a href="#组合逻辑-时序逻辑" class="headerlink" title="组合逻辑 &amp; 时序逻辑"></a>组合逻辑 &amp; 时序逻辑</h2><p>组合逻辑：输出完全由当前输入决定<br>时序逻辑：还与旧电路状态有关</p>
-<h3 id="锁存器-电平触发"><a href="#锁存器-电平触发" class="headerlink" title="锁存器-电平触发"></a>锁存器-电平触发</h3><p>![[SR.png]]<br>![[D.png]]<br>![[D-nand.png]]<br>![[D-tg.png]]</p>
-<p>同步电路：全局时钟<br>异步电路：模块间局部通信信号实现同步<br>![[sync_async.png]]</p>
-<h3 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h3><p>![[DFF.png]]</p>
+<h3 id="锁存器-电平触发"><a href="#锁存器-电平触发" class="headerlink" title="锁存器-电平触发"></a>锁存器-电平触发</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/SR.png"
+                      alt="SR.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/D.png"
+                      alt="D.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/D-nand.png"
+                      alt="D-nand.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/D-tg.png"
+                      alt="D-tg.png"
+                ></p>
+<p>同步电路：全局时钟<br>异步电路：模块间局部通信信号实现同步<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/sync_async.png"
+                      alt="sync_async.png"
+                ></p>
+<h3 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/DFF.png"
+                      alt="DFF.png"
+                ></p>
 <p>上升沿的时候，先使能第二个锁存器，可以读取第一个的Q，然后马上关闭第一个锁存器WE，所以无法再修改最终输出Q，仅仅取决于上升沿这一刻<br>其他时候：</p>
 <ul>
 <li>低电平 输入D可变，但是输出锁存器锁死，最终Q不变</li>
@@ -666,7 +696,27 @@
 <li>高电平 中间D可变，但是输入锁存器锁死使得中间Q不变，导致最终Q不变</li>
 <li>下降沿的时候先关闭的 第二个锁存器，再关闭第一个锁存器，所以Q没影响</li>
 </ul>
-<p>![[D-reset.png]]<br>![[D-syncReset.png]]<br>![[D-EN.png]]<br>![[Multi-D.png]]<br>这里 DFFS 表示同步置位(1)触发器 DFFR表示 同步复位(1)触发器<br>这样 S、R、R、S 对应复位后的就是1 0 0 1</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/D-reset.png"
+                      alt="D-reset.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/D-syncReset.png"
+                      alt="D-syncReset.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/D-EN.png"
+                      alt="D-EN.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F3-2/Multi-D.png"
+                      alt="Multi-D.png"
+                ><br>这里 DFFS 表示同步置位(1)触发器 DFFR表示 同步复位(1)触发器<br>这样 S、R、R、S 对应复位后的就是1 0 0 1</p>
 
 		</div>
 
@@ -681,7 +731,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-05-18 17:52:27
+                    :</strong> 2026-05-19 14:06:19
             </li>
         
         <li>
@@ -845,7 +895,7 @@
                     </span>
                     
                         <span>
-                            共 88.6k 字
+                            共 88.8k 字
                         </span>
                     
                 </p>

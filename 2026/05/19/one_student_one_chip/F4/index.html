@@ -572,8 +572,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-05-19 13:45:29</span>
-            <span class="mobile">2026-05-19 13:45:29</span>
+            <span class="desktop">2026-05-19 14:06:19</span>
+            <span class="mobile">2026-05-19 14:06:19</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -625,12 +625,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1k 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.3k 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>5 分钟</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>6 分钟</span>
         </span>
     
     
@@ -653,7 +653,12 @@
 <span id="more"></span>
 
 <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>数字电路的<strong>表示</strong>、<strong>处理</strong>和<strong>存储</strong></p>
-<h2 id="CPU-工作原理"><a href="#CPU-工作原理" class="headerlink" title="CPU 工作原理"></a>CPU 工作原理</h2><h3 id="指令及编码-opcode-operand"><a href="#指令及编码-opcode-operand" class="headerlink" title="指令及编码 opcode &amp; operand"></a>指令及编码 opcode &amp; operand</h3><p>![[指令示意图.png]]</p>
+<h2 id="CPU-工作原理"><a href="#CPU-工作原理" class="headerlink" title="CPU 工作原理"></a>CPU 工作原理</h2><h3 id="指令及编码-opcode-operand"><a href="#指令及编码-opcode-operand" class="headerlink" title="指令及编码 opcode &amp; operand"></a>指令及编码 opcode &amp; operand</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F4/%E6%8C%87%E4%BB%A4%E7%A4%BA%E6%84%8F%E5%9B%BE.png"
+                      alt="指令示意图.png"
+                ></p>
 <ul>
 <li>00指令（add），将 R[rd] 寄存器的内容赋值为 R[rs1] + R[rs2]  的结果</li>
 <li>10指令（li），将 R[rd] 寄存器的内容赋值为 后四位 表示的 立即数</li>
@@ -676,29 +681,68 @@
 <th></th>
 <th>C 程序</th>
 <th>ISA</th>
+<th>数字电路</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>状态</td>
 <td>{PC, V}</td>
 <td>{PC, R, M}</td>
+<td>时序逻辑电路</td>
 </tr>
 <tr>
 <td>激励事件</td>
 <td>执行的语句</td>
 <td>执行的指令</td>
+<td>处理组合逻辑电路</td>
 </tr>
 <tr>
 <td>状态转移规则</td>
-<td>语句的</td>
-<td></td>
+<td>语句的语义</td>
+<td>指令的语义</td>
+<td>组合逻辑电路的逻辑</td>
 </tr>
 <tr>
-<td>![[状态机转换.png]]</td>
+<td><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F4/%E7%8A%B6%E6%80%81%E6%9C%BA%E8%BD%AC%E6%8D%A21.png"
+                      alt="状态机转换1.png"
+                ></td>
+<td></td>
 <td></td>
 <td></td>
 </tr>
 </tbody></table>
+<ul>
+<li>将C程序的状态翻译成ISA的状态, 也即<ul>
+<li>将C程序的PC对应到ISA的PC</li>
+<li>将C程序的变量对应到ISA的GPR或内存</li>
+</ul>
+</li>
+<li>将C程序的状态转移规则翻译成ISA的状态转移规则, 也即, 将语句翻译成指令序列</li>
+</ul>
+<h3 id="CPU-设计，-即-根据-ISA-设计数字电路"><a href="#CPU-设计，-即-根据-ISA-设计数字电路" class="headerlink" title="CPU 设计， 即 根据 ISA 设计数字电路"></a>CPU 设计， 即 根据 ISA 设计数字电路</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F4/%E7%8A%B6%E6%80%81%E6%9C%BA%E8%BD%AC%E6%8D%A22.png"
+                      alt="状态机转换2.png"
+                ></p>
+<ul>
+<li>用数字电路的状态实现ISA的状态, 也即, 用时序逻辑电路实现PC, GPR和内存</li>
+<li>用数字电路的状态转移规则实现ISA的状态转移规则, 也即, 用组合逻辑电路实现指令的功能</li>
+</ul>
+<h2 id="程序-ISA和CPU之间的联系"><a href="#程序-ISA和CPU之间的联系" class="headerlink" title="程序, ISA和CPU之间的联系"></a>程序, ISA和CPU之间的联系</h2><ol>
+<li>根据 ISA 手册规定的功能描述，画一张 CPU 结构图 -&gt; <strong>处理器微结构设计</strong></li>
+<li>根据 结构图 设计 具体电路 -&gt; <strong>逻辑设计</strong></li>
+<li>开发程序 -&gt; 软件编程</li>
+<li>将 程序 翻译为 ISA 指令序列 -&gt; 编译</li>
+<li>在 CPU 上执行程序 &#x3D; 用 <strong>程序</strong> 编译 出的 <strong>指令序列</strong> 控制 <strong>CPU 电路</strong> 进行 <strong>状态转移</strong><ul>
+<li>此时，三个状态机产生联系  S_C<del>S_ISA</del>S_CPU</li>
+</ul>
+</li>
+</ol>
+<p>指令集是规范，CPU是物理实现</p>
 
 		</div>
 
@@ -713,7 +757,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-05-19 13:45:29
+                    :</strong> 2026-05-19 14:06:19
             </li>
         
         <li>
@@ -834,7 +878,7 @@
 	<div class="post-toc">
 		<div class="toc-title">目录</div>
 		<div class="page-title">F4-计算机系统的状态机模型</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-text">CPU 工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E5%8F%8A%E7%BC%96%E7%A0%81-opcode-operand"><span class="nav-text">指令及编码 opcode &amp; operand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU-%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="nav-text">CPU 执行程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="nav-text">跳转指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%9A%84-demo"><span class="nav-text">一个小的 demo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA%E8%A7%86%E8%A7%92"><span class="nav-text">状态机视角</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E9%9B%86%E6%9E%B6%E6%9E%84%E7%9A%84%E7%8A%B6%E6%80%81%E6%9C%BA%E6%A8%A1%E5%9E%8B"><span class="nav-text">指令集架构的状态机模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%EF%BC%8C%E5%8D%B3-%E5%B0%86-C-%E7%A8%8B%E5%BA%8F-%E7%BF%BB%E8%AF%91%E4%B8%BA-%E6%8C%87%E4%BB%A4%E5%BA%8F%E5%88%97"><span class="nav-text">编译，即 将 C 程序 翻译为 指令序列</span></a></li></ol></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-text">CPU 工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E5%8F%8A%E7%BC%96%E7%A0%81-opcode-operand"><span class="nav-text">指令及编码 opcode &amp; operand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU-%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="nav-text">CPU 执行程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="nav-text">跳转指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%9A%84-demo"><span class="nav-text">一个小的 demo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA%E8%A7%86%E8%A7%92"><span class="nav-text">状态机视角</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E9%9B%86%E6%9E%B6%E6%9E%84%E7%9A%84%E7%8A%B6%E6%80%81%E6%9C%BA%E6%A8%A1%E5%9E%8B"><span class="nav-text">指令集架构的状态机模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%EF%BC%8C%E5%8D%B3-%E5%B0%86-C-%E7%A8%8B%E5%BA%8F-%E7%BF%BB%E8%AF%91%E4%B8%BA-%E6%8C%87%E4%BB%A4%E5%BA%8F%E5%88%97"><span class="nav-text">编译，即 将 C 程序 翻译为 指令序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU-%E8%AE%BE%E8%AE%A1%EF%BC%8C-%E5%8D%B3-%E6%A0%B9%E6%8D%AE-ISA-%E8%AE%BE%E8%AE%A1%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AF"><span class="nav-text">CPU 设计， 即 根据 ISA 设计数字电路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F-ISA%E5%92%8CCPU%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB"><span class="nav-text">程序, ISA和CPU之间的联系</span></a></li></ol>
 
 	</div>
 </div>
@@ -865,7 +909,7 @@
                     </span>
                     
                         <span>
-                            共 88.6k 字
+                            共 88.8k 字
                         </span>
                     
                 </p>
