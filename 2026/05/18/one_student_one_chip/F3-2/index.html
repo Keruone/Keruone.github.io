@@ -123,7 +123,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://Keruone.github.io/2026/05/18/one_student_one_chip/f3/"/>
+    <link rel="canonical" href="https://Keruone.github.io/2026/05/18/one_student_one_chip/f3-2/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -140,7 +140,7 @@
     
     <title>
         
-            F3 | Keruone&#39;s 个人小记
+            F3-数字逻辑电路基础-下半 | Keruone&#39;s 个人小记
         
     </title>
 
@@ -513,7 +513,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
         <div class="label text-third-text-color text-sm">标签</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -521,7 +521,7 @@
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">59</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">61</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -544,7 +544,7 @@
 		<div class="article-title relative w-full">
 			
 			<div class="w-full flex items-center pt-6 justify-start">
-				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">F3</h1>
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">F3-数字逻辑电路基础-下半</h1>
 			</div>
 			
 		</div>
@@ -565,15 +565,15 @@
 					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2026-05-18 11:00</span>
-        <span class="mobile">2026-05-18 11:00</span>
+        <span class="desktop">2026-05-18 16:56</span>
+        <span class="mobile">2026-05-18 16:56</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-05-18 11:37:44</span>
-            <span class="mobile">2026-05-18 11:37:44</span>
+            <span class="desktop">2026-05-18 17:52:27</span>
+            <span class="mobile">2026-05-18 17:52:27</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -618,10 +618,6 @@
                         | <a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">一生一芯</a>&nbsp;
                     </li>
                 
-                    <li>
-                        | <a href="/tags/RISC-V/">RISC-V</a>&nbsp;
-                    </li>
-                
             </ul>
         </span>
     
@@ -629,7 +625,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>84 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>375 字</span>
         </span>
     
     
@@ -653,15 +649,24 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<p>记录参与”一生一芯”项目的学习过程。</p>
+			<p>自己数字逻辑电路已经有些忘记了，趁此机会学习并复习</p>
 <span id="more"></span>
 
-<h2 id="项目简介"><a href="#项目简介" class="headerlink" title="项目简介"></a>项目简介</h2><p>“一生一芯”（One Student One Chip）是由中国科学院大学发起的芯片设计教育项目，目标是让每位学生都能自己设计并流片一颗芯片。</p>
-<h2 id="学习计划"><a href="#学习计划" class="headerlink" title="学习计划"></a>学习计划</h2><ul>
-<li><input disabled="" type="checkbox"> 环境搭建</li>
-<li><input disabled="" type="checkbox"> 预学习阶段</li>
-<li><input disabled="" type="checkbox"> PA 实验</li>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>数字电路的<strong>表示</strong>、<strong>处理</strong>和<strong>存储</strong></p>
+<h2 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h2><p>取反加一<br>补码符号位 可以视为 -2^(n-1)  为权重</p>
+<p>溢出</p>
+<h2 id="组合逻辑-时序逻辑"><a href="#组合逻辑-时序逻辑" class="headerlink" title="组合逻辑 &amp; 时序逻辑"></a>组合逻辑 &amp; 时序逻辑</h2><p>组合逻辑：输出完全由当前输入决定<br>时序逻辑：还与旧电路状态有关</p>
+<h3 id="锁存器-电平触发"><a href="#锁存器-电平触发" class="headerlink" title="锁存器-电平触发"></a>锁存器-电平触发</h3><p>![[SR.png]]<br>![[D.png]]<br>![[D-nand.png]]<br>![[D-tg.png]]</p>
+<p>同步电路：全局时钟<br>异步电路：模块间局部通信信号实现同步<br>![[sync_async.png]]</p>
+<h3 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h3><p>![[DFF.png]]</p>
+<p>上升沿的时候，先使能第二个锁存器，可以读取第一个的Q，然后马上关闭第一个锁存器WE，所以无法再修改最终输出Q，仅仅取决于上升沿这一刻<br>其他时候：</p>
+<ul>
+<li>低电平 输入D可变，但是输出锁存器锁死，最终Q不变</li>
+<li>（忽略取反的时间，可简单视为，D的输出取决于上升沿的那一刻）</li>
+<li>高电平 中间D可变，但是输入锁存器锁死使得中间Q不变，导致最终Q不变</li>
+<li>下降沿的时候先关闭的 第二个锁存器，再关闭第一个锁存器，所以Q没影响</li>
 </ul>
+<p>![[D-reset.png]]<br>![[D-syncReset.png]]<br>![[D-EN.png]]<br>![[Multi-D.png]]<br>这里 DFFS 表示同步置位(1)触发器 DFFR表示 同步复位(1)触发器<br>这样 S、R、R、S 对应复位后的就是1 0 0 1</p>
 
 		</div>
 
@@ -669,18 +674,18 @@
 		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
 			<div class="article-copyright-info-container">
     <ul>
-        <li><strong>标题:</strong> F3</li>
+        <li><strong>标题:</strong> F3-数字逻辑电路基础-下半</li>
         <li><strong>作者:</strong> Keruone</li>
         <li><strong>创建于
-                :</strong> 2026-05-18 11:00:00</li>
+                :</strong> 2026-05-18 16:56:00</li>
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-05-18 11:37:44
+                    :</strong> 2026-05-18 17:52:27
             </li>
         
         <li>
-            <strong>链接:</strong> https://keruone.github.io/2026/05/18/one_student_one_chip/F3/
+            <strong>链接:</strong> https://keruone.github.io/2026/05/18/one_student_one_chip/F3-2/
         </li>
         <li>
             <strong>
@@ -709,10 +714,6 @@
 				<a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">#一生一芯</a>&nbsp;
 			</li>
 			
-			<li class="tag-item mx-0.5">
-				<a href="/tags/RISC-V/">#RISC-V</a>&nbsp;
-			</li>
-			
 		</ul>
 		
 
@@ -721,11 +722,23 @@
 		
 		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
 			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2026/05/19/one_student_one_chip/F4/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">F4-计算机系统的状态机模型</span>
+						<span class="post-nav-item">上一篇</span>
+					</span>
+				</a>
+			</div>
+			
 			
 			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="next" rel="next" href="/2026/05/18/one_student_one_chip/one-student-one-chip-start/">
+				<a class="next" rel="next" href="/2026/05/18/one_student_one_chip/F3-1/">
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item truncate max-w-48">一生一芯项目开始</span>
+						<span class="post-nav-title-item truncate max-w-48">F3-数字逻辑电路基础-上半</span>
 						<span class="post-nav-item">下一篇</span>
 					</span>
 					<span class="right arrow-icon flex justify-center items-center">
@@ -800,8 +813,8 @@
 		<div class="post-toc-wrap">
 	<div class="post-toc">
 		<div class="toc-title">目录</div>
-		<div class="page-title">F3</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%AE%80%E4%BB%8B"><span class="nav-text">项目简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92"><span class="nav-text">学习计划</span></a></li></ol>
+		<div class="page-title">F3-数字逻辑电路基础-下半</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E7%A0%81"><span class="nav-text">补码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E9%80%BB%E8%BE%91-%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91"><span class="nav-text">组合逻辑 &amp; 时序逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%81%E5%AD%98%E5%99%A8-%E7%94%B5%E5%B9%B3%E8%A7%A6%E5%8F%91"><span class="nav-text">锁存器-电平触发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-text">触发器</span></a></li></ol></li></ol>
 
 	</div>
 </div>
@@ -828,11 +841,11 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共撰写了 59 篇文章
+                        共撰写了 61 篇文章
                     </span>
                     
                         <span>
-                            共 86.7k 字
+                            共 88.6k 字
                         </span>
                     
                 </p>
