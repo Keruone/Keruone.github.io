@@ -521,7 +521,7 @@
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">61</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">62</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -572,8 +572,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-05-19 14:06:19</span>
-            <span class="mobile">2026-05-19 14:06:19</span>
+            <span class="desktop">2026-05-19 18:49:45</span>
+            <span class="mobile">2026-05-19 18:49:45</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -625,7 +625,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>349 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>438 字</span>
         </span>
     
     
@@ -655,6 +655,91 @@
 <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>数字电路的<strong>表示</strong>、<strong>处理</strong>和<strong>存储</strong></p>
 <h2 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h2><p>取反加一<br>补码符号位 可以视为 -2^(n-1)  为权重</p>
 <p>溢出</p>
+<table>
+<thead>
+<tr>
+<th align="center">As​</th>
+<th align="center">Bs​</th>
+<th align="center">Cin​</th>
+<th align="center">和位Ss​</th>
+<th align="center">进位Cout​</th>
+<th align="center">运算含义</th>
+<th align="center">是否溢出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">正 + 正 &#x3D; 正</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">正 + 正 &#x3D; 负</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">正 + 负</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">正 + 负</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">负 + 正</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">负 + 正</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">负 + 负 &#x3D; 正</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">负 + 负 &#x3D; 负</td>
+<td align="center">否</td>
+</tr>
+</tbody></table>
 <h2 id="组合逻辑-时序逻辑"><a href="#组合逻辑-时序逻辑" class="headerlink" title="组合逻辑 &amp; 时序逻辑"></a>组合逻辑 &amp; 时序逻辑</h2><p>组合逻辑：输出完全由当前输入决定<br>时序逻辑：还与旧电路状态有关</p>
 <h3 id="锁存器-电平触发"><a href="#锁存器-电平触发" class="headerlink" title="锁存器-电平触发"></a>锁存器-电平触发</h3><p><img  
                      lazyload
@@ -731,7 +816,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-05-19 14:06:19
+                    :</strong> 2026-05-19 18:49:45
             </li>
         
         <li>
@@ -891,11 +976,11 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共撰写了 61 篇文章
+                        共撰写了 62 篇文章
                     </span>
                     
                         <span>
-                            共 88.8k 字
+                            共 89.8k 字
                         </span>
                     
                 </p>
