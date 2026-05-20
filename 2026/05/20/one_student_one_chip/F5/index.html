@@ -572,8 +572,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-05-20 18:37:49</span>
-            <span class="mobile">2026-05-20 18:37:49</span>
+            <span class="desktop">2026-05-20 18:43:47</span>
+            <span class="mobile">2026-05-20 18:43:47</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -625,7 +625,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>867 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>826 字</span>
         </span>
     
     
@@ -652,7 +652,12 @@
 			<p>主要记录一下必做题，以及最重要的，搭出来了自己的第一个 sCPU !</p>
 <span id="more"></span>
 
-<h2 id="sCPU"><a href="#sCPU" class="headerlink" title="sCPU"></a>sCPU</h2><h3 id="main总体概览"><a href="#main总体概览" class="headerlink" title="main总体概览"></a>main总体概览</h3><p>![Pasted image 20260520171706.png](Pasted image 20260520171706.png)</p>
+<h2 id="sCPU"><a href="#sCPU" class="headerlink" title="sCPU"></a>sCPU</h2><h3 id="main总体概览"><a href="#main总体概览" class="headerlink" title="main总体概览"></a>main总体概览</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F5/Pasted_image_20260520171706.png"
+                      alt="Pasted image 20260520171706.png"
+                ></p>
 <ul>
 <li>PC 每个时钟周期递增，输出下一条将要执行的指令</li>
 <li>Program_List 中存储程序，不过这是组合电路搭成的 ROM 所以读取在 PC 变化后，立刻可以将指令 instruction 传递给 Instruction Decoder</li>
@@ -663,13 +668,28 @@
 </li>
 <li>GPR 通用寄存器，存储各个状态</li>
 </ul>
-<h3 id="PC"><a href="#PC" class="headerlink" title="PC"></a>PC</h3><p>![Pasted image 20260520172219.png](Pasted image 20260520172219.png)<br>PC 比较简单，基本就两种输入:</p>
+<h3 id="PC"><a href="#PC" class="headerlink" title="PC"></a>PC</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F5/Pasted_image_20260520172219.png"
+                      alt="Pasted image 20260520172219.png"
+                ><br>PC 比较简单，基本就两种输入:</p>
 <ul>
 <li>一种是递增</li>
 <li>一种是外来的输入<br>对此，可以使用 MUX 来决定下次 D 触发器赋值的时候究竟用哪个<br>(不过这里默认的 8 bit 数据位 我没改，保持默认，偷懒了)</li>
 </ul>
-<h3 id="Program-List"><a href="#Program-List" class="headerlink" title="Program_List"></a>Program_List</h3><p>放置程序的地方，组合电路实现。<br>根据 PC 决定输出哪条 机器码<br>![Pasted image 20260520172515.png](Pasted image 20260520172515.png)</p>
-<h3 id="Instruction-Decoder"><a href="#Instruction-Decoder" class="headerlink" title="Instruction Decoder"></a>Instruction Decoder</h3><p>![Pasted image 20260520182647.png](Pasted image 20260520182647.png)</p>
+<h3 id="Program-List"><a href="#Program-List" class="headerlink" title="Program_List"></a>Program_List</h3><p>放置程序的地方，组合电路实现。<br>根据 PC 决定输出哪条 机器码<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F5/Pasted_image_20260520172515.png"
+                      alt="Pasted image 20260520172515.png"
+                ></p>
+<h3 id="Instruction-Decoder"><a href="#Instruction-Decoder" class="headerlink" title="Instruction Decoder"></a>Instruction Decoder</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F5/Pasted_image_20260520182647.png"
+                      alt="Pasted image 20260520182647.png"
+                ></p>
 <ul>
 <li><p>对于 00(add)、10(li) 指令都需要 写，所以其实通过 低位 可以判断是否要 写使能</p>
 </li>
@@ -688,7 +708,12 @@
 <li><p>对于 bner0 则特殊一点，需要额外引出了几个输出</p>
 <div class="code-container" data-rel="Haskell"><figure class="iseeu highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">7</span>  <span class="number">6</span> <span class="number">5</span>  <span class="number">4</span> <span class="number">3</span>   <span class="number">2</span> <span class="number">1</span>   <span class="number">0</span></span><br><span class="line">+----+----+-----+-----+</span><br><span class="line">| <span class="number">00</span> | rd | rs1 | rs2 | <span class="type">R</span>[rd]=<span class="type">R</span>[rs1]+<span class="type">R</span>[rs2]       add指令, 寄存器相加</span><br><span class="line">+----+----+-----+-----+</span><br><span class="line">| <span class="number">10</span> | rd |    imm    | <span class="type">R</span>[rd]=imm                 li指令, 装入立即数, 高位补<span class="number">0</span></span><br><span class="line">+----+----+-----+-----+</span><br><span class="line">| <span class="number">11</span> |   addr   | rs2 | <span class="keyword">if</span> (<span class="type">R</span>[<span class="number">0</span>]!=<span class="type">R</span>[rs2]) <span class="type">PC</span>=addr bner0指令, 若不等于<span class="type">R</span>[<span class="number">0</span>]则跳转</span><br><span class="line">+----+----------+-----+</span><br></pre></td></tr></table></figure></div></li>
 </ul>
-<h3 id="GPR"><a href="#GPR" class="headerlink" title="GPR"></a>GPR</h3><p>![Pasted image 20260520180902.png](Pasted image 20260520180902.png)<br>这个没太多好说的，就是纯重复劳动</p>
+<h3 id="GPR"><a href="#GPR" class="headerlink" title="GPR"></a>GPR</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/F5/Pasted_image_20260520180902.png"
+                      alt="Pasted image 20260520180902.png"
+                ><br>这个没太多好说的，就是纯重复劳动</p>
 <h2 id="存储程序"><a href="#存储程序" class="headerlink" title="存储程序"></a>存储程序</h2><p>计算机中的一切，其实都是可以用状态转换实现的，就是电路的不同实现与组合。</p>
 <h2 id="关于指令"><a href="#关于指令" class="headerlink" title="关于指令"></a>关于指令</h2><p>其实只需要足够的基础指令有专门的电路实现，剩下的指令，都可以通过组合来实现。<br>对于指令的设计，我觉得得从两个方面决定：</p>
 <ul>
@@ -712,7 +737,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-05-20 18:37:49
+                    :</strong> 2026-05-20 18:43:47
             </li>
         
         <li>
