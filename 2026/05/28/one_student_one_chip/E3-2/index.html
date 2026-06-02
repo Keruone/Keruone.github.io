@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo, 技术博客, 学习总结, Tech Blog, Notes">
+    
+    <meta name="author" content="Keruone">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://Keruone.github.io/2026/05/28/one_student_one_chip/e3-2/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/keruone-blog-logo.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/keruone-blog-logo.jpg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/keruone-blog-logo.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            E3  The Missing Semester of Your CS Education-1 | Keruone&#39;s 个人小记
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"keruone.github.io","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":false,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Keruone's blog","subtitle":{"text":["一边想着一定要做点什么，另一边却烦恼着做点什么好，甚至担心什么都没干就这么长大了。 ——K-ON"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":"enable","version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"links":{"path":"/links","icon":"fa-solid fa-link"},"About":{"icon":"fa-regular fa-user","submenus":{"Github":"https://github.com/Keruone/Keruone.github.io","Blog":"https://blog.keruone.cn"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"原博客 blog.keruone.cn","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2026/1/12 13:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Keruone&#39;s 个人小记
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/links"
+                                        >
+                                    <i class="fa-solid fa-link fa-fw"></i>
+                                    链接
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.keruone.cn">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/links"
+                        >
+                            <span>
+                                链接
+                            </span>
+                            
+                                <i class="fa-solid fa-link fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.keruone.cn">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">68</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">E3  The Missing Semester of Your CS Education-1</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/keruone-myFavoritePhoto.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Keruone</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-05-28 13:06</span>
+        <span class="mobile">2026-05-28 13:06</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-06-02 15:45:51</span>
+            <span class="mobile">2026-06-02 15:45:51</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/">项目记录</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">一生一芯</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE/">项目</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">一生一芯</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>7.8k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>36 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p> <a class="link"   target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/" >The Missing Semester of Your CS Education<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<span id="more"></span>
+<h2 id="课程概览与shell"><a href="#课程概览与shell" class="headerlink" title="课程概览与shell"></a>课程概览与shell</h2><ol start="2">
+<li>.<code>ls</code> 的 <code>-l</code> 选项（flag）作用是什么？运行 <code>ls -l /</code> 并观察输出。每一行最前面的 10 个字符分别代表什么？（提示：<code>man ls</code>）<br>![Pasted image 20260529135227.png](Pasted image 20260529135227.png)<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">ls</span> -l</span><br><span class="line">total 16</span><br><span class="line">-rw-rw-r-- 1 keruone keruone  847  5月 29 12:48  hello.txt</span><br><span class="line">-rw-rw-r-- 1 keruone keruone 8233  5月 29 14:01 <span class="string">&#x27;man ls.txt&#x27;</span></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<ul>
+<li>total：和后文比较后，你可以发现，其实就是 <strong>文件实际占用的磁盘空间</strong></li>
+<li>前 10 字符表示：文件权限<ul>
+<li>在 info ls 中找到，使用 s pattern ，其中 pattern 输入 Note File permissions，然后跳转 info 中的链接。再进入 Mode Structure 介绍。</li>
+<li>第 1 位 表示是 文件 还是 目录</li>
+<li>第 2-4 位 表示 文件拥有者 的 可读可写可执行 权限</li>
+<li>第 5-7 位 表示 用户同组的其他成员 的 可读可写可执行 权限</li>
+<li>第 8-10 位 表示 其他每个用户 的 可读可写可执行 权限<div class="code-container" data-rel="Vim"><figure class="iseeu highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Next</span>: File timestamps,  Prev: Numeric operations,  Up: Top</span><br><span class="line"></span><br><span class="line"><span class="number">27</span> File permissions</span><br><span class="line">*******************</span><br><span class="line"></span><br><span class="line">Each <span class="keyword">file</span> <span class="built_in">has</span> <span class="keyword">a</span> <span class="keyword">set</span> of “<span class="keyword">file</span> <span class="keyword">mode</span> bits” that control the kinds of access</span><br><span class="line">that users have <span class="keyword">to</span> that <span class="keyword">file</span>.  They can <span class="keyword">be</span> represented either in</span><br><span class="line">symbolic form <span class="built_in">or</span> <span class="keyword">as</span> <span class="keyword">an</span> octal <span class="keyword">number</span>.</span><br><span class="line"></span><br><span class="line">* Menu:</span><br><span class="line"></span><br><span class="line">* Mode Structure::              Structure of <span class="keyword">file</span> <span class="keyword">mode</span> bits.</span><br><span class="line">* Symbolic Modes::              Mnemonic representation of <span class="keyword">file</span> <span class="keyword">mode</span> bits.</span><br><span class="line">* Numeric Modes::               File <span class="keyword">mode</span> bits <span class="keyword">as</span> octal numbers.</span><br><span class="line">* Operator Numeric Modes::      ANDing, ORing, <span class="built_in">and</span> setting modes octally.</span><br><span class="line">* Directory Setuid <span class="built_in">and</span> Setgid:: Set-user-ID <span class="built_in">and</span> <span class="keyword">set</span>-group-ID <span class="keyword">on</span> directories.</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+<div class="code-container" data-rel="Applescript"><figure class="iseeu highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">   There are three kinds <span class="keyword">of</span> permissions <span class="keyword">that</span> a user can have <span class="keyword">for</span> a <span class="built_in">file</span>:</span><br><span class="line"></span><br><span class="line">  <span class="number">1.</span> permission <span class="keyword">to</span> <span class="built_in">read</span> <span class="keyword">the</span> <span class="built_in">file</span>.  For directories, this means</span><br><span class="line">     permission <span class="keyword">to</span> <span class="built_in">list</span> <span class="keyword">the</span> <span class="built_in">contents</span> <span class="keyword">of</span> <span class="keyword">the</span> directory.</span><br><span class="line">  <span class="number">2.</span> permission <span class="keyword">to</span> <span class="built_in">write</span> <span class="keyword">to</span> (change) <span class="keyword">the</span> <span class="built_in">file</span>.  For directories, this</span><br><span class="line">     means permission <span class="keyword">to</span> create <span class="keyword">and</span> remove files <span class="keyword">in</span> <span class="keyword">the</span> directory.</span><br><span class="line">  <span class="number">3.</span> permission <span class="keyword">to</span> execute <span class="keyword">the</span> <span class="built_in">file</span> (<span class="built_in">run</span> <span class="keyword">it</span> <span class="keyword">as</span> a program).  For</span><br><span class="line">     directories, this means permission <span class="keyword">to</span> access files <span class="keyword">in</span> <span class="keyword">the</span></span><br><span class="line">     directory.</span><br><span class="line"></span><br><span class="line">   There are three categories <span class="keyword">of</span> users who may have different</span><br><span class="line">permissions <span class="keyword">to</span> perform any <span class="keyword">of</span> <span class="keyword">the</span> <span class="keyword">above</span> operations <span class="keyword">on</span> a <span class="built_in">file</span>:</span><br><span class="line"></span><br><span class="line">  <span class="number">1.</span> <span class="keyword">the</span> <span class="built_in">file</span>’s owner;</span><br><span class="line">  <span class="number">2.</span> other users who are <span class="keyword">in</span> <span class="keyword">the</span> <span class="built_in">file</span>’s group;</span><br><span class="line">  <span class="number">3.</span> everyone <span class="keyword">else</span>.</span><br><span class="line"></span><br><span class="line">   Files are <span class="keyword">given</span> an owner <span class="keyword">and</span> group when they are created.  Usually</span><br><span class="line"><span class="keyword">the</span> owner <span class="keyword">is</span> <span class="keyword">the</span> current user <span class="keyword">and</span> <span class="keyword">the</span> group <span class="keyword">is</span> <span class="keyword">the</span> group <span class="keyword">of</span> <span class="keyword">the</span></span><br><span class="line">directory <span class="keyword">the</span> <span class="built_in">file</span> <span class="keyword">is</span> <span class="keyword">in</span>, <span class="keyword">but</span> this varies <span class="keyword">with</span> <span class="keyword">the</span> operating system, <span class="keyword">the</span></span><br><span class="line"><span class="built_in">file</span> system <span class="keyword">the</span> <span class="built_in">file</span> <span class="keyword">is</span> created <span class="keyword">on</span>, <span class="keyword">and</span> <span class="keyword">the</span> way <span class="keyword">the</span> <span class="built_in">file</span> <span class="keyword">is</span> created.</span><br><span class="line">You can change <span class="keyword">the</span> owner <span class="keyword">and</span> group <span class="keyword">of</span> a <span class="built_in">file</span> <span class="keyword">by</span> using <span class="keyword">the</span> ‘chown’ <span class="keyword">and</span></span><br><span class="line">‘chgrp’ commands.</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>你还可以发现一件事： </p>
+</blockquote>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">ls</span> -al --block-size=K</span><br><span class="line">total 24K</span><br><span class="line">drwxr-xr-x  2 keruone keruone 4K  5月 29 14:07  .</span><br><span class="line">drwxr-x--- 19 keruone keruone 4K  5月 29 14:17  ..</span><br><span class="line">-rw-rw-r--  1 keruone keruone 1K  5月 29 12:48  hello.txt</span><br><span class="line">-rw-rw-r--  1 keruone keruone 9K  5月 29 14:01 <span class="string">&#x27;man ls.txt&#x27;</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">ls</span> -l --block-size=K</span><br><span class="line">total 16K</span><br><span class="line">-rw-rw-r-- 1 keruone keruone 1K  5月 29 12:48  hello.txt</span><br><span class="line">-rw-rw-r-- 1 keruone keruone 9K  5月 29 14:01 <span class="string">&#x27;man ls.txt&#x27;</span></span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>很诡异啊，这咋平白无故多出来了 6K的空间占用？</p>
+<blockquote>
+<p>关键在于:<code>ls -l</code> 顶部的 <code>total</code> 行报告的是<strong>文件实际占用的磁盘空间</strong>(也就是 <code>du</code> 看到的、按文件系统块分配的大小),而每行 size 列显示的是<strong>文件的逻辑大小(apparent size)</strong> 向上取整到 K。这两个数不是一回事。</p>
+</blockquote>
+<blockquote>
+<p>对此，我的文件系统(ext4)的块大小是 4K,文件只能按整块分配。<br><code>/dev/sda3      ext4      78G   15G   59G  20% /</code></p>
+<ul>
+<li>hello.txt 逻辑大小不到 1K,显示为 <code>1K</code>,但它至少占用一个完整的 4K 块 → 实际占 4K,多出 3K。</li>
+<li>man ls.txt 逻辑大小在 8K~9K 之间,显示为 <code>9K</code>,但需要 3 个 4K 块才放得下(2 块只有 8K 不够)→ 实际占 12K,多出 3K。</li>
+<li>两个文件各多出 3K,加起来正好就是那 <strong>6K</strong>。</li>
+</ul>
+</blockquote>
+</blockquote>
+<ol start="3">
+<li>在命令 <code>find ~/Downloads -type f -name &quot;*.zip&quot; -mtime +30</code> 中，<code>*.zip</code> 是一个 「glob」。什么是 glob ？新建一个测试目录并创建一些文件，试试 <code>ls *.txt</code> 、<code>ls file?.txt</code> 、<code>ls &#123;a,b,c&#125;.txt</code> 等模式。参见 Bash 手册中的 <a class="link"   target="_blank" rel="noopener" href="https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html" >Pattern Matching<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 。</li>
+</ol>
+<ul>
+<li><code>-type</code> 表示文件类型<ul>
+<li><code>-f</code> regular file，普通文件</li>
+</ul>
+</li>
+<li>glob 表示 通配符模式<div class="code-container" data-rel="Jboss-cli"><figure class="iseeu highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~<span class="string">/Desktop</span>$ <span class="keyword">ls</span></span><br><span class="line"> abc.txt   a.txt   b.txt   c.txt   hello.txt  &#x27;man <span class="keyword">ls</span>.txt&#x27;</span><br><span class="line">keruone@keruone-virtual-machine:~<span class="string">/Desktop</span>$ <span class="keyword">ls</span> *<span class="string">.txt</span></span><br><span class="line"> abc.txt   a.txt   b.txt   c.txt   hello.txt  &#x27;man <span class="keyword">ls</span>.txt&#x27;</span><br><span class="line">keruone@keruone-virtual-machine:~<span class="string">/Desktop</span>$ <span class="keyword">ls</span> &#123;a,b,c&#125;<span class="string">.txt</span></span><br><span class="line">a.txt  b.txt  c.txt</span><br><span class="line">keruone@keruone-virtual-machine:~<span class="string">/Desktop</span>$ <span class="keyword">ls</span> ?<span class="string">.txt</span></span><br><span class="line">a.txt  b.txt  c.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<ol start="4">
+<li><code>&#39;单引号&#39;</code>、<code>&quot;双引号&quot;</code> 和 <code>$&#39;ANSI 引号&#39;</code> 有什么区别？写一条命令，输出一个同时包含字面量 <code>$</code> 、<code>!</code> 和换行符的字符串。参见 <a class="link"   target="_blank" rel="noopener" href="https://www.gnu.org/software/bash/manual/html_node/Quoting.html" >Quoting<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 。</li>
+</ol>
+<ul>
+<li>单引号里面包的是啥就当啥，不做任何转换转义解释</li>
+<li>双引号<strong>大部分字符保留原义</strong>，仅 <code>$</code>、<code>`</code>、<code>\</code>、<code>!</code>（历史扩展开启时）有特殊功能。</li>
+<li><code>$&#39;字符串&#39;</code> 是特殊单引号语法，会按照 ANSI C 标准解析字符串内的反斜杠转义符，并将转义序列替换为对应实际字符。<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">echo</span> $<span class="string">&#x27;hello $ !\nsecond line&#x27;</span></span><br><span class="line">hello $ !</span><br><span class="line">second line</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ !!</span><br><span class="line"><span class="built_in">echo</span> $<span class="string">&#x27;hello $ !\nsecond line&#x27;</span></span><br><span class="line">hello $ !</span><br><span class="line">second line</span><br></pre></td></tr></table></figure></div>
+! 在 Shell 中的作用：历史扩展 (History Expansion)。Shell 会记录你执行过的所有命令（命令历史），! 是用来快速调取、复用历史命令的专用符号，这就叫历史扩展。<br>假设你历史里执行过这些命令：<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">100 <span class="built_in">ls</span> -l</span><br><span class="line">101 <span class="built_in">echo</span> hello</span><br><span class="line">102 <span class="built_in">cat</span> test.txt</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<p> ① <code>!数字</code> 执行指定序号的历史命令</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!100   <span class="comment"># 等价重新执行第 100 条：ls -l</span></span><br></pre></td></tr></table></figure></div>
+
+<p> ② <code>!字符串</code> 执行<strong>最近一条以该字符串开头</strong>的命令</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!<span class="built_in">cat</span>   <span class="comment"># 找到最近一条以 cat 开头的命令，执行 cat test.txt</span></span><br></pre></td></tr></table></figure></div>
+
+<p> ③ <code>!!</code> 快速执行<strong>上一条命令</strong>（高频）</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!!     <span class="comment"># 重复执行刚刚跑完的命令</span></span><br></pre></td></tr></table></figure></div>
+
+<p> ④ <code>!$</code> 取上一条命令的<strong>最后一个参数</strong></p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> test.txt</span><br><span class="line"><span class="built_in">cat</span> !$   <span class="comment"># !$ = test.txt，等价 cat test.txt</span></span><br><span class="line">```    </span><br><span class="line">5. Shell 有三条标准流：stdin（0）、stdout（1）、stderr（2）。运行 `<span class="built_in">ls</span> /nonexistent /tmp` ，把 stdout 和 stderr 分别重定向到两个文件。你将如何把两者都重定向到同一个文件？参见 [Redirections](https://www.gnu.org/software/bash/manual/html_node/Redirections.html) 。</span><br><span class="line">```bash</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">ls</span> /nonexistent /tmp 1&gt;stdout.txt 2&gt;stderr.txt</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">ls</span> /nonexistent /tmp &gt; same.txt 2&gt;&amp;1</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>在以下说明中，若省略文件描述符编号，且重定向操作符的首字符为 **&lt;**，则该重定向指向标准输入（文件描述符 0）；若重定向操作符的首字符为&gt; ，则该重定向指向标准输出（文件描述符 1）。<br>重定向后面的内容正常执行全套扩展、替换、解析；但最终结果必须是单个目标（单个文件 &#x2F; 单个路径）；一旦解析出多个单词 &#x2F; 多个文件，直接报错。<br>重定向按书写顺序依次执行，后序操作基于前序的描述符状态；顺序不同，最终数据流走向也不同。</p>
+<ul>
+<li><code>ls &gt; dirlist 2&gt;&amp;1</code><ul>
+<li>标准输出1与错误输出2都输出到 指定文件。</li>
+<li>首先 <code>&gt;</code>重定向 标准输出；（类似此时赋值 <code>标准输出1=dirlist</code></li>
+<li>接着将 错误输出 输出到 同样的输出位置（类似此时赋值 <code>错误输出2=标准输出1</code>，即<code>错误输出2=dirlist</code></li>
+</ul>
+</li>
+<li><code>ls 2&gt;&amp;1 &gt; dirlist</code><ul>
+<li>标准输出1输出到 指定文件，错误输出2 重定向到屏幕。</li>
+<li>错误输出2 &#x3D; 标准输出1<br>&#x2F;dev&#x2F;fd 是一个伪文件系统目录，用来把当前进程的所有文件描述符（fd）暴露成 “文件路径”，方便用路径方式操作 fd。<br>二者互为软链接，**&#x2F;dev&#x2F;stdin&#x2F;stdout&#x2F;stderr 等价于 &#x2F;dev&#x2F;fd&#x2F;0&#x2F;1&#x2F;2**。</li>
+</ul>
+</li>
+</ul>
+<p>数字在前代表要重定向的来源流，符号后是接收内容的目的地。<br><code>2&gt;&amp;1</code> 中 <code>&amp;</code> 作用是<strong>标记后面数字为文件描述符</strong>，避免 Shell 把它当成普通文件。<br>    The general format for redirecting input is: <code>[n]&lt;word</code><br>    The general format for redirecting output is:  <code>[n]&gt;[|]word</code>(*注意，如果开了 <code>noclobber</code> 防覆盖模式，你就要注意你写入的文件并没有提前创建了)<br>重定向标准输出和标准错误有 <code>&amp;&gt;word</code> 与 <code>&gt;&amp;word</code> 两种写法，优先用前者，二者等价于 <code>&gt;word 2&gt;&amp;1</code>。<br><code>&gt;&gt;</code> 代表追加写入，用法逻辑和前文一致。</p>
+</blockquote>
+<blockquote>
+<p>Here-doc 标准格式：</p>
+</blockquote>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">命令 &lt;&lt; 标记名</span><br><span class="line">内容行1</span><br><span class="line">内容行2</span><br><span class="line">标记名</span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<ol>
+<li><code>&lt;&lt; 标记名</code>：告诉 Shell，<strong>接下来直到「单独一行写标记名」为止</strong>，所有内容都当作命令的标准输入。</li>
+<li>中间的行：真正要输入的内容。</li>
+<li>最后单独一行的 <code>标记名</code>：<strong>结束符</strong>，代表读取终止，这一行本身<strong>不会被传给命令、也不会打印出来</strong>。</li>
+<li>若标记名（word）包含引号，分隔符为去除引号后的内容，Here-doc 内所有内容不会做任何解析展开；若标记名无引号，分隔符即为原内容，文档文本规则等同于双引号字符串：会执行参数展开、命令替换、算术展开，<code>\换行</code> 原样识别，需用 <code>\</code> 转义 <code>\</code>、<code>$</code>、`，双引号则无特殊作用。</li>
+</ol>
+</blockquote>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~$ <span class="built_in">cat</span> &lt;&lt; <span class="string">xxx</span></span><br><span class="line"><span class="string">\t sdfsd</span></span><br><span class="line"><span class="string">xxx</span></span><br><span class="line">\t sdfsd</span><br><span class="line">keruone@keruone-virtual-machine:~$ <span class="built_in">cat</span> &lt;&lt;- <span class="string">xxx</span></span><br><span class="line"><span class="string">&gt;  sdfsfsf</span></span><br><span class="line"><span class="string">&gt;        xxx</span></span><br><span class="line">&gt; sdf</span><br><span class="line">...</span><br><span class="line">keruone@keruone-virtual-machine:~$ <span class="built_in">cat</span> &lt;&lt;- <span class="string">xxx</span></span><br><span class="line"><span class="string">&gt;       sdfsdfsf</span></span><br><span class="line"><span class="string">&gt;       xxx</span></span><br><span class="line">sdfsdfsf</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~$ <span class="built_in">cat</span> &lt;&lt; <span class="string">xxx</span></span><br><span class="line"><span class="string">&gt; sdfsdf\</span></span><br><span class="line"><span class="string">&gt; sdf</span></span><br><span class="line"><span class="string">&gt; xxx</span></span><br><span class="line">sdfsdfsdf</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>Here 文档以<code>[n]&lt;&lt;[-]分隔符</code>定义输入范围，引号控制内容是否解析变量 &#x2F; 命令，<code>&lt;&lt;-</code>可剔除行首制表符，无引号时行尾<code>\</code>会合并换行。</p>
+</blockquote>
+<blockquote>
+<p>复制文件描述符 <code>&gt;&amp;</code> &#x2F; <code>&lt;&amp;</code> <strong>含义</strong>：把一个文件描述符的<strong>读写通道复制一份</strong>，新旧描述符指向同一个数据源 &#x2F; 目标，二者独立存在、互不关闭。(经典的 <code>2&gt;&amp;1</code> 就是)</p>
+<p>移动（迁移）文件描述符 <code>digit-</code> <strong>含义</strong>：将描述符转移到新编号，<strong>转移完成后，原描述符会被直接关闭</strong>，不再可用。</p>
+</blockquote>
+<div class="code-container" data-rel="Apache"><figure class="iseeu highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将描述符 1 迁移到 3，原 1 被关闭</span></span><br><span class="line"><span class="attribute">exec</span> <span class="number">3</span>&gt;&amp;<span class="number">1</span>-</span><br><span class="line"><span class="comment"># 此时 1 已关闭，普通 echo 无输出；使用 3 可正常输出</span></span><br><span class="line"><span class="attribute">echo</span> <span class="string">&quot;测试迁移&quot;</span> &gt;&amp;<span class="number">3</span></span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>执行后仅 <code>&gt;&amp;3</code> 的内容会打印，直接 <code>echo</code> 无效果。</p>
+</blockquote>
+<blockquote>
+<p><code>[n]&lt;&gt;文件</code> 会让该文件描述符对目标文件<strong>兼具读、写能力</strong>。即做输入，又做输出。</p>
+</blockquote>
+<ol start="6">
+<li><p><code>$?</code> 保存上一条命令的退出状态（0 表示成功）。<code>&amp;&amp;</code> 仅在前一条成功时执行后一条；<code>||</code> 仅在前一条失败时执行后一条。写一个一行命令：仅当 <code>/tmp/mydir</code> 不存在时才创建它。参见 <a class="link"   target="_blank" rel="noopener" href="https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html" >Exit Status<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 。</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~$ <span class="built_in">ls</span> /tmp/mydir || <span class="built_in">mkdir</span> /tmp/mydir</span><br><span class="line"><span class="built_in">ls</span>: cannot access <span class="string">&#x27;/tmp/mydir&#x27;</span>: No such file or directory</span><br><span class="line">keruone@keruone-virtual-machine:~$ <span class="built_in">ls</span> /tmp/mydir || <span class="built_in">mkdir</span> /tmp/mydir</span><br><span class="line">keruone@keruone-virtual-machine:~$ </span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>为什么 <code>cd</code> 必须是 Shell 内建命令，而不能是独立程序？（提示：想想子进程能影响和不能影响父进程的哪些状态。）</p>
+</li>
+</ol>
+<ul>
+<li>内建命令：跑在 Shell 自身进程里，无子进程。</li>
+<li>外部命令：新建子进程运行，子进程改不了父进程状态。</li>
+<li>子进程不能影响父进程，所以如果作为独立程序，修改后也只会修改子进程路径，不会修改父进程路径。所以必须是 Shell 修改 Shell 本身，所以得是内建命令。</li>
+</ul>
+<ol start="8">
+<li>写一个脚本，接收文件名参数（<code>$1</code>），用 <code>test -f</code> 或 <code>[ -f ... ]</code> 检查该文件是否存在，并根据结果输出不同提示。参见 <a class="link"   target="_blank" rel="noopener" href="https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html" >Bash Conditional Expressions<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 。<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> temp.sh </span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="variable">$1</span> ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;文件 <span class="variable">$1</span> 存在，且是普通文件&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;文件 <span class="variable">$1</span> 不存在或不是普通文件&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ ./temp.sh empty.sh</span><br><span class="line">文件 empty.sh 不存在或不是普通文件</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ ./temp.sh empty.txt</span><br><span class="line">文件 empty.txt 存在，且是普通文件</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<blockquote>
+<p>* 注意，这里 <code>$1</code> 表示的不是标准输出，而是第一个参数</p>
+<p><code>[</code> 本身就是 <strong>Shell 内置命令</strong>（全称 <code>test</code>），不是单纯的标点符号。<br><code>[ 条件 ]</code> 和 <code>test 条件</code> <strong>完全等价</strong>。<br>注意，<code>[</code> <code>]</code> 前后都要留出空格</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>作用</th>
+<th>简写说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件存在 &amp; 基础类型判断</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>-e file</code></td>
+<td>文件 &#x2F; 目录<strong>存在</strong></td>
+<td>通用存在判断，最常用</td>
+</tr>
+<tr>
+<td><code>-f file</code></td>
+<td>是<strong>普通文件</strong>（文本 &#x2F; 脚本 &#x2F; 二进制）</td>
+<td>区分文件和目录</td>
+</tr>
+<tr>
+<td><code>-d file</code></td>
+<td>是<strong>目录</strong></td>
+<td>判断文件夹</td>
+</tr>
+<tr>
+<td><code>-s file</code></td>
+<td>文件存在 <strong>且大小 &gt; 0</strong></td>
+<td>判断文件非空</td>
+</tr>
+<tr>
+<td>权限判断</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>-r file</code></td>
+<td>可读</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-w file</code></td>
+<td>可写</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-x file</code></td>
+<td>可执行</td>
+<td></td>
+</tr>
+<tr>
+<td>字符串判断</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>-z 字符串</code></td>
+<td>字符串<strong>为空</strong>（长度 0）</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-n 字符串</code></td>
+<td>字符串<strong>非空</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><code>str1 == str2</code></td>
+<td>字符串相等</td>
+<td></td>
+</tr>
+<tr>
+<td><code>str1 != str2</code></td>
+<td>字符串不等</td>
+<td></td>
+</tr>
+<tr>
+<td>整数比较（Shell 数字判断，固定写法）<strong>只用于整数，不能用 &gt; &lt; &#x3D;</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>运算符</td>
+<td>含义</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-eq</code></td>
+<td>等于 (equal)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-ne</code></td>
+<td>不等于 (not equal)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-lt</code></td>
+<td>小于 (less than)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-le</code></td>
+<td>小于等于</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-gt</code></td>
+<td>大于 (greater than)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-ge</code></td>
+<td>大于等于</td>
+<td></td>
+</tr>
+<tr>
+<td>示例：</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<div class="code-container" data-rel="Elixir"><figure class="iseeu highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -e empty.txt ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -e test.txt ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -f empty.txt ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -d /tmp ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -s empty.txt ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>echo <span class="string">&quot;112233&quot;</span> &gt;&gt; empty.txt </span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -s empty.txt ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">0</span>keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -r empty.txt ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -z  ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -z <span class="string">&quot;asdf&quot;</span> ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -n  ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -n <span class="string">&quot;asdf&quot;</span> ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ -n <span class="string">&quot;&quot;</span> ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ <span class="number">10</span> -eq <span class="number">10</span> ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">keruone<span class="variable">@keruone</span>-virtual-<span class="symbol">machine:</span>~/<span class="title class_">Desktop</span><span class="variable">$ </span>[ <span class="number">10</span> -eq <span class="number">11</span> ] &amp;&amp; echo <span class="variable">$?</span> || echo <span class="variable">$?</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-b file</code></td>
+<td>块设备（硬盘、分区 &#x2F;dev&#x2F;sda）</td>
+</tr>
+<tr>
+<td><code>-c file</code></td>
+<td>字符设备（终端、键盘 &#x2F;dev&#x2F;tty）</td>
+</tr>
+<tr>
+<td>表达式</td>
+<td>作用</td>
+</tr>
+<tr>
+<td><code>-h file</code> &#x2F; <code>-L file</code></td>
+<td>符号链接（软链接）<br><br>两者功能基本一致，记一个即可</td>
+</tr>
+<tr>
+<td>表达式</td>
+<td>作用</td>
+</tr>
+<tr>
+<td><code>-u file</code></td>
+<td>设置了 SUID 位</td>
+</tr>
+<tr>
+<td><code>-g file</code></td>
+<td>设置了 SGID 位</td>
+</tr>
+<tr>
+<td><code>-k file</code></td>
+<td>设置了 粘滞位 (sticky bit)</td>
+</tr>
+<tr>
+<td>表达式</td>
+<td>作用</td>
+</tr>
+<tr>
+<td><code>file1 -nt file2</code></td>
+<td>file1 <strong>更新</strong>（newer than）</td>
+</tr>
+<tr>
+<td><code>file1 -ot file2</code></td>
+<td>file1 <strong>更旧</strong>（older than）</td>
+</tr>
+<tr>
+<td>表达式</td>
+<td>作用</td>
+</tr>
+<tr>
+<td><code>-v 变量名</code></td>
+<td>变量是否已定义（赋值）</td>
+</tr>
+</tbody></table>
+<ul>
+<li>其它不常见的：</li>
+<li><strong>管道 &amp; 套接字</strong><ul>
+<li><code>-p file</code>：命名管道 (FIFO)</li>
+<li><code>-S file</code>：socket 套接字</li>
+</ul>
+</li>
+<li><strong>归属判断</strong><ul>
+<li><code>-O file</code>：文件属于当前有效用户</li>
+<li><code>-G file</code>：文件属于当前有效组</li>
+</ul>
+</li>
+<li><strong>文件硬链接判断</strong><ul>
+<li><code>file1 -ef file2</code>：两个文件指向<strong>同一个 inode</strong>（硬链接）</li>
+</ul>
+</li>
+<li><strong>终端判断</strong><ul>
+<li><code>-t fd</code>：文件描述符指向终端（一般判断交互式终端）</li>
+</ul>
+</li>
+<li><strong>其他冷门</strong><ul>
+<li><code>-N file</code>：文件自上次读取后被修改</li>
+<li>字符串大小比较 <code>str1 &lt; str2</code>、<code>str1 &gt; str2</code>（字典序，几乎不用）</li>
+<li><code>-o optname</code>：判断 Shell 选项是否开启</li>
+</ul>
+</li>
+</ul>
+<ol start="9">
+<li>把上一题完成的脚本保存为文件（如 <code>check.sh</code>）。先运行 <code>./check.sh somefile</code> ，会发生什么？然后执行 <code>chmod +x check.sh</code> 再试一次。为什么这一步是必须的？（提示：比较 <code>chmod</code> 前后的 <code>ls -l check.sh</code> 输出）<br> 会发现无法执行，因为没有 执行权限。<br> 所以添加 <code>+x</code> 是必须的。<div class="code-container" data-rel="Stata"><figure class="iseeu highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="keyword">ls</span> -<span class="keyword">l</span> temp.<span class="keyword">sh</span> </span><br><span class="line">-rw-rw-r-- 1 keruone keruone 135  6月  1 11:38 temp.<span class="keyword">sh</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ chmod +x temp.<span class="keyword">sh</span> </span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="keyword">ls</span> -<span class="keyword">l</span> temp.<span class="keyword">sh</span> </span><br><span class="line">-rwxrwxr-x 1 keruone keruone 135  6月  1 11:38 temp.<span class="keyword">sh</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+<li>在脚本的 <code>set</code> 选项（flag）里加入 <code>-x</code> 会发生什么？写个简单脚本试试并观察输出。参见 <a class="link"   target="_blank" rel="noopener" href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html" >The Set Builtin<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 。<br>会把每一行打印出来，方便调试<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> temp.sh </span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -x</span><br><span class="line">name=empty.txt</span><br><span class="line">[ -f $<span class="string">&quot;name&quot;</span> ]</span><br><span class="line">[ -f name ]</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ ./temp.sh </span><br><span class="line">+ name=empty.txt</span><br><span class="line">+ <span class="string">&#x27;[&#x27;</span> -f name <span class="string">&#x27;]&#x27;</span></span><br><span class="line">+ <span class="string">&#x27;[&#x27;</span> -f name <span class="string">&#x27;]&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<p> <code>-e</code> errexit 作用：命令执行失败（退出码≠0），脚本立即退出</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">set</span> -e</span><br><span class="line"><span class="built_in">ls</span> nofile123  <span class="comment"># 文件不存在，命令失败</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;这条不会执行&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>-u</code> nounset 作用：使用<strong>未定义变量</strong>直接报错退出</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">set</span> -u</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$abc</span>  <span class="comment"># abc 未定义，脚本直接报错终止</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>-x</code> xtrace 调试模式 作用：打印每一行命令、变量展开过程，</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">set</span> -x</span><br><span class="line">name=<span class="string">&quot;test.txt&quot;</span></span><br><span class="line">[ -f <span class="string">&quot;<span class="variable">$name</span>&quot;</span> ]</span><br></pre></td></tr></table></figure></div>
+<p>关闭调试：<code>set +x</code></p>
+<p><code>-n</code> noexec 语法检查 作用：只解析脚本语法，<strong>不执行任何命令</strong>，查语法错误</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">set</span> -n</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;测试&quot;</span></span><br><span class="line">[ -f 123.txt  <span class="comment"># 故意少写 ]，会报语法错误</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>-C</code> noclobber 作用：禁止 <code>&gt;</code> 重定向覆盖已有文件；可用 <code>&gt;|</code> 强制覆盖</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先创建文件</span></span><br><span class="line"><span class="built_in">touch</span> a.txt</span><br><span class="line"><span class="built_in">set</span> -C</span><br><span class="line"><span class="built_in">echo</span> 123 &gt; a.txt   <span class="comment"># 报错：无法覆盖已有文件</span></span><br><span class="line"><span class="built_in">echo</span> 456 &gt;| a.txt <span class="comment"># 强制覆盖，正常执行</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>-f</code> noglob 作用：禁用 <code>* ? []</code> 文件名通配</p>
+<div class="code-container" data-rel="Jboss-cli"><figure class="iseeu highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> -f</span><br><span class="line"><span class="keyword">echo</span> *<span class="string">.txt</span>  <span class="comment"># 直接输出字符串 *.txt，不会匹配文件</span></span><br></pre></td></tr></table></figure></div>
+
+<ol start="11">
+<li>写一条命令，把文件复制为带当天日期的备份文件名（例如 <code>notes.txt</code> → <code>notes_2026-01-12.txt</code>）。（提示：<code>$(date +%Y-%m-%d)</code>）参见 <a class="link"   target="_blank" rel="noopener" href="https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html" >Command Substitution<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 。<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cp</span> notes.txt note_$(<span class="built_in">date</span> +%Y-%m-%d).txt</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>$(cmd)</code></td>
+<td>子 shell 运行命令</td>
+</tr>
+<tr>
+<td><code>$&#123; cmd; &#125;</code></td>
+<td><strong>当前 shell 环境执行命令</strong>（不开子 shell，效率更高，会改变当前 shell 变量 &#x2F; 环境）<br><em>{不过如果版本过低会执行不了}</em></td>
+</tr>
+</tbody></table>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> empty.txt </span><br><span class="line">There shoule be empty.</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> test.txt </span><br><span class="line"><span class="built_in">cat</span> empty.txt</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ $(<span class="built_in">cat</span> test.txt )</span><br><span class="line">There shoule be empty.</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ $(&lt;test.txt )</span><br><span class="line">There shoule be empty.</span><br></pre></td></tr></table></figure></div>
+<ol start="12">
+<li>修改讲义中的「复现偶尔才会失败的测试」脚本（flaky test），使它能够从命令行参数接收测试命令，而不是在脚本中写死 <code>cargo test my_test</code>。（提示：<code>$1</code> 或 <code>$@</code>）参见 <a class="link"   target="_blank" rel="noopener" href="https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html" >Special Parameters<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 。<br>修改 <code>cargo test my_test</code> 为<code>&quot;$@&quot;</code>即可<blockquote>
+<p>使用 <code>&quot;$@&quot;</code> 而不是 <code>$@</code> 的原因如下：<br>可以发现带空格的参数被 意外拆分了</p>
+</blockquote>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">模拟一个测试循环，只是打印收到的参数数量</span></span><br><span class="line">echo &quot;Received $# arguments:&quot;</span><br><span class="line">printf &#x27;  [%s]\n&#x27; &quot;$@&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果不加引号使用 <span class="variable">$@</span>，会怎样？我们可以同时展示区别</span></span><br><span class="line">echo &quot;---&quot;</span><br><span class="line">echo &quot;Using unquoted \$@:&quot;</span><br><span class="line">for arg in $@; do</span><br><span class="line">  echo &quot;  [$arg]&quot;</span><br><span class="line">done</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ ./temp.sh a <span class="string">&quot;b c d&quot;</span> e f</span><br><span class="line">Received 4 arguments:</span><br><span class="line">  [a]</span><br><span class="line">  [b c d]</span><br><span class="line">  [e]</span><br><span class="line">  [f]</span><br><span class="line">---</span><br><span class="line">Using unquoted <span class="variable">$@</span>:</span><br><span class="line">  [a]</span><br><span class="line">  [b]</span><br><span class="line">  [c]</span><br><span class="line">  [d]</span><br><span class="line">  [e]</span><br><span class="line">  [f]</span><br></pre></td></tr></table></figure></div>
+
+<p>不加引号：<code>$*</code> 和 <code>$@</code> 效果一样<br>    都会拆成：<code>a b c d</code>（空格劈分）<br>加双引号【重点区别】</p>
+<ul>
+<li><code>&quot;$*&quot;</code>：<strong>合并成 1 个字符串</strong> → <code>&quot;a b c d&quot;</code></li>
+<li><code>&quot;$@&quot;</code>：<strong>保留原有独立参数</strong> → <code>&quot;a&quot;</code>、<code>&quot;b c&quot;</code>、<code>&quot;d&quot;</code><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;--- &quot;$*&quot; ---&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;$*&quot;</span>;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;--- &quot;$@&quot; ---&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span>;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br></pre></td></tr></table></figure></div>
+执行 <code>./test.sh a &quot;b c&quot; d</code><div class="code-container" data-rel="Jboss-cli"><figure class="iseeu highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">---</span> <span class="string">&quot;$*&quot;</span> <span class="params">---</span></span><br><span class="line">a b c d</span><br><span class="line"><span class="params">---</span> <span class="string">&quot;$@&quot;</span> <span class="params">---</span></span><br><span class="line">a</span><br><span class="line">b c</span><br><span class="line">d</span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>开发规范：**永远用 “@”，不用”*“。</p>
+</blockquote>
+</li>
+</ul>
+<ol start="12">
+<li>使用管道找出你「home 目录」中最常见的 5 种文件扩展名。（提示：组合 <code>find</code> 、<code>grep</code> &#x2F; <code>sed</code> &#x2F; <code>awk</code>、<code>sort</code>、<code>uniq -c</code> 以及 <code>head</code>）<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ find /home/* -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">basename</span> &#123;&#125; \; |sed -nE <span class="string">&#x27;s/^[^.]+\.([^.]*)$/\1/p&#x27;</span>|<span class="built_in">sort</span>|<span class="built_in">uniq</span> -c | <span class="built_in">sort</span> -nr -k1 | <span class="built_in">head</span> -n 5</span><br><span class="line">  35675 md</span><br><span class="line">    593 h</span><br><span class="line">    301 c</span><br><span class="line">    213 td</span><br><span class="line">    194 cpp</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<ul>
+<li><code>find</code> 通过 type 限制 文件只能是 f 普通文件；再通过 basename ，滤除文件的路径，仅仅保留基础的文件名<ul>
+<li>注意，<code>\;</code> 是 <code>-exec</code>的结束符号，而且在此之前需要和 exec 的具体命令末尾 <strong>空一格</strong></li>
+<li><code>-exec</code> 中 <code>&#123;&#125;</code> 会把 前面find 的结果传递给 具体命令</li>
+</ul>
+</li>
+<li><code>sed</code> 匹配 开头 不是<code>.</code>，但中间又有<code>.</code>的结果<ul>
+<li>其中<code>-n</code>表示关掉一般输出，对此，在 <code>&#39;s/ / /p&#39;</code>最后要补上 <code>p</code> 表示输出匹配的对象</li>
+<li><code>-p</code> ：打印，亦即将某个选择的数据印出。通常 <code>p</code> 会与参数 <code>sed -n</code> 一起运行～</li>
+<li><code>-E</code> 表示开启正则表达式</li>
+<li>正则表达式为 <code>/^[^.]+\.([^.]*)$</code>、<code>\1</code>，依次为：<ul>
+<li><code>^</code>: 表示开头</li>
+<li><code>[^.]</code>: <code>[]</code>表示可选的字符，<code>[^]</code>表示<strong>不</strong>可选的字符</li>
+<li><code>+</code>: 表示前面的内容至少出现 1 次</li>
+<li>所以这里结合前三条，表示<strong>开头不是点</strong></li>
+<li><code>\.</code> 转移符号<code>.</code>。因为<code>.</code>本身表示任意字符。这里表示结尾前的<code>.</code></li>
+<li><code>()</code> 表示 捕获分组，即括号内的东西可以相当于存储了一个变量，之后可以通过 <code>\1</code>来提取。（<em>*有多个捕获分组可以 <code>\不同数字</code> 表示</em>）</li>
+<li><code>[^.]*</code> 任意非<code>.</code>字符重复任意次数</li>
+<li><code>$</code> 表示结尾</li>
+</ul>
+</li>
+<li>只有满足上述正则表达式的内容，才会被 <code>p</code> 输出</li>
+</ul>
+</li>
+<li><code>sort</code> 先排序一次，因为 uniq 只会合并相邻的，对于散乱的没法合并</li>
+<li><code>uniq -c</code> 只输出一次，同时计算相邻个数</li>
+<li>再 <code>sort -nr</code>，<code>-n</code> 表示根据 依据数值大小排序，<code>-r</code> 表示反向排序，<code>-k</code>表示参考哪列。</li>
+<li>最后通过 <code>head -n 5</code>输出 头五个<br>另一种方法：<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ~ -<span class="built_in">type</span> f | awk -F/ <span class="string">&#x27;&#123;print $NF&#125;&#x27;</span> | grep -v <span class="string">&#x27;^\.&#x27;</span> | awk -F. <span class="string">&#x27;NF&gt;1 &#123;print tolower($NF)&#125;&#x27;</span> | <span class="built_in">sort</span> | <span class="built_in">uniq</span> -c | <span class="built_in">sort</span> -nr | <span class="built_in">head</span> -5</span><br></pre></td></tr></table></figure></div></li>
+<li><code>awk -F/</code> 设定分隔符为 <code>/</code> ，<code>$NF</code>表示输出最后一列。</li>
+<li><code>grep -v</code> ：反向查找，只打印不匹配的行。</li>
+</ul>
+<ol start="13">
+<li><code>xargs</code> 会把 stdin 的每一行转换为命令参数。结合 <code>find</code> 和 <code>xargs</code>（不要用 <code>find -exec</code>），找出目录中所有 <code>.sh</code> 文件，并用 <code>wc -l</code> 统计每个文件行数。加分项：正确处理文件名中的空格。（提示：<code>-print0</code> 和 <code>-0</code>）参见 <code>man xargs</code> 。<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ find /home/keruone/ -name <span class="string">&quot;*.sh&quot;</span></span><br><span class="line">/home/keruone/ysyx-workbench/init.sh</span><br><span class="line">/home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/compile_all.sh</span><br><span class="line">/home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/fuzz/fuzzit.sh</span><br><span class="line">...</span><br><span class="line">/home/keruone/Desktop/a b.sh</span><br><span class="line">/home/keruone/Desktop/temp.sh</span><br><span class="line">/home/keruone/Desktop/c_d e.sh</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ find /home/keruone/ -name <span class="string">&quot;*.sh&quot;</span> | <span class="built_in">wc</span> -l</span><br><span class="line">32</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ find /home/keruone/ -name <span class="string">&quot;*.sh&quot;</span> | xargs <span class="built_in">wc</span> -l </span><br><span class="line">   76 /home/keruone/ysyx-workbench/init.sh</span><br><span class="line">   30 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/compile_all.sh</span><br><span class="line">   27 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/fuzz/fuzzit.sh</span><br><span class="line">    9 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/cstest/build_cstest.sh</span><br><span class="line">...</span><br><span class="line"><span class="built_in">wc</span>: /home/keruone/Desktop/a: No such file or directory</span><br><span class="line"><span class="built_in">wc</span>: b.sh: No such file or directory</span><br><span class="line">   11 /home/keruone/Desktop/temp.sh</span><br><span class="line"><span class="built_in">wc</span>: /home/keruone/Desktop/c_d: No such file or directory</span><br><span class="line"><span class="built_in">wc</span>: e.sh: No such file or directory</span><br><span class="line"> 1595 total</span><br><span class="line"><span class="comment"># 最终 包含空格的 *.sh 提取</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ find /home/keruone/ -name <span class="string">&quot;*.sh&quot;</span> -print0 | xargs -0 <span class="built_in">wc</span> -l </span><br><span class="line">   76 /home/keruone/ysyx-workbench/init.sh</span><br><span class="line">   30 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/compile_all.sh</span><br><span class="line">   27 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/fuzz/fuzzit.sh</span><br><span class="line">    9 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/cstest/build_cstest.sh</span><br><span class="line">    9 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/test_all.sh</span><br><span class="line">   13 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/test_python.sh</span><br><span class="line">   11 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/disasm_mc.sh</span><br><span class="line">   70 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/synctools/genall-arch.sh</span><br><span class="line">   33 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/synctools/genall-full.sh</span><br><span class="line">   28 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/synctools/tablegen/gen-tablegen-reduce.sh</span><br><span class="line">   47 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/synctools/tablegen/gen-tablegen.sh</span><br><span class="line">   32 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/synctools/tablegen/gen-tablegen-full.sh</span><br><span class="line">   45 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/synctools/tablegen/gen-tablegen-arch.sh</span><br><span class="line">   28 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/synctools/genall-reduce.sh</span><br><span class="line">   25 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/test_c.sh</span><br><span class="line">   15 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/suite/test_mc.sh</span><br><span class="line">  154 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/make.sh</span><br><span class="line">   20 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/tests/test_all.sh</span><br><span class="line">   72 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/cmake.sh</span><br><span class="line">    0 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/packages/rpm/postinstall.sh</span><br><span class="line">   14 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/bindings/python/build_wheel.sh</span><br><span class="line">   26 /home/keruone/ysyx-workbench/nemu/tools/capstone/repo/bindings/java/run.sh</span><br><span class="line">   34 /home/keruone/ysyx-workbench/abstract-machine/tools/minirv/minirv-common.sh</span><br><span class="line">  267 /home/keruone/.local/share/tldr/tldr/scripts/check-pr.sh</span><br><span class="line">   59 /home/keruone/.local/share/tldr/tldr/scripts/pdf/build-pdf.sh</span><br><span class="line">  163 /home/keruone/.local/share/tldr/tldr/scripts/check-errors.sh</span><br><span class="line">  145 /home/keruone/.local/share/tldr/tldr/scripts/test.sh</span><br><span class="line">   79 /home/keruone/.local/share/tldr/tldr/scripts/build.sh</span><br><span class="line">   53 /home/keruone/.local/share/tldr/tldr/scripts/deploy.sh</span><br><span class="line">    0 /home/keruone/Desktop/a b.sh</span><br><span class="line">   11 /home/keruone/Desktop/temp.sh</span><br><span class="line">    0 /home/keruone/Desktop/c_d e.sh</span><br><span class="line"> 1595 total</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<ul>
+<li><code>find path -name *.sh</code> 其实就已经可以找到 <code>*.sh </code>文件了，但是 shell 会先解析通配符，导致find对于空格的处理出问题。对此，加上双引号就可以避免，这样，<code>&quot;*.sh&quot;</code>就从 shel l解析，变成了 find 解析。</li>
+<li>如果使用 <code>\</code> 直接 传输给 <code>wc -l</code>那么其实相当与只给了 <code>*.sh</code>的搜索结果作为一个临时文件传递给了 <code>wc</code>，此时，只会统计 搜索到的 <code>*.sh</code> 文件数量。这其实是不符合预期的。</li>
+<li>对此，就可以使用 <code>xargs</code> ，将每一行 作为参数 传递给 <code>wc -l</code>。对此，wc 就会逐文件打开，统计行数。但其实此时，对于名字中由空格的文件，还没发处理。</li>
+<li><blockquote>
+<ul>
+<li><strong>xargs</strong>命令将标准输入数据转换为命令行参数。xargs能够读取stdin的输入数据，将其转换为特定命令的参数形式，这在管道操作中特别有用。某些命令无法直接从管道接收参数，xargs就能够解决这一问题。</li>
+<li>xargs命令的基本用法：<br>xargs通常与管道命令一起使用，其基本格式如下：<br><code>somecommand | xargs [option] command</code><br>其中，_somecommand_是任意命令，_xargs_后面跟随的是需要执行的命令。xargs会将前一个命令的输出作为后一个命令的参数。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p><strong>1. <code>-print0</code> → find 的选项</strong></p>
+</blockquote>
+<div class="code-container" data-rel="Gams"><figure class="iseeu highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">find</span></span> ... -print0</span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<pre><code>- 默认 find：**换行符 `\n` 分隔每个文件名**
+- `-print0`：改用 **空字符 `\0`（ASCII 0）** 分割文件名输出
+</code></pre>
+<p>Linux 文件名<strong>不允许包含 \0</strong>，所以<code>\0</code>是绝对安全的分隔符。<br><strong>2. <code>-0</code> → xargs 的选项（全称<code>--null</code>）</strong></p>
+</blockquote>
+<div class="code-container" data-rel="Apache"><figure class="iseeu highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">xargs</span> -<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<pre><code>- 默认 xargs：以**空格、换行、制表符**切割输入，遇到文件名带空格就会把一个文件劈成多个参数（报错）
+- `-0`：约定输入用`\0`做分隔符，按`\0`切分参数，**空格 / 换行全部当成文件名的普通字符**
+</code></pre>
+</blockquote>
+<ol start="14">
+<li><p>使用 <code>curl</code> 获取 <a class="link"   target="_blank" rel="noopener" href="https://missing.csail.mit.edu/" >课程网站<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 的 HTML，并通过 <code>grep</code> 统计列出了多少讲。（提示：找出每讲课程名称在那份 HTML 中的共性；用 <code>curl -s</code> 关闭进度输出。）wc</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载调试</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ curl https://missing.csail.mit.edu/ &gt;temp.html</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100 14737  100 14737    0     0   9931      0  0:00:01  0:00:01 --:--:--  9937</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> temp.html | grep -E <span class="string">&#x27;href=\&quot;/20../[^&quot;]&#x27;</span></span><br><span class="line">            &lt;a href=<span class="string">&quot;/2026/course-shell/&quot;</span>&gt;Course Overview + Introduction to the Shell&lt;/a&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/2026/command-line-environment/&quot;</span>&gt;Command-line Environment&lt;/a&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/2026/development-environment/&quot;</span>&gt;Development Environment and Tools&lt;/a&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/2026/debugging-profiling/&quot;</span>&gt;Debugging and Profiling&lt;/a&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/2026/version-control/&quot;</span>&gt;Version Control and Git&lt;/a&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/2026/shipping-code/&quot;</span>&gt;Packaging and Shipping Code&lt;/a&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/2026/agentic-coding/&quot;</span>&gt;Agentic Coding&lt;/a&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/2026/beyond-code/&quot;</span>&gt;Beyond the Code&lt;/a&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/2026/code-quality/&quot;</span>&gt;Code Quality&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2020/data-wrangling/&quot;</span>&gt;Data Wrangling&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2020/security/&quot;</span>&gt;Security and Cryptography&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2020/potpourri/&quot;</span>&gt;Potpourri&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2020/qa/&quot;</span>&gt;Q&amp;amp;A&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2019/backups/&quot;</span>&gt;Backups&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2019/automation/&quot;</span>&gt;Automation&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2019/machine-introspection/&quot;</span>&gt;Machine Introspection&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2019/os-customization/&quot;</span>&gt;OS Customization&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2019/web/&quot;</span>&gt;Web and Browsers&lt;/a&gt;</span><br><span class="line">                    &lt;a href=<span class="string">&quot;/2019/security/&quot;</span>&gt;Security and Privacy&lt;/a&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最终结果</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ curl -s https://missing.csail.mit.edu/ | grep -E <span class="string">&#x27;href=\&quot;/20../[^&quot;]&#x27;</span> | <span class="built_in">wc</span> -l</span><br><span class="line">19</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://jqlang.github.io/jq/"><code>jq</code></a> 是处理 JSON 的强大工具。用 curl 获取示例数据 <a class="link"   target="_blank" rel="noopener" href="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json%EF%BC%8C%E5%86%8D%E7%94%A8" >https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json，再用<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> jq 提取 version 大于 6 的人员姓名。（提示：先 <code>jq</code> . 看结构；再试 <code>jq &#39;.[] | select(...) | .name&#39;</code>）</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ curl -s https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json | jq <span class="string">&#x27;.[] | select(.version &gt; 6) | .name&#x27;</span> | <span class="built_in">sort</span> | <span class="built_in">uniq</span> -c</span><br><span class="line">      1 <span class="string">&quot;Aamir Solangi&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Adeel Solangi&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Adil Abro&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Adil Eli&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Adnan Spahic&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Ali Ayaz&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Antía Sixirei&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Aygul Mutellip&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Boitumelo Ngwako&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Bukhosi Bhengu&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Celtia Anes&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Charmaine Abela&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Chetana Hegde&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Damir Benic&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Denis Terzic&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Dialè Meso&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Dilnur Qeyser&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Doreen Bartolo&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Einar Einarsson&quot;</span></span><br><span class="line">      1 <span class="string">&quot;George Mifsud&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Gunnar Gunnarsson&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Guzelnur Polat&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Haris Osmanovic&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Hunadi Makgatho&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Iago Peirallo&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Ingibjörg Ólafsdóttir&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Ivana Kalic&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Joanne Scerri&quot;</span></span><br><span class="line">      1 <span class="string">&quot;John Falzon&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Joseph Grech&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Josephine Balzan&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Kabelo Morwe&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Kenosi Kwenaemang&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Kgabo Lerumo&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Kgosietsile Bogatsu&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Kristján Kristjánsson&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Lajwanti Kumari&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Lawrence Scicluna&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Lesetja Theko&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Lucky Shastry&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Madule Ledimo&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Malehumò Ledwaba&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Maname Mohlare&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Marcos Amboade&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Maria Sammut&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Mariña Quintá&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Martiño Arxíz&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Matome Molamo&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Meenakshi Benjaree&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Meladi Papo&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Memet Tursun&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Mmathabò Mojapelo&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Modise Tau&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Mogorosi Bakwena&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Mohan Pandey&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Monica Lohana&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Monika Nayak&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Monty Dubey&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Mxolisi Mhlongo&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Nicholas Micallef&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Noa Ervello&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Peter Zammit&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Philip Camilleri&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Prakash Malviya&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Prashant Chourey&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Preeti Rajdan&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Rajesh Santoshi&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Raju Rathore&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Rashid Rajput&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Ratanang Maphutha&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Richa Choukse&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Rohini Vasav&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Ronak Gupta&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Sabela Veloso&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Samir Simic&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Sanjay Trivedi&quot;</span></span><br><span class="line">      1 <span class="string">&quot;sayama Amir&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Shafqat Memon&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Sigríður Einarsdóttir&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Sigrún Kristjánsdóttir&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Siyabonga Sithole&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Sonu Jain&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Stefán Stefánsson&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Sunil Kapoor&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Tegra Núnez&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Thobile Mbele&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Tshepè Mobu&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Tumelò Letamo&quot;</span></span><br><span class="line">      1 <span class="string">&quot;Zamokuhle Zulu&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+<li><p><code>awk</code> 可以按列值过滤行并改写输出。例如，<code>awk &#39;$3 ~ /pattern/ &#123;$4=&quot;&quot;; print&#125;&#39;</code> 会只输出第三列匹配 <code>pattern</code> 的行，并省略第四列。请写一个 <code>awk</code> 命令：只输出第二列大于 100 的行，并交换第一列和第三列。可用这条命令测试：<code>printf &#39;a 50 x\nb 150 y\nc 200 z\n&#39;</code></p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#我的初版答案</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">printf</span> <span class="string">&#x27;a 50 x\nb 150 y\nc 200 z\n&#x27;</span> | awk <span class="string">&#x27;$2 &gt; 100 &#123;print $3&quot; &quot;$2&quot; &quot;$1&#125;&#x27;</span></span><br><span class="line">y 150 b</span><br><span class="line">z 200 c</span><br><span class="line"></span><br><span class="line"><span class="comment">#询问 AI 后的答案</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">printf</span> <span class="string">&#x27;a 50 x\nb 150 y\nc 200 z\n&#x27;</span> | awk <span class="string">&#x27;$2 &gt; 100 &#123;tmp = $1;$1=$3;$3=tmp;print&#125;&#x27;</span></span><br><span class="line">y 150 b</span><br><span class="line">z 200 c</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<blockquote>
+<p>awk 中 ，$0 表示整行，$1 表示第一列.. $N 表示第N列<br><strong><code>~</code> 与 <code>/正则/</code> 简要解析</strong></p>
+</blockquote>
+<ol>
+<li><p><strong><code>/xxx/</code><strong>：awk 里</strong>正则字面量容器</strong>，斜杠包裹的内容就是正则表达式，本身不能直接绑定字段。</p>
+</li>
+<li><p><strong><code>~</code>：匹配运算符</strong>，含义：<strong>左边字符串 能否匹配 右边正则</strong></p>
+</li>
+<li><p>**<code>!~</code>**：反向，不匹配<br> 比如<code>$2 !~ /[0-9]/</code>：第 2 列不含数字。</p>
+<blockquote>
+<p>awk完整框架如下：</p>
+</blockquote>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">awk [选项OPT] <span class="string">&#x27;</span></span><br><span class="line"><span class="string">BEGIN &#123; 预处理，读文件前执行1次 &#125;</span></span><br><span class="line"><span class="string"># 多条 Pattern &#123; Action &#125; 从上往下逐行匹配</span></span><br><span class="line"><span class="string">P1 &#123; A1 &#125;</span></span><br><span class="line"><span class="string">P2 &#123; A2 &#125;</span></span><br><span class="line"><span class="string">P3,P4 &#123;A3&#125;    #区间模式</span></span><br><span class="line"><span class="string">&#123;默认动作&#125;    #无pattern=真值1，每行必执行</span></span><br><span class="line"><span class="string">END &#123;收尾，全部读完执行1次&#125;</span></span><br><span class="line"><span class="string">&#x27;</span> file1 file2…</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>拆解讲义中的 <a class="link"   target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/2026/course-shell/#shell-%E8%AF%AD%E8%A8%80bash" >SSH 日志处理管道<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>：每一步分别做了什么？然后仿照它构建一个管道，从 <code>~/.bash_history</code>（或 <code>~/.zsh_history</code>）中找出你最常使用的 Shell 命令。</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 我的初版，因为不确定$ [ 是否算作命令，就都列出来了</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> ~/.bash_history | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> |<span class="built_in">sort</span> | <span class="built_in">uniq</span> -c| <span class="built_in">sort</span> -nr | <span class="built_in">head</span> -n 10</span><br><span class="line">     64 <span class="built_in">ls</span></span><br><span class="line">     30 [</span><br><span class="line">     26 git</span><br><span class="line">     24 <span class="built_in">sudo</span></span><br><span class="line">     20 <span class="built_in">cat</span></span><br><span class="line">     17 man</span><br><span class="line">     16 </span><br><span class="line">     13 vim</span><br><span class="line">     12 <span class="built_in">cd</span></span><br><span class="line">     10 tldr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不确定$ [ 是否算作命令，就另写了一个版本</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> ~/.bash_history |grep -E <span class="string">&#x27;^[a-zA-Z0-9_\-\.]+&#x27;</span> |<span class="built_in">sort</span> | <span class="built_in">uniq</span> -c| <span class="built_in">sort</span> -nr | <span class="built_in">head</span> -n 10</span><br><span class="line">     64 <span class="built_in">ls</span></span><br><span class="line">     26 git</span><br><span class="line">     24 <span class="built_in">sudo</span></span><br><span class="line">     20 <span class="built_in">cat</span></span><br><span class="line">     17 man</span><br><span class="line">     13 vim</span><br><span class="line">     12 <span class="built_in">cd</span></span><br><span class="line">     10 tldr</span><br><span class="line">     10 <span class="built_in">echo</span></span><br><span class="line">     10 apt-get</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> E3  The Missing Semester of Your CS Education-1</li>
+        <li><strong>作者:</strong> Keruone</li>
+        <li><strong>创建于
+                :</strong> 2026-05-28 13:06:00</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2026-06-02 15:45:51
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://keruone.github.io/2026/05/28/one_student_one_chip/E3-2/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E9%A1%B9%E7%9B%AE/">#项目</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">#一生一芯</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2026/05/28/one_student_one_chip/%E6%9C%AA%E5%91%BD%E5%90%8D/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48"></span>
+						<span class="post-nav-item">上一篇</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2026/05/28/one_student_one_chip/E3-1/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">E3 Linux系统安装和基本使用</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Keruone/Keruone.github.io',
+                'data-repo-id': 'R_kgDOQ4GXyQ',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDOQ4GXyc4C04nb',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'zh-CN',
+                'data-input-position': 'top',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">E3  The Missing Semester of Your CS Education-1</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%A7%88%E4%B8%8Eshell"><span class="nav-text">课程概览与shell</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2026</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Keruone</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 68 篇文章
+                    </span>
+                    
+                        <span>
+                            共 104.9k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+        
+<script src="/js/build/libs/mermaid.min.js"></script>
+
+    
+    
+<script src="/js/build/plugins/mermaid.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>
