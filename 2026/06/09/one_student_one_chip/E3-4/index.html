@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo, 技术博客, 学习总结, Tech Blog, Notes">
+    
+    <meta name="author" content="Keruone">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://Keruone.github.io/2026/06/09/one_student_one_chip/e3-4/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/keruone-blog-logo.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/keruone-blog-logo.jpg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/keruone-blog-logo.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            E3  The Missing Semester of Your CS Education-3 | Keruone&#39;s 个人小记
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"keruone.github.io","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":false,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Keruone's blog","subtitle":{"text":["一边想着一定要做点什么，另一边却烦恼着做点什么好，甚至担心什么都没干就这么长大了。 ——K-ON"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":"enable","version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"links":{"path":"/links","icon":"fa-solid fa-link"},"About":{"icon":"fa-regular fa-user","submenus":{"Github":"https://github.com/Keruone/Keruone.github.io","Blog":"https://blog.keruone.cn"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"原博客 blog.keruone.cn","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2026/1/12 13:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Keruone&#39;s 个人小记
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/links"
+                                        >
+                                    <i class="fa-solid fa-link fa-fw"></i>
+                                    链接
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.keruone.cn">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/links"
+                        >
+                            <span>
+                                链接
+                            </span>
+                            
+                                <i class="fa-solid fa-link fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.keruone.cn">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">71</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">E3  The Missing Semester of Your CS Education-3</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/keruone-myFavoritePhoto.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Keruone</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-06-09 09:54</span>
+        <span class="mobile">2026-06-09 09:54</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-06-13 11:44:54</span>
+            <span class="mobile">2026-06-13 11:44:54</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/">项目记录</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">一生一芯</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE/">项目</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">一生一芯</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>4.7k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>21 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p> <a class="link"   target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/" >The Missing Semester of Your CS Education<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<span id="more"></span>
+<h2 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h2><ol>
+<li>用 Vim 宏将 XML 转换到 JSON (<a class="link"   target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/2020/files/example-data.xml" >例子文件<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>)。<br>对于括号学习并使用<br><code>%s/&lt;person&gt;/&#123;/</code> 其它同理<br>宏录制如下，保存在寄存器 a<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qa</span><br><span class="line">j</span><br><span class="line">:s/&lt;name&gt;\(.*\)&lt;\/name&gt;/name\:\1\;/</span><br><span class="line">j</span><br><span class="line">:s/&lt;email&gt;\(.*\)&lt;\/email&gt;/email\:\1\;/</span><br><span class="line">jj</span><br><span class="line">q</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<h2 id="数据整理"><a href="#数据整理" class="headerlink" title="数据整理"></a>数据整理</h2><ol>
+<li><p>学习一下这篇简短的 <a class="link"   target="_blank" rel="noopener" href="https://regexone.com/" >交互式正则表达式教程<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>.<br> 已学习</p>
+</li>
+<li><p>统计 words 文件 (<code>/usr/share/dict/words</code>) 中包含至少三个 <code>a</code> 且不以 <code>&#39;s</code> 结尾的单词个数。这些单词中，出现频率前三的末尾两个字母是什么？ <code>sed</code> 的 <code>y</code> 命令，或者 <code>tr</code> 程序也许可以帮你解决大小写的问题。共存在多少种词尾两字母组合？还有一个很 有挑战性的问题：哪个组合从未出现过？</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> /usr/share/dict/words|<span class="built_in">tr</span> <span class="string">&#x27;A-Z&#x27;</span> <span class="string">&#x27;a-z&#x27;</span> | grep -E <span class="string">&quot;^[^a]*a[^a]*a[^a]*a[^a]*$&quot;</span>| grep -v <span class="string">&quot;&#x27;s$&quot;</span> | <span class="built_in">wc</span> -l</span><br><span class="line">761</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> /usr/share/dict/words|<span class="built_in">tr</span> <span class="string">&#x27;A-Z&#x27;</span> <span class="string">&#x27;a-z&#x27;</span> | grep -E <span class="string">&quot;^[^a]*a[^a]*a[^a]*a[^a]*$&quot;</span>| grep -v <span class="string">&quot;&#x27;s$&quot;</span> | sed -E <span class="string">&#x27;s/.*(\w\w)/\1/&#x27;</span> | <span class="built_in">sort</span> | <span class="built_in">uniq</span> -c | <span class="built_in">wc</span> -l</span><br><span class="line">109</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> /usr/share/dict/words|<span class="built_in">tr</span> <span class="string">&#x27;A-Z&#x27;</span> <span class="string">&#x27;a-z&#x27;</span> | grep -E <span class="string">&quot;^[^a]*a[^a]*a[^a]*a[^a]*$&quot;</span>| grep -v <span class="string">&quot;&#x27;s$&quot;</span> | sed -E <span class="string">&#x27;s/.*(\w\w)/\1/&#x27;</span> | <span class="built_in">sort</span> | <span class="built_in">uniq</span> -c | <span class="built_in">sort</span> -nr | <span class="built_in">head</span> -3</span><br><span class="line">     87 an</span><br><span class="line">     53 ns</span><br><span class="line">     48 as</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">comm</span> -23 &lt;(<span class="built_in">echo</span> &#123;a..z&#125;&#123;a..z&#125;|<span class="built_in">tr</span> <span class="string">&#x27; &#x27;</span> <span class="string">&#x27;\n&#x27;</span>) &lt;(<span class="built_in">cat</span> /usr/share/dict/words|<span class="built_in">tr</span> <span class="string">&#x27;A-Z&#x27;</span> <span class="string">&#x27;a-z&#x27;</span> | grep -E <span class="string">&quot;^[^a]*a[^a]*a[^a]*a[^a]*$&quot;</span>| grep -v <span class="string">&quot;&#x27;s$&quot;</span> | sed -E <span class="string">&#x27;s/.*(\w\w)/\1/&#x27;</span> | <span class="built_in">sort</span> | <span class="built_in">uniq</span>) | <span class="built_in">wc</span> -l</span><br><span class="line">567</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+<li><p>进行原地替换听上去很有诱惑力，例如： <code>sed s/REGEX/SUBSTITUTION/ input.txt &gt; input.txt</code>。但是这并不是一个明智的做法，为什么呢？还是说只有 <code>sed</code> 是这样的? 查看 <code>man sed</code> 来完成这个问题</p>
+<ul>
+<li>首先，对于  shell 重定向来说，会先打开重定向的输出文件，然后清空该文件。</li>
+<li>所以 这种通过 重定向的方式的 in-place 操作并不明智。</li>
+<li>对此，其实可以 使用 sed  的 -i –in-place 实现。</li>
+</ul>
+</li>
+<li><p>找出您最近十次开机的开机时间平均数、中位数和最长时间。在 Linux 上需要用到 <code>journalctl</code> ，而在 macOS 上使用 <code>log show</code>。找到每次起到开始和结束时的时间戳。在 Linux 上类似这样操作：</p>
+ <div class="code-container" data-rel="Ada"><figure class="iseeu highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Logs <span class="keyword">begin</span> <span class="keyword">at</span> ...</span><br></pre></td></tr></table></figure></div>
+<p> 和</p>
+ <div class="code-container" data-rel="Prolog"><figure class="iseeu highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemd[<span class="number">577</span>]: <span class="symbol">Startup</span> finished in ...</span><br></pre></td></tr></table></figure></div>
+<p> 在 macOS 上, <a class="link"   target="_blank" rel="noopener" href="https://eclecticlight.co/2018/03/21/macos-unified-log-3-finding-your-way/" >查找<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>:</p>
+ <div class="code-container" data-rel="Asciidoc"><figure class="iseeu highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">=== system boot:</span></span><br></pre></td></tr></table></figure></div>
+<p> 和</p>
+ <div class="code-container" data-rel="Mipsasm"><figure class="iseeu highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Previous <span class="keyword">shutdown </span><span class="built_in">cause</span>: <span class="number">5</span></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ journalctl --no-pager | grep -E <span class="string">&quot;\[1\].*Startup&quot;</span> | <span class="built_in">tail</span> -10 | sed -E <span class="string">&#x27;s/.*([0-9]+\.[0-9]+)s\.$/\1/g&#x27;</span></span><br><span class="line">4.053</span><br><span class="line">3.421</span><br><span class="line">3.197</span><br><span class="line">9.329</span><br><span class="line">4.897</span><br><span class="line">7.959</span><br><span class="line">4.111</span><br><span class="line">4.215</span><br><span class="line">4.122</span><br><span class="line">6.033</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ journalctl --no-pager | grep -E <span class="string">&quot;\[1\].*Startup&quot;</span> | <span class="built_in">tail</span> -10 | sed -E <span class="string">&#x27;s/.*([0-9]+\.[0-9]+)s\.$/\1/g&#x27;</span>|<span class="built_in">sort</span> -n | awk <span class="string">&#x27;&#123;sum += $1</span></span><br><span class="line"><span class="string">if(NR==1)max=$1</span></span><br><span class="line"><span class="string">if($1&gt;max)max=$1</span></span><br><span class="line"><span class="string">vals[NR]=$1</span></span><br><span class="line"><span class="string">&#125;END&#123;n=NR</span></span><br><span class="line"><span class="string">if(n%2) median=vals[(n+1)/2]</span></span><br><span class="line"><span class="string">else median=(vals[n/2]+vals[n/2+1])/2</span></span><br><span class="line"><span class="string">printf &quot;最大值: %.2f\n平均值: %.2f\n中位数: %.2f\n&quot;, max, sum/n, median</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br><span class="line">最大值: 9.33</span><br><span class="line">平均值: 5.13</span><br><span class="line">中位数: 4.17</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>grep 提取开机信息，其中 <code>[1]</code> 表示 启动的进程</li>
+<li>tail 提取末尾10个，即最近的10个</li>
+<li>sed 提取其中的时间信息</li>
+<li>awk 计算各项数值<ul>
+<li>其中BEGIN{}表示的是开始的时候执行的内容（此处没有）</li>
+<li>{}表示的是每一行都执行的内容</li>
+<li>END{}表示的是结束的时候执行的内容</li>
+<li>整体都用 <code>&#39;&#39;</code> 包裹</li>
+</ul>
+</li>
+</ul>
+<ol start="5">
+<li><p>查看之前三次重启启动信息中不同的部分(参见 <code>journalctl</code> 的 <code>-b</code> 选项)。将这一任务分为几个步骤，首先获取之前三次启动的启动日志，也许获取启动日志的命令就有合适的选项可以帮助您提取前三次启动的日志，亦或者您可以使用 <code>sed &#39;0,/STRING/d&#39;</code> 来删除 <code>STRING</code> 匹配到的字符串前面的全部内容。然后，过滤掉每次都不相同的部分，例如时间戳。下一步，重复记录输入行并对其计数(可以使用 <code>uniq</code> )。最后，删除所有出现过 3 次的内容（因为这些内容是三次启动日志中的重复部分）。</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ journalctl -b 0| <span class="built_in">cut</span> -d<span class="string">&#x27; &#x27;</span> -f5- &gt; start0.txt</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ journalctl -b -1| <span class="built_in">cut</span> -d<span class="string">&#x27; &#x27;</span> -f5- &gt; start-1.txt</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ journalctl -b -2| <span class="built_in">cut</span> -d<span class="string">&#x27; &#x27;</span> -f5- &gt; start-2.txt</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> start0.txt start-1.txt start-2.txt |sed -E <span class="string">&#x27;s/[0-9]+/\\num /g&#x27;</span>| <span class="built_in">sort</span> | <span class="built_in">uniq</span> -c | <span class="built_in">sort</span> -rn | awk <span class="string">&#x27;&#123;if($1&lt;3) print($0)&#125;&#x27;</span></span><br><span class="line"><span class="comment">#输出略</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>在网上找一个类似 <a class="link"   target="_blank" rel="noopener" href="https://stats.wikimedia.org/EN/TablesWikipediaZZ.htm" >这个<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 或者 <a class="link"   target="_blank" rel="noopener" href="https://ucr.fbi.gov/crime-in-the-u.s/2016/crime-in-the-u.s.-2016/topic-pages/tables/table-1" >这个<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 的数据集。或者从 <a class="link"   target="_blank" rel="noopener" href="https://www.springboard.com/blog/free-public-data-sets-data-science-project/" >这里<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 找一些。使用 <code>curl</code> 获取数据集并提取其中两列数据，如果您想要获取的是 HTML 数据，那么 <a target="_blank" rel="noopener" href="https://github.com/EricChiang/pup"><code>pup</code></a> 可能会更有帮助。对于 JSON 类型的数据，可以试试 <a target="_blank" rel="noopener" href="https://stedolan.github.io/jq/"><code>jq</code></a>。请使用一条指令来找出其中一列的最大值和最小值，用另外一条指令计算两列之间差的总和。</p>
+</li>
+</ol>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 因为数据 curl 会被阻止，所以选择先本地保存</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> FBI\ —\ Table\ 1.html | pup <span class="string">&#x27;table tbody tr json&#123;&#125;&#x27;</span> | jq -r <span class="string">&#x27;.[] | [.children[] | .text] | @csv&#x27;</span> &gt; Table1.csv</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ vim Table1.csv </span><br><span class="line"><span class="comment">#vim内部操作</span></span><br><span class="line">:%s/<span class="string">&quot;/ /g</span></span><br><span class="line"><span class="string">:%s/\(\d\+\),/\1/g</span></span><br><span class="line"><span class="string">:%s/ //g</span></span><br><span class="line"><span class="string">:%s/,/, /g</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">keruone@keruone-virtual-machine:~/Desktop$ awk -F, &#x27;BEGIN&#123;</span></span><br><span class="line"><span class="string">max1=0</span></span><br><span class="line"><span class="string">min1=100000000000000000</span></span><br><span class="line"><span class="string">max2=0</span></span><br><span class="line"><span class="string">min2=100000000000000000</span></span><br><span class="line"><span class="string">diffsum=0</span></span><br><span class="line"><span class="string">&#125;&#123;</span></span><br><span class="line"><span class="string">if(<span class="variable">$1</span>&lt;min1)min1=<span class="variable">$1</span></span></span><br><span class="line"><span class="string">if(<span class="variable">$1</span>&gt;max1)max1=<span class="variable">$1</span></span></span><br><span class="line"><span class="string">if(<span class="variable">$2</span>&lt;min2)min2=<span class="variable">$2</span></span></span><br><span class="line"><span class="string">if(<span class="variable">$2</span>&gt;max2)max2=<span class="variable">$2</span></span></span><br><span class="line"><span class="string">diffsum=diffsum+<span class="variable">$2</span>-<span class="variable">$1</span></span></span><br><span class="line"><span class="string">&#125;END&#123;</span></span><br><span class="line"><span class="string">printf &quot;</span>min1: %d\tmax1: %d\n<span class="string">&quot;,min1, max1</span></span><br><span class="line"><span class="string">printf &quot;</span>min2: %d\tmax2: %d\n<span class="string">&quot;,min2, max2</span></span><br><span class="line"><span class="string">printf &quot;</span>diffsum: %d\n<span class="string">&quot;,diffsum</span></span><br><span class="line"><span class="string">&#125;&#x27; Table1.csv </span></span><br><span class="line"><span class="string">min1: 1997	max1: 2016</span></span><br><span class="line"><span class="string">min2: 267783607	max2: 323127513</span></span><br><span class="line"><span class="string">diffsum: 2147483647</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="命令行环境"><a href="#命令行环境" class="headerlink" title="命令行环境"></a>命令行环境</h2><h3 id="任务控制"><a href="#任务控制" class="headerlink" title="任务控制"></a>任务控制</h3><ul>
+<li><p><code>SIGINT</code> signal interrupt, 中断。<code>Ctrl-C</code> 其实就是这个。</p>
+</li>
+<li><p><code>SIGQUIT</code> signal quit, 停止。<code>Ctrl-\</code> 其实就是这个。</p>
+</li>
+<li><p><code>SIGTERM</code> signal terminal, 终止。<code>kell -TERM &lt;PID&gt;</code> 其实就是这个。</p>
+</li>
+<li><p><code>SIGSTOP</code> signal stop, 暂停。</p>
+</li>
+<li><p><code>SIGTSTP</code> signal  Terminal Stop, 终端暂停。<code>Ctrl-Z</code> 其实就是这个。</p>
+</li>
+<li><p><code>SIGHUP</code> signal Hang Up, 挂断信号。如终端关闭或推出登陆时，系统向该终端下启动的所有进程（前台和后台）发送 <code>SIGHUP</code> 信号。</p>
+</li>
+<li><p><code>SIGKILL</code> signal kill，杀死进程。不过注意，有可能留下孤儿进程。</p>
+</li>
+<li><p><code>fg</code> <code>bg</code> 在 前台&#x2F;后台恢复暂停的工作（只恢复最近的一个任务）。想恢复全部需要逐个 <code>bg %1 %2 ...</code>。</p>
+</li>
+<li><p><code>jobs</code> 列出终端中尚未完成的全部任务</p>
+</li>
+<li><p>也可以使用 <code>pgrep</code> 找出 pid</p>
+</li>
+<li><p><code>&amp;</code> 后缀，可以让命令在 后台运行</p>
+</li>
+<li></li>
+</ul>
+<h3 id="远端设备"><a href="#远端设备" class="headerlink" title="远端设备"></a>远端设备</h3><h4 id="认证"><a href="#认证" class="headerlink" title="认证"></a>认证</h4><p><code>ssh user@host</code>连接</p>
+<ul>
+<li>第一次连接是会弹出 对方的 公钥的指纹</li>
+<li>这个数值 应该和在对方本地运行 <code>ssh-keygen -lf ssh_host_rsa_key.pub</code>的结果一致（换成对应的key.pub）</li>
+<li>可以将 连接发起方的 公钥 放置在 被连接方 的<code>~/.ssh/authorized_keys</code> 中，这样下一次连接就可以不输入密码了。也可以参考如下方式添加：<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> .ssh/id_ed25519.pub | ssh foobar@remote <span class="string">&#x27;cat &gt;&gt; ~/.ssh/authorized_keys&#x27;</span></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h4 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h4><ul>
+<li>ctrl-d 推出，或者exit</li>
+</ul>
+<h4 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h4><ul>
+<li>对于已经 ssh 登录的情况就不多说了，因为此时就和直接操控终端没区别了。</li>
+<li>对于没 ssh 登录的情况，可以 <code>ssh user@host &#39;command&#39;</code>，比如<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ ssh keruone@keruone.cn <span class="string">&#x27;ls -al ~/&#x27;</span></span><br><span class="line">total 32</span><br><span class="line">drwxr-xr-x 4 keruone keruone 4096 Jun  9 18:41 .</span><br><span class="line">drwxr-xr-x 3 root    root    4096 Jun  9 16:53 ..</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h4 id="通过-ssh-复制文件"><a href="#通过-ssh-复制文件" class="headerlink" title="通过 ssh 复制文件"></a>通过 ssh 复制文件</h4><p><code>scp path/to/local_file user@host:path/to/remote_file</code></p>
+<h4 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h4><p>通用格式</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L/R [myhost] port1:target_host:port2 remotehost</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><code>-L</code> &#x3D; 我求人办事。即 <code>myhost</code> 求 <code>remotehost</code> 办事，动用的是 <code>remotehost</code> 的人脉，联系到了<code>target_host</code></li>
+<li><code>-R</code> &#x3D; 我为人办事。即 <code>myhost </code> 有人脉联系到 <code>target_host</code> 从而为 <code>remotehost</code> 提供服务。</li>
+<li>port1 表示的永远是 实际的服务需求方 的入口端口。如:<ul>
+<li>在 -L 情况下，<code>myhost</code> 是服务需求方，描述的 port1 就是 myhost 上的端口；</li>
+<li>在 -R 情况下，<code>remotehost</code> 是服务需求方，描述的 port1 就是 remotehost 上的端口</li>
+</ul>
+</li>
+<li>同理， <code>port2</code> 表示的是 实际服务提供方 的生产端口。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-4/Pasted_image_20260609200048.png"
+                      alt="Pasted_image_20260609200048.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-4/Pasted_image_20260609200056.png"
+                      alt="Pasted_image_20260609200056.png"
+                ></li>
+</ul>
+<h3 id="课后练习"><a href="#课后练习" class="headerlink" title="课后练习"></a>课后练习</h3><p><a class="link"   target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/missing-notes-and-solutions/2020/solutions//command-line-solution" >习题解答<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h4 id="任务控制-1"><a href="#任务控制-1" class="headerlink" title="任务控制"></a>任务控制</h4><ol>
+<li>我们可以使用类似 <code>ps aux | grep</code> 这样的命令来获取任务的 pid ，然后您可以基于 pid 来结束这些进程。但我们其实有更好的方法来做这件事。在终端中执行 <code>sleep 10000</code> 这个任务。然后用 <code>Ctrl-Z</code> 将其切换到后台并使用 <code>bg</code> 来继续运行它。现在，使用 <a target="_blank" rel="noopener" href="https://www.man7.org/linux/man-pages/man1/pgrep.1.html"><code>pgrep</code></a> 来查找 pid 并使用 <a target="_blank" rel="noopener" href="https://www.man7.org/linux/man-pages/man1/pgrep.1.html"><code>pkill</code></a> 结束进程而不需要手动输入 pid。(提示：: 使用 <code>-af</code> 标记)。<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">sleep</span> 10000</span><br><span class="line">^Z</span><br><span class="line">[1]+  Stopped                 <span class="built_in">sleep</span> 10000</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">jobs</span></span><br><span class="line">[1]+  Stopped                 <span class="built_in">sleep</span> 10000</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ pgrep <span class="built_in">sleep</span></span><br><span class="line">2736</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ ps aux | grep <span class="built_in">sleep</span></span><br><span class="line">keruone     2736  0.0  0.0  11464  2368 pts/0    T    09:29   0:00 <span class="built_in">sleep</span> 10000</span><br><span class="line">keruone     2742  0.0  0.0  12304  2884 pts/0    S+   09:30   0:00 grep --color=auto <span class="built_in">sleep</span></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">bg</span></span><br><span class="line">[1]+ <span class="built_in">sleep</span> 10000 &amp;</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ pgrep <span class="built_in">sleep</span></span><br><span class="line">2736</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ pgrep -af <span class="built_in">sleep</span></span><br><span class="line">2736 <span class="built_in">sleep</span> 10000</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ pkill <span class="built_in">sleep</span></span><br><span class="line">[1]+  Terminated              <span class="built_in">sleep</span> 10000</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<ul>
+<li><code>ps aux</code> 中，ps 表示 process status，a表示全部，u表示用户可读，x表示显示无控制终端的进程（<strong>脱离任何终端独立运行的后台进程</strong>，用 <code>?</code>表示）</li>
+<li><code>pgrep</code> process grep，<ul>
+<li><code>-a, --list-full</code><br>    List the full command line as well as the process ID.  (pgrep only.)</li>
+<li><code>-f, --full</code><br>    The  pattern  is normally only matched against the process name.  When <code>-f</code> is set, the full command line is used.</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>如果您希望某个进程结束后再开始另外一个进程， 应该如何实现呢？在这个练习中，我们使用 <code>sleep 60 &amp;</code> 作为先执行的程序。一种方法是使用 <a target="_blank" rel="noopener" href="http://man7.org/linux/man-pages/man1/wait.1p.html"><code>wait</code></a> 命令。尝试启动这个休眠命令，然后待其结束后再执行 <code>ls</code> 命令。<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">sleep</span> 60 &amp;</span><br><span class="line">[1] 2907</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">wait</span> <span class="built_in">ls</span></span><br><span class="line">bash: <span class="built_in">wait</span>: `<span class="built_in">ls</span><span class="string">&#x27;: not a pid or valid job spec</span></span><br><span class="line"><span class="string">keruone@keruone-virtual-machine:~/Desktop$ wait</span></span><br><span class="line"><span class="string">[1]+  Done                    sleep 60</span></span><br><span class="line"><span class="string">keruone@keruone-virtual-machine:~/Desktop$ ls</span></span><br><span class="line"><span class="string"> a.txt          &#x27;</span>FBI — Table 1_files<span class="string">&#x27;   nohup.out                    Table1.csv</span></span><br><span class="line"><span class="string"> fbi_crime.csv  &#x27;</span>FBI — Table 1.html<span class="string">&#x27;    pup_v0.4.0_linux_amd64.zip</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<p>但是，如果我们在不同的 bash 会话中进行操作，则上述方法就不起作用了。因为 <strong><code>wait</code> 只能对子进程起作用</strong>。之前我们没有提过的一个特性是，<code>kill</code> 命令成功退出时其状态码为 0 ，其他状态则是非 0。<code>kill -0</code> 则不会发送信号，但是会在进程不存在时返回一个不为 0 的状态码。请编写一个 bash 函数 <code>pidwait</code> ，它接受一个 pid 作为输入参数，然后一直等待直到该进程结束。您需要使用 <code>sleep</code> 来避免浪费 CPU 性能。</p>
+<ul>
+<li>wait 可以等待某个后台任务完成，然后终端响应<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">sleep</span> 10 &amp;</span><br><span class="line">[2] 2846</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">sleep</span> 10 &amp;</span><br><span class="line">[3] 2847</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">wait</span> %2</span><br><span class="line">[2]-  Done                    <span class="built_in">sleep</span> 10</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">cat</span> pidwait.sh </span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="function"><span class="title">pidwait</span></span>()&#123;</span><br><span class="line">	<span class="keyword">while</span> <span class="built_in">kill</span> -0 <span class="variable">$1</span> 2&gt;/dev/null;<span class="keyword">do</span></span><br><span class="line">		<span class="built_in">sleep</span> 1</span><br><span class="line">	<span class="keyword">done</span>	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">sleep</span> 15 &amp;</span><br><span class="line">[2] 3029</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ pidwait 3029</span><br><span class="line">[2]+  Done                    <span class="built_in">sleep</span> 15</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+*注意：Shell 只在<strong>输出提示符之前</strong>检查并打印后台作业状态。如果进程结束时你正好在输入命令，状态会延迟到下一个提示符才显示。</li>
+</ul>
+<h4 id="终端多路复用"><a href="#终端多路复用" class="headerlink" title="终端多路复用"></a>终端多路复用</h4><ol>
+<li>请完成这个 <code>tmux</code> <a class="link"   target="_blank" rel="noopener" href="https://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/" >教程<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 参考 <a class="link"   target="_blank" rel="noopener" href="https://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/" >这些步骤<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 来学习如何自定义 <code>tmux</code>。</li>
+</ol>
+<ul>
+<li>tmux session独立运行在后台进程里，关闭终端只是断开客户端连接，session和其中运行的程序会继续运行。<div class="code-container" data-rel="Mathematica"><figure class="iseeu highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">tmux</span> 服务器 </span><br><span class="line">└── <span class="variable">Session</span> <span class="variable">A</span> <span class="punctuation">(</span>会话<span class="punctuation">)</span></span><br><span class="line">	├── <span class="variable">Window</span> <span class="number">1</span> <span class="punctuation">(</span>窗口<span class="punctuation">)</span></span><br><span class="line">	│    ├── <span class="built_in">Pane</span> <span class="number">1</span> <span class="punctuation">(</span>窗格<span class="punctuation">)</span></span><br><span class="line">	│    ├── <span class="built_in">Pane</span> <span class="number">2</span></span><br><span class="line">	│    └── <span class="built_in">Pane</span> <span class="number">3</span></span><br><span class="line">	└── <span class="variable">Window</span> <span class="number">2</span> <span class="punctuation">(</span>窗口<span class="punctuation">)</span></span><br><span class="line">         ├── <span class="built_in">Pane</span> <span class="number">1</span></span><br><span class="line">         └── <span class="built_in">Pane</span> <span class="number">2</span></span><br></pre></td></tr></table></figure></div></li>
+<li><strong>Session（会话）</strong>：最外层容器，可以独立分离&#x2F;重连</li>
+<li><strong>Window（窗口）</strong>：每个 session 可以有多个窗口，类似标签页</li>
+<li><strong>Pane（窗格）</strong>：每个 window 可以被分割成多个 pane</li>
+<li>一个 Session 下有 b 个 Window，每个 Window 下有 c 个 Pane，三层结构，互不干扰。</li>
+</ul>
+<h4 id="别名"><a href="#别名" class="headerlink" title="别名"></a>别名</h4><ol>
+<li><p>创建一个 <code>dc</code> 别名，它的功能是当我们错误的将 <code>cd</code> 输入为 <code>dc</code> 时也能正确执行。</p>
+<div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ alias dc=cd</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ dc ..</span><br><span class="line">keruone@keruone-virtual-machine:~$ dc Desktop/</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>执行 <code>history | awk &#39;&#123;$1=&quot;&quot;;print substr($0,2)&#125;&#39; | sort | uniq -c | sort -n | tail -n 10</code> 来获取您最常用的十条命令，尝试为它们创建别名。注意：这个命令只在 Bash 中生效，如果您使用 ZSH，使用 <code>history 1</code> 替换 <code>history</code>。</p>
+</li>
+</ol>
+<ul>
+<li>把第一列置空后，awk自动用空格重新拼接所有字段，导致第一个字段（空）和第二个字段之间产生一个多余的空格。</li>
+<li><code>substr($0, 2)</code> 的作用是<strong>从第2个字符开始截取整行，从而去掉因删除第一列而留下的多余空格</strong>，其中 <code>$0</code> 是当前行，数字 <code>2</code> 表示起始位置（跳过第一个字符）。<div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ history | awk &#x27;&#123;$1=&quot;&quot;;print substr($0,2)&#125;&#x27; | sort |uniq -c | sort -n | tail -n 10</span><br><span class="line">      7 $?</span><br><span class="line">      7 exit</span><br><span class="line">      8 echo $?</span><br><span class="line">      8 vim find_err.sh</span><br><span class="line">      9 pgrep sleep</span><br><span class="line">     10 ./find_err.sh error.sh</span><br><span class="line">     11 vim temp.sh</span><br><span class="line">     12 tmux ls</span><br><span class="line">     14 jobs</span><br><span class="line">     37 ls</span><br><span class="line"></span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ alias tmuxDisplay=&#x27;tmux ls&#x27;</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ tmuxDisplay</span><br><span class="line">error connecting to /tmp/tmux-1000/default (No such file or directory)</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ tmux new</span><br><span class="line">[exited]</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ tmuxDisplay</span><br><span class="line">no server running on /tmp/tmux-1000/default</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop$ tmux ls</span><br><span class="line">no server running on /tmp/tmux-1000/default</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">其它就不一一列举了</span></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>让我们帮助您进一步学习配置文件：</p>
+<ol>
+<li>为您的配置文件新建一个文件夹，并设置好版本控制</li>
+<li>在其中添加至少一个配置文件，比如说您的 shell，在其中包含一些自定义设置（可以从设置 <code>$PS1</code> 开始）。</li>
+<li>建立一种在新设备进行快速安装配置的方法（无需手动操作）。最简单的方法是写一个 shell 脚本对每个文件使用 <code>ln -s</code>，也可以使用 <a class="link"   target="_blank" rel="noopener" href="https://dotfiles.github.io/utilities/" >专用工具<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li>在新的虚拟机上测试该安装脚本。</li>
+<li>将您现有的所有配置文件移动到项目仓库里。</li>
+<li>将项目发布到 GitHub。</li>
+</ol>
+<h4 id="远端设备-1"><a href="#远端设备-1" class="headerlink" title="远端设备"></a>远端设备</h4><p>进行下面的练习需要您先安装一个 Linux 虚拟机（如果已经安装过则可以直接使用），如果您对虚拟机尚不熟悉，可以参考 <a class="link"   target="_blank" rel="noopener" href="https://hibbard.eu/install-ubuntu-virtual-box/" >这篇教程<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 来进行安装。</p>
+<ol>
+<li>前往 <code>~/.ssh/</code> 并查看是否已经存在 SSH 密钥对。如果不存在，请使用 <code>ssh-keygen -o -a 100 -t ed25519</code> 来创建一个。建议为密钥设置密码然后使用 <code>ssh-agent</code>，更多信息可以参考 <a class="link"   target="_blank" rel="noopener" href="https://www.ssh.com/ssh/agent" >这里<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>；</li>
+<li>在 <code>.ssh/config</code> 加入下面内容：</li>
+</ol>
+<div class="code-container" data-rel="Crmsh"><figure class="iseeu highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Host vm</span><br><span class="line">    <span class="keyword">User</span> <span class="title">username_goes_here</span></span><br><span class="line">    HostName ip_goes_here</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line">    LocalForward <span class="number">9999</span> localhost:<span class="number">8888</span></span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>* 可以注意到，其实这里的 最后一行配置，已经做了端口转发(可以同时做多个转发)，相当于 <code>ssh -L 9999:localhost:8888 ip_goes_here</code></p>
+</blockquote>
+<div class="code-container" data-rel="Apache"><figure class="iseeu highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Host</span> vm</span><br><span class="line">	<span class="attribute">User</span> keruone</span><br><span class="line">	<span class="attribute">HostName</span> <span class="number">192.168.179.128</span></span><br><span class="line">	<span class="attribute">IdentityFile</span> ~/.ssh/id_ed25519</span><br><span class="line">	<span class="attribute">LocalForward</span> <span class="number">9999</span> localhost:<span class="number">8888</span></span><br><span class="line">	<span class="attribute">LocalForward</span> <span class="number">7777</span> localhost:<span class="number">6666</span></span><br></pre></td></tr></table></figure></div>
+<ol>
+<li><p>使用 <code>ssh-copy-id vm</code> 将您的 ssh 密钥拷贝到服务器。</p>
+<blockquote>
+<p>我主机 使用 windows 虚拟机使用 linux Ubuntu，而 windows 本身并不具有 ssh-copy-id，所以此处询问 ai 使用了如下内容。（*注意，需要先在 linux 上安装 ssh 服务端，一般 linux 只自动携带 ssh 客户端。 ）</p>
+</blockquote>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(base) PS C:\Windows\System32&gt; type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh vm &quot;mkdir -p ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys&quot;</span><br><span class="line">The authenticity of host &#x27;192.168.179.128 (192.168.179.128)&#x27; can&#x27;t be established.</span><br><span class="line">ED25519 key fingerprint is SHA256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bc.</span><br><span class="line">This key is not known by any other names.</span><br><span class="line">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span><br><span class="line">Warning: Permanently added &#x27;192.168.179.128&#x27; (ED25519) to the list of known hosts.</span><br><span class="line">keruone@192.168.179.128&#x27;s password:</span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>其实 直接在 linux ~&#x2F;.ssh 文件夹下 添加 authorized_keys ，再追加对应 公钥即可</p>
+</blockquote>
+</li>
+<li><p>使用 <code>python -m http.server 8888</code> 在您的虚拟机中启动一个 Web 服务器并通过本机的 <code>http://localhost:9999</code> 访问虚拟机上的 Web 服务器<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-4/Pasted_image_20260610161743.png"
+                      alt="Pasted_image_20260610161743.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-4/Pasted_image_20260610161106.png"
+                      alt="Pasted_image_20260610161106.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-4/Pasted_image_20260610161159.png"
+                      alt="Pasted_image_20260610161159.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-4/Pasted_image_20260610161303.png"
+                      alt="Pasted_image_20260610161303.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-4/Pasted_image_20260610161626.png"
+                      alt="Pasted_image_20260610161626.png"
+                ></p>
+</li>
+<li><p>使用 <code>sudo vim /etc/ssh/sshd_config</code> 编辑 SSH 服务器配置，通过修改 <code>PasswordAuthentication</code> 的值来禁用密码验证。通过修改 <code>PermitRootLogin</code> 的值来禁用 root 登录。然后使用 <code>sudo service sshd restart</code> 重启 <code>ssh</code> 服务器，然后重新尝试。<br>注意, <code>/etc/ssh/</code>下有俩长的很相似的:</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/etc/ssh/ssh_config</code></td>
+<td><strong>客户端</strong>配置文件</td>
+</tr>
+<tr>
+<td><code>/etc/ssh/sshd_config</code></td>
+<td><strong>服务端</strong>配置文件</td>
+</tr>
+</tbody></table>
+<ol start="4">
+<li>(附加题) 在虚拟机中安装 <a target="_blank" rel="noopener" href="https://mosh.org/"><code>mosh</code></a> 并启动连接。然后断开服务器&#x2F;虚拟机的网络适配器。mosh 可以恢复连接吗？</li>
+</ol>
+<div class="code-container" data-rel="Routeros"><figure class="iseeu highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/gits/dotfiles$ mosh keruone@aaa.bbb.ccc.ddd                    </span><br><span class="line">The locale requested by <span class="attribute">LANG</span>=en_US.UTF-8 isn<span class="string">&#x27;t available here.                                   </span></span><br><span class="line"><span class="string">Running `locale-gen en_US.UTF-8&#x27;</span> may be necessary.</span><br><span class="line"></span><br><span class="line">The locale requested by <span class="attribute">LANG</span>=en_US.UTF-8 isn<span class="string">&#x27;t available here.</span></span><br><span class="line"><span class="string">Running `locale-gen en_US.UTF-8&#x27;</span> may be necessary.</span><br><span class="line"></span><br><span class="line">mosh-server needs a UTF-8 native locale <span class="keyword">to</span> run.</span><br><span class="line"></span><br><span class="line">Unfortunately, the local environment (<span class="attribute">LANG</span>=en_US.UTF-8) specifies</span><br><span class="line">the character <span class="built_in">set</span> <span class="string">&quot;US-ASCII&quot;</span>,</span><br><span class="line"></span><br><span class="line">The client-supplied environment (<span class="attribute">LANG</span>=en_US.UTF-8) specifies</span><br><span class="line">the character <span class="built_in">set</span> <span class="string">&quot;US-ASCII&quot;</span>.</span><br><span class="line"></span><br><span class="line">locale: Cannot <span class="built_in">set</span> LC_ALL <span class="keyword">to</span><span class="built_in"> default </span>locale: <span class="literal">No</span> such file <span class="keyword">or</span> directory</span><br><span class="line"><span class="attribute">LANG</span>=en_US.UTF-8</span><br><span class="line"><span class="attribute">LANGUAGE</span>=en_US:en</span><br><span class="line"><span class="attribute">LC_CTYPE</span>=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line"><span class="attribute">LC_NUMERIC</span>=zh_CN.UTF-8</span><br><span class="line"><span class="attribute">LC_TIME</span>=zh_CN.UTF-8</span><br><span class="line"><span class="attribute">LC_COLLATE</span>=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line"><span class="attribute">LC_MONETARY</span>=zh_CN.UTF-8</span><br><span class="line"><span class="attribute">LC_MESSAGES</span>=<span class="string">&quot;en_US.UTF-8&quot;</span></span><br><span class="line"><span class="attribute">LC_PAPER</span>=zh_CN.UTF-8</span><br><span class="line"><span class="attribute">LC_NAME</span>=zh_CN.UTF-8</span><br><span class="line"><span class="attribute">LC_ADDRESS</span>=zh_CN.UTF-8</span><br><span class="line"><span class="attribute">LC_TELEPHONE</span>=zh_CN.UTF-8</span><br><span class="line"><span class="attribute">LC_MEASUREMENT</span>=zh_CN.UTF-8</span><br><span class="line"><span class="attribute">LC_IDENTIFICATION</span>=zh_CN.UTF-8</span><br><span class="line">LC_ALL=<span class="built_in"></span></span><br><span class="line"><span class="built_in">Connection </span><span class="keyword">to</span> aaa.bbb.ccc.ddd closed.</span><br><span class="line">/usr/bin/mosh: Did <span class="keyword">not</span> <span class="built_in">find</span> mosh<span class="built_in"> server </span>startup message. (Have you installed mosh on your server?)</span><br><span class="line">keruone@keruone-virtual-machine:~/gits/dotfiles$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>你会发现直接连接 mosh 连接不上，出现上述问题，对此，我在[这里](<a class="link"   target="_blank" rel="noopener" href="https://dev59.com/unix/8kPXs4cB2Jgan1zng3aI" >mosh-server需要一个UTF-8本地区域设置才能运行。 ssh gentoo - Dev59<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>)找到了处理方法:</p>
+<div class="code-container" data-rel="Ceylon"><figure class="iseeu highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alias</span> mosh=<span class="string">&quot;export LC_ALL=\&quot;</span>en<span class="number">_</span>US.UTF<span class="number">8</span>\<span class="string">&quot; &amp;&amp; mosh&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-4/Pasted_image_20260610172734.png"
+                      alt="Pasted_image_20260610172734.png"
+                ><br>后续暂时跳过，以后再处理<br>5. (附加题) 查看 <code>ssh</code> 的 <code>-N</code> 和 <code>-f</code> 选项的作用，找出在后台进行端口转发的命令是什么？</p>
+<div class="code-container" data-rel="Pgsql"><figure class="iseeu highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-N      <span class="keyword">Do</span> <span class="keyword">not</span> <span class="keyword">execute</span> a remote command.  This <span class="keyword">is</span> useful <span class="keyword">for</span> just forwarding ports.  Refer <span class="keyword">to</span> the description <span class="keyword">of</span> SessionType <span class="keyword">in</span> ssh_config(<span class="number">5</span>) <span class="keyword">for</span> details.</span><br><span class="line">        </span><br><span class="line">-f      Requests ssh <span class="keyword">to</span> go <span class="keyword">to</span> background just <span class="keyword">before</span> command execution.  This <span class="keyword">is</span> useful <span class="keyword">if</span> ssh <span class="keyword">is</span> going <span class="keyword">to</span> ask <span class="keyword">for</span> passwords <span class="keyword">or</span> passphrases, but the <span class="keyword">user</span> wants it <span class="keyword">in</span> the background.  This implies -n.  The recommended way <span class="keyword">to</span> <span class="keyword">start</span> X11 programs at a remote site <span class="keyword">is</span> <span class="keyword">with</span> something <span class="keyword">like</span> ssh -f host xterm.</span><br><span class="line"></span><br><span class="line">        <span class="keyword">If</span> the ExitOnForwardFailure <span class="keyword">configuration</span> <span class="keyword">option</span> <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">to</span> “yes”, <span class="keyword">then</span> a client started <span class="keyword">with</span> -f will wait <span class="keyword">for</span> <span class="keyword">all</span> remote port forwards <span class="keyword">to</span> be successfully established <span class="keyword">before</span> <span class="keyword">placing</span> itself <span class="keyword">in</span> the background.  Refer <span class="keyword">to</span> the description <span class="keyword">of</span> ForkAfterAuthentication <span class="keyword">in</span> ssh_config(<span class="number">5</span>) <span class="keyword">for</span> details.</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><p><strong>-N</strong> </p>
+<ul>
+<li>不执行远程命令。这仅用于端口转发场景。详见 ssh_config(5) 中 SessionType 的描述。</li>
+</ul>
+</li>
+<li><p><strong>-f</strong> </p>
+<ul>
+<li>要求 ssh 在命令执行前转入后台。这在 ssh 需要询问密码或密钥口令、但用户希望它在后台运行时很有用。该选项隐含了 <strong>-n</strong>。在远程站点启动 X11 程序的推荐方式类似于：<code>ssh -f host xterm</code>。</li>
+<li>如果 ExitOnForwardFailure 配置选项设置为 “yes”，则以 -f 启动的客户端会在所有远程端口转发成功建立后，才将自身置入后台。详见 ssh_config(5) 中 ForkAfterAuthentication 的描述。</li>
+</ul>
+</li>
+<li><p>-N 就是不执行远端命令，适用于端口转发的情况</p>
+</li>
+<li><p>-f 是让 ssh 在执行命令前切换到后台运行</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(base) PS C:\Windows\System32&gt; ssh -fN -L 9999:localhost:8888 keruone@192.168.179.128</span><br></pre></td></tr></table></figure></div>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-4/Pasted_image_20260610164525.png"
+                      alt="Pasted_image_20260610164525.png"
+                ><br>*没有输出是正常的<br>不过我这似乎是 windows powershell 的一个 bug，导致卡死在这里</p>
+</li>
+</ul>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> E3  The Missing Semester of Your CS Education-3</li>
+        <li><strong>作者:</strong> Keruone</li>
+        <li><strong>创建于
+                :</strong> 2026-06-09 09:54:00</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2026-06-13 11:44:54
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://keruone.github.io/2026/06/09/one_student_one_chip/E3-4/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E9%A1%B9%E7%9B%AE/">#项目</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">#一生一芯</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2026/06/11/one_student_one_chip/E3-5/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">E3  The Missing Semester of Your CS Education-3</span>
+						<span class="post-nav-item">上一篇</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2026/05/28/one_student_one_chip/E3-3/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">E3  The Missing Semester of Your CS Education-2</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Keruone/Keruone.github.io',
+                'data-repo-id': 'R_kgDOQ4GXyQ',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDOQ4GXyc4C04nb',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'zh-CN',
+                'data-input-position': 'top',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">E3  The Missing Semester of Your CS Education-3</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vim"><span class="nav-text">Vim</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86"><span class="nav-text">数据整理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="nav-text">命令行环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%8E%A7%E5%88%B6"><span class="nav-text">任务控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%AB%AF%E8%AE%BE%E5%A4%87"><span class="nav-text">远端设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BE%E5%90%8E%E7%BB%83%E4%B9%A0"><span class="nav-text">课后练习</span></a></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2026</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Keruone</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 71 篇文章
+                    </span>
+                    
+                        <span>
+                            共 116.1k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+        
+<script src="/js/build/libs/mermaid.min.js"></script>
+
+    
+    
+<script src="/js/build/plugins/mermaid.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

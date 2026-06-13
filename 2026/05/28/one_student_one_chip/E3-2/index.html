@@ -521,7 +521,7 @@
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">68</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">71</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -572,8 +572,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-06-02 15:45:51</span>
-            <span class="mobile">2026-06-02 15:45:51</span>
+            <span class="desktop">2026-06-13 11:44:54</span>
+            <span class="mobile">2026-06-13 11:44:54</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -652,7 +652,12 @@
 			<p> <a class="link"   target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/" >The Missing Semester of Your CS Education<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 <span id="more"></span>
 <h2 id="课程概览与shell"><a href="#课程概览与shell" class="headerlink" title="课程概览与shell"></a>课程概览与shell</h2><ol start="2">
-<li>.<code>ls</code> 的 <code>-l</code> 选项（flag）作用是什么？运行 <code>ls -l /</code> 并观察输出。每一行最前面的 10 个字符分别代表什么？（提示：<code>man ls</code>）<br>![Pasted image 20260529135227.png](Pasted image 20260529135227.png)<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">ls</span> -l</span><br><span class="line">total 16</span><br><span class="line">-rw-rw-r-- 1 keruone keruone  847  5月 29 12:48  hello.txt</span><br><span class="line">-rw-rw-r-- 1 keruone keruone 8233  5月 29 14:01 <span class="string">&#x27;man ls.txt&#x27;</span></span><br></pre></td></tr></table></figure></div></li>
+<li>.<code>ls</code> 的 <code>-l</code> 选项（flag）作用是什么？运行 <code>ls -l /</code> 并观察输出。每一行最前面的 10 个字符分别代表什么？（提示：<code>man ls</code>）<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-2/Pasted_image_20260529135227.png"
+                      alt="Pasted_image_20260529135227.png"
+                ><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop$ <span class="built_in">ls</span> -l</span><br><span class="line">total 16</span><br><span class="line">-rw-rw-r-- 1 keruone keruone  847  5月 29 12:48  hello.txt</span><br><span class="line">-rw-rw-r-- 1 keruone keruone 8233  5月 29 14:01 <span class="string">&#x27;man ls.txt&#x27;</span></span><br></pre></td></tr></table></figure></div></li>
 </ol>
 <ul>
 <li>total：和后文比较后，你可以发现，其实就是 <strong>文件实际占用的磁盘空间</strong></li>
@@ -705,7 +710,7 @@
 ! 在 Shell 中的作用：历史扩展 (History Expansion)。Shell 会记录你执行过的所有命令（命令历史），! 是用来快速调取、复用历史命令的专用符号，这就叫历史扩展。<br>假设你历史里执行过这些命令：<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">100 <span class="built_in">ls</span> -l</span><br><span class="line">101 <span class="built_in">echo</span> hello</span><br><span class="line">102 <span class="built_in">cat</span> test.txt</span><br></pre></td></tr></table></figure></div></li>
 </ul>
 <p> ① <code>!数字</code> 执行指定序号的历史命令</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!100   <span class="comment"># 等价重新执行第 100 条：ls -l</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">!100   <span class="comment"># 等价重新执行第 100 条：ls -l</span></span><br><span class="line"><span class="comment"># 命令其实可以通过 history 实时查看</span></span><br></pre></td></tr></table></figure></div>
 
 <p> ② <code>!字符串</code> 执行<strong>最近一条以该字符串开头</strong>的命令</p>
 <div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!<span class="built_in">cat</span>   <span class="comment"># 找到最近一条以 cat 开头的命令，执行 cat test.txt</span></span><br></pre></td></tr></table></figure></div>
@@ -1069,7 +1074,7 @@
 <li><code>[^.]</code>: <code>[]</code>表示可选的字符，<code>[^]</code>表示<strong>不</strong>可选的字符</li>
 <li><code>+</code>: 表示前面的内容至少出现 1 次</li>
 <li>所以这里结合前三条，表示<strong>开头不是点</strong></li>
-<li><code>\.</code> 转移符号<code>.</code>。因为<code>.</code>本身表示任意字符。这里表示结尾前的<code>.</code></li>
+<li><code>\.</code> 转义符号<code>.</code>。因为<code>.</code>本身表示任意字符。这里表示结尾前的<code>.</code></li>
 <li><code>()</code> 表示 捕获分组，即括号内的东西可以相当于存储了一个变量，之后可以通过 <code>\1</code>来提取。（<em>*有多个捕获分组可以 <code>\不同数字</code> 表示</em>）</li>
 <li><code>[^.]*</code> 任意非<code>.</code>字符重复任意次数</li>
 <li><code>$</code> 表示结尾</li>
@@ -1157,7 +1162,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2026-06-02 15:45:51
+                    :</strong> 2026-06-13 11:44:54
             </li>
         
         <li>
@@ -1317,11 +1322,11 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共撰写了 68 篇文章
+                        共撰写了 71 篇文章
                     </span>
                     
                         <span>
-                            共 104.9k 字
+                            共 116.1k 字
                         </span>
                     
                 </p>
