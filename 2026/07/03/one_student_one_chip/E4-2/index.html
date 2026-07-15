@@ -773,13 +773,13 @@
 <h3 id="clang-fsyntax-only-Xclang-ast-dump-a-c"><a href="#clang-fsyntax-only-Xclang-ast-dump-a-c" class="headerlink" title="clang -fsyntax-only -Xclang -ast-dump a.c"></a><code>clang -fsyntax-only -Xclang -ast-dump a.c</code></h3><p>这里是输出语法树（AST）<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E4-2/Pasted_image_20260705165030.png"
+                     data-src="/2026/07/03/one_student_one_chip/E4-2/Pasted_image_20260705165030.png"
                       alt="Pasted_image_20260705165030.png"
                 ></p>
 <h3 id="clang-a-c-analyze-Xanalyzer-analyzer-output-text"><a href="#clang-a-c-analyze-Xanalyzer-analyzer-output-text" class="headerlink" title="clang a.c --analyze -Xanalyzer -analyzer-output=text"></a><code>clang a.c --analyze -Xanalyzer -analyzer-output=text</code></h3><p>lint: 静态代码分析工具<br>正常代码不会有问题，但是遇到隐藏错误代码：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E4-2/Pasted_image_20260705172614.png"
+                     data-src="/2026/07/03/one_student_one_chip/E4-2/Pasted_image_20260705172614.png"
                       alt="Pasted_image_20260705172614.png"
                 ></p>
 <h3 id="中间代码生成"><a href="#中间代码生成" class="headerlink" title="中间代码生成"></a>中间代码生成</h3><p>中间代码 是 由编译器定义的，面向编译场景的 ISA（Instruction Set Architecture 指令集架构），也称中间表示(Intermediate Representation, IR)或中间语言(Intermediate Language)</p>
@@ -836,13 +836,13 @@
 <p>对于链接<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E4-2/Pasted_image_20260706171556.png"
+                     data-src="/2026/07/03/one_student_one_chip/E4-2/Pasted_image_20260706171556.png"
                       alt="Pasted_image_20260706171556.png"
                 ><br>其中 crt*.o 都是 C runtime，表示 C程序运行时候的环境。<br>即：链接，会将 a.c 的编译汇编后的 .o 目标文件，和 已有的 C 程序的运行时环境相关的目标文件进行合并，得到最终的可执行文件。</p>
 <p>对于 a.o 和 a.out  的 反汇编，可以发现 从本来的相对地址，变成了具体的虚拟地址，此外还添加了很多别的 crt 或其它链接库的东西<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E4-2/Pasted_image_20260706173437.png"
+                     data-src="/2026/07/03/one_student_one_chip/E4-2/Pasted_image_20260706173437.png"
                       alt="Pasted_image_20260706173437.png"
                 ></p>
 <h3 id="编译优化对比"><a href="#编译优化对比" class="headerlink" title="编译优化对比"></a>编译优化对比</h3><div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/Desktop/E4$ gcc -O0 b.c -o bO0.o -c</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop/E4$ gcc -O1 b.c -o bO1.o -c</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop/E4$ gcc -O2 b.c -o bO2.o -c</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop/E4$ objdump bO0.o -d</span><br><span class="line"></span><br><span class="line">bO0.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;main&gt;:</span><br><span class="line">   0:   f3 0f 1e fa             endbr64</span><br><span class="line">   4:   55                      push   %rbp</span><br><span class="line">   5:   48 89 e5                mov    %rsp,%rbp</span><br><span class="line">   8:   c7 45 f8 00 00 00 00    movl   $0x0,-0x8(%rbp)</span><br><span class="line">   f:   c7 45 fc 00 00 00 00    movl   $0x0,-0x4(%rbp)</span><br><span class="line">  16:   eb 0a                   jmp    22 &lt;main+0x22&gt;</span><br><span class="line">  18:   8b 45 fc                mov    -0x4(%rbp),%eax</span><br><span class="line">  1b:   01 45 f8                add    %eax,-0x8(%rbp)</span><br><span class="line">  1e:   83 45 fc 01             addl   $0x1,-0x4(%rbp)</span><br><span class="line">  22:   81 7d fc e7 03 00 00    cmpl   $0x3e7,-0x4(%rbp)</span><br><span class="line">  29:   7e ed                   jle    18 &lt;main+0x18&gt;</span><br><span class="line">  2b:   8b 45 f8                mov    -0x8(%rbp),%eax</span><br><span class="line">  2e:   5d                      pop    %rbp</span><br><span class="line">  2f:   c3                      ret</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop/E4$ objdump bO1.o -d</span><br><span class="line"></span><br><span class="line">bO1.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;main&gt;:</span><br><span class="line">   0:   f3 0f 1e fa             endbr64</span><br><span class="line">   4:   b8 e8 03 00 00          mov    $0x3e8,%eax</span><br><span class="line">   9:   83 e8 01                sub    $0x1,%eax</span><br><span class="line">   c:   75 fb                   jne    9 &lt;main+0x9&gt;</span><br><span class="line">   e:   b8 2c 9f 07 00          mov    $0x79f2c,%eax</span><br><span class="line">  13:   c3                      ret</span><br><span class="line">keruone@keruone-virtual-machine:~/Desktop/E4$ objdump bO2.o -d</span><br><span class="line"></span><br><span class="line">bO2.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text.startup:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;main&gt;:</span><br><span class="line">   0:   f3 0f 1e fa             endbr64</span><br><span class="line">   4:   b8 2c 9f 07 00          mov    $0x79f2c,%eax</span><br><span class="line">   9:   c3                      ret</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
@@ -876,7 +876,7 @@ real: 墙钟时间，从启动到结束的完整时间<br>user: 用户态 CPU �
 <p>A: 序列点：在序列点之前的side effect 都应该完成；在序列点之后的 side effect 都该完成。<br>可以看到，f1()、f2()、f3()、f4()的执行顺序可以是任意的，即这些参数之间不存在序列点<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E4-2/Pasted_image_20260707113508.png"
+                     data-src="/2026/07/03/one_student_one_chip/E4-2/Pasted_image_20260707113508.png"
                       alt="Pasted_image_20260707113508.png"
                 ></p>
 <p>*注意：逗号运算符则是一个二元运算符，可在一个表达式中顺序执行多个子表达式，并返回最后一个子表达式的值。</p>
@@ -1020,7 +1020,7 @@ real: 墙钟时间，从启动到结束的完整时间<br>user: 用户态 CPU �
 <h4 id="添加-vga"><a href="#添加-vga" class="headerlink" title="添加 vga"></a>添加 vga</h4><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E4-2/Pasted_image_20260708221649.png"
+                     data-src="/2026/07/03/one_student_one_chip/E4-2/Pasted_image_20260708221649.png"
                       alt="Pasted_image_20260708221649.png"
                 ></p>
 <p>完整代码如下</p>

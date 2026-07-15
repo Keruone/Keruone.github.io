@@ -744,7 +744,7 @@
 <h3 id="仿真波形-wave-生成"><a href="#仿真波形-wave-生成" class="headerlink" title="仿真波形 wave 生成"></a>仿真波形 wave 生成</h3><p>有点没招，找了半天没在正文找着，结果在 FAQ。<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260711141716.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260711141716.png"
                       alt="Pasted_image_20260711141716.png"
                 ></p>
 <ul>
@@ -776,7 +776,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260711154445.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260711154445.png"
                       alt="Pasted_image_20260711154445.png"
                 ></p>
 <h3 id="make-一键仿真"><a href="#make-一键仿真" class="headerlink" title="make 一键仿真"></a>make 一键仿真</h3><p>不过需要注意一点，make sim 后，提交的不是 HEAD 分支的，而是 tracer-ysyx 分支的，所以直接 git log 会看不到，而应该是 git log –all</p>
@@ -869,13 +869,13 @@
 <h3 id="流水灯-Verilator-仿真代码查看"><a href="#流水灯-Verilator-仿真代码查看" class="headerlink" title="流水灯 Verilator 仿真代码查看"></a>流水灯 Verilator 仿真代码查看</h3><p>在 Vtop___024root__0.cpp 中。不过这个变量命名是真的看的很吃力<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260714165521.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260714165521.png"
                       alt="Pasted_image_20260714165521.png"
                 ><br>这里 是按照 敏感事件 来写 大 if-else 的，而不是 模块<br>nba 表示的就是 非阻塞赋值</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260714171332.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260714171332.png"
                       alt="Pasted_image_20260714171332.png"
                 ><br>verilator 是<strong>周期仿真</strong>，所以看到的是上面的代码。<br>而之前的 R1 R2 ..  的模型 是 <strong>事件仿真</strong>，所以逻辑不太一样</p>
 <h3 id="用事件模型分析Verilog代码的行为-2"><a href="#用事件模型分析Verilog代码的行为-2" class="headerlink" title="用事件模型分析Verilog代码的行为(2)"></a>用事件模型分析Verilog代码的行为(2)</h3><p>会产生 数据竞争</p>
@@ -970,7 +970,7 @@
 <p>show 的结果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715155502.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715155502.png"
                       alt="Pasted_image_20260715155502.png"
                 ></p>
 <h4 id="粗粒度综合-Coarse-grain-synthesis"><a href="#粗粒度综合-Coarse-grain-synthesis" class="headerlink" title="粗粒度综合(Coarse-grain synthesis)"></a>粗粒度综合(Coarse-grain synthesis)</h4><p><code>yosys proc</code></p>
@@ -978,7 +978,7 @@
 <p>再查看 show<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715163207.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715163207.png"
                       alt="Pasted_image_20260715163207.png"
                 ><br>可以看到 process 中的内容也都被打开了</p>
 <div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line">autoidx 18</span><br><span class="line"></span><br><span class="line">attribute \src &quot;vsrc/top.v:1.1-21.10&quot;</span><br><span class="line">attribute \top 1</span><br><span class="line">attribute \dynports 1</span><br><span class="line">attribute \hdlname &quot;top&quot;</span><br><span class="line">module \top</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:2.8-2.11&quot;</span><br><span class="line">  wire input 1 \clk</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:3.8-3.11&quot;</span><br><span class="line">  wire input 2 \rst</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:4.18-4.21&quot;</span><br><span class="line">  wire width 8 output 3 \led</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:8.25-8.32&quot;</span><br><span class="line">  wire width 30 \counter</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:9.2-19.5&quot;</span><br><span class="line">  wire width 8 $0\led[7:0]</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:9.2-19.5&quot;</span><br><span class="line">  wire width 30 $0\counter[29:0]</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:14.11-14.31&quot;</span><br><span class="line">  wire $eq$vsrc/top.v:14$2_Y</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:18.19-18.30&quot;</span><br><span class="line">  wire width 32 $add$vsrc/top.v:18$3_Y</span><br><span class="line"></span><br><span class="line">  wire $procmux$6_CMP</span><br><span class="line"></span><br><span class="line">  wire width 30 $procmux$5_Y</span><br><span class="line"></span><br><span class="line">  wire $procmux$9_CMP</span><br><span class="line"></span><br><span class="line">  wire width 30 $procmux$8_Y</span><br><span class="line"></span><br><span class="line">  wire $procmux$12_CMP</span><br><span class="line"></span><br><span class="line">  wire width 8 $procmux$11_Y</span><br><span class="line"></span><br><span class="line">  wire $procmux$15_CMP</span><br><span class="line"></span><br><span class="line">  wire width 8 $procmux$14_Y</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:14.11-14.31&quot;</span><br><span class="line">  cell $eq $eq$vsrc/top.v:14$2</span><br><span class="line">    parameter \A_SIGNED 0</span><br><span class="line">    parameter \B_SIGNED 0</span><br><span class="line">    parameter \A_WIDTH 30</span><br><span class="line">    parameter \B_WIDTH 30</span><br><span class="line">    parameter \Y_WIDTH 1</span><br><span class="line">    connect \A \counter</span><br><span class="line">    connect \B 30&#x27;000000010011000100101101000000</span><br><span class="line">    connect \Y $eq$vsrc/top.v:14$2_Y</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:18.19-18.30&quot;</span><br><span class="line">  cell $add $add$vsrc/top.v:18$3</span><br><span class="line">    parameter \A_SIGNED 0</span><br><span class="line">    parameter \B_SIGNED 0</span><br><span class="line">    parameter \A_WIDTH 30</span><br><span class="line">    parameter \B_WIDTH 32</span><br><span class="line">    parameter \Y_WIDTH 32</span><br><span class="line">    connect \A \counter</span><br><span class="line">    connect \B 1</span><br><span class="line">    connect \Y $add$vsrc/top.v:18$3_Y</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:14.11-14.31|vsrc/top.v:14.8-18.31&quot;</span><br><span class="line">  attribute \full_case 1</span><br><span class="line">  cell $mux $procmux$5</span><br><span class="line">    parameter \WIDTH 30</span><br><span class="line">    connect \A $add$vsrc/top.v:18$3_Y [29:0]</span><br><span class="line">    connect \B 30&#x27;000000000000000000000000000000</span><br><span class="line">    connect \S $procmux$6_CMP</span><br><span class="line">    connect \Y $procmux$5_Y</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:10.6-10.9|vsrc/top.v:10.3-18.31&quot;</span><br><span class="line">  attribute \full_case 1</span><br><span class="line">  cell $mux $procmux$8</span><br><span class="line">    parameter \WIDTH 30</span><br><span class="line">    connect \A $procmux$5_Y</span><br><span class="line">    connect \B 30&#x27;000000000000000000000000000000</span><br><span class="line">    connect \S $procmux$9_CMP</span><br><span class="line">    connect \Y $procmux$8_Y</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:14.11-14.31|vsrc/top.v:14.8-18.31&quot;</span><br><span class="line">  attribute \full_case 1</span><br><span class="line">  cell $mux $procmux$11</span><br><span class="line">    parameter \WIDTH 8</span><br><span class="line">    connect \A \led</span><br><span class="line">    connect \B &#123; \led [6:0] \led [7] &#125;</span><br><span class="line">    connect \S $procmux$12_CMP</span><br><span class="line">    connect \Y $procmux$11_Y</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:10.6-10.9|vsrc/top.v:10.3-18.31&quot;</span><br><span class="line">  attribute \full_case 1</span><br><span class="line">  cell $mux $procmux$14</span><br><span class="line">    parameter \WIDTH 8</span><br><span class="line">    connect \A $procmux$11_Y</span><br><span class="line">    connect \B 8&#x27;00000001</span><br><span class="line">    connect \S $procmux$15_CMP</span><br><span class="line">    connect \Y $procmux$14_Y</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:9.2-19.5&quot;</span><br><span class="line">  cell $dff $procdff$16</span><br><span class="line">    parameter \WIDTH 8</span><br><span class="line">    parameter \CLK_POLARITY 1&#x27;1</span><br><span class="line">    connect \D $procmux$14_Y</span><br><span class="line">    connect \Q \led</span><br><span class="line">    connect \CLK \clk</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  attribute \src &quot;vsrc/top.v:9.2-19.5&quot;</span><br><span class="line">  cell $dff $procdff$17</span><br><span class="line">    parameter \WIDTH 30</span><br><span class="line">    parameter \CLK_POLARITY 1&#x27;1</span><br><span class="line">    connect \D $procmux$8_Y</span><br><span class="line">    connect \Q \counter</span><br><span class="line">    connect \CLK \clk</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  connect $procmux$6_CMP $eq$vsrc/top.v:14$2_Y</span><br><span class="line">  connect $procmux$9_CMP \rst</span><br><span class="line">  connect $0\counter[29:0] $procmux$8_Y</span><br><span class="line">  connect $procmux$12_CMP $eq$vsrc/top.v:14$2_Y</span><br><span class="line">  connect $procmux$15_CMP \rst</span><br><span class="line">  connect $0\led[7:0] $procmux$14_Y</span><br><span class="line">end</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
@@ -986,7 +986,7 @@
 <h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><p><code>yosys&gt; opt</code><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715163628.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715163628.png"
                       alt="Pasted_image_20260715163628.png"
                 ><br>可以看到优化后的就清爽了很多</p>
 <h4 id="有限状态机的识别和处理"><a href="#有限状态机的识别和处理" class="headerlink" title="有限状态机的识别和处理"></a>有限状态机的识别和处理</h4><p><code>yosys&gt; FSM</code></p>
@@ -995,7 +995,7 @@
 <p>tech 后的结果其实已经有点夸张了：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715170001.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715170001.png"
                       alt="Pasted_image_20260715170001.png"
                 ></p>
 <p>替换为门级单元后, 还需要对一些多位的线网和端口进行拆分, 否则RTLIL中将会包含不必要的位抽取和位拼接操作. 这可以通过<code>splitnets</code>命令来实现:<br><code>yosys&gt; splitnets -ports</code><br>然后, 可以执行<code>opt -full</code>命令让yosys开展一些优化工作, 以清除无用的单元和线网,<br>（这个时候就 show 不了了，部件太多，名字太长了）</p>
@@ -1010,7 +1010,7 @@
 <li>当目标库没有某种专用 DFF 时，Yosys 会尝试用“库里已有的 DFF + 组合逻辑”实现<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715174231.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715174231.png"
                       alt="Pasted_image_20260715174231.png"
                 ></li>
 </ol>
@@ -1019,7 +1019,7 @@
 <li>最后这个只是修改了显示问题：执行 show 时，Yosys 不知道外部单元 DFF 的端口方向，于是把 Q 误画在输入侧，把结构图排版画得不合理。read后，知道真实排布。<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715174322.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715174322.png"
                       alt="Pasted_image_20260715174322.png"
                 ></li>
 </ul>
@@ -1030,57 +1030,57 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715174546.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715174546.png"
                       alt="Pasted_image_20260715174546.png"
                 ></p>
 <p>示例代码全图展示：<br>proc<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715170844.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715170844.png"
                       alt="Pasted_image_20260715170844.png"
                 ><br>opt<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715170920.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715170920.png"
                       alt="Pasted_image_20260715170920.png"
                 ><br>techmap<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715171008.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715171008.png"
                       alt="Pasted_image_20260715171008.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715171912.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715171912.png"
                       alt="Pasted_image_20260715171912.png"
                 ><br><code>$_SDFFE_PP0P_</code>的功能是”带 高有效 同步复位信号 和 高有效 使能信号 的正边沿D触发器”</p>
 <p>yosys&gt; dfflibmap -liberty cell.lib<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715172101.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715172101.png"
                       alt="Pasted_image_20260715172101.png"
                 ><br>    DFF表示问题：<br>    <img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715172206.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715172206.png"
                       alt="Pasted_image_20260715172206.png"
                 ></p>
 <p>yosys&gt; read_liberty -lib cell.lib</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715171534.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715171534.png"
                       alt="Pasted_image_20260715171534.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715173012.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715173012.png"
                       alt="Pasted_image_20260715173012.png"
                 ></p>
 <p>yosys&gt; abc -liberty cell.lib<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715173550.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715173550.png"
                       alt="Pasted_image_20260715173550.png"
                 ></p>
 <h3 id="通过yosys的日志文件了解综合过程"><a href="#通过yosys的日志文件了解综合过程" class="headerlink" title="通过yosys的日志文件了解综合过程"></a>通过yosys的日志文件了解综合过程</h3><ol>
@@ -1558,7 +1558,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E5-1/Pasted_image_20260715132716.png"
+                     data-src="/2026/07/09/one_student_one_chip/E5-1/Pasted_image_20260715132716.png"
                       alt="Pasted_image_20260715132716.png"
                 ></p>
 <h3 id="4-三态驱动器的建模"><a href="#4-三态驱动器的建模" class="headerlink" title="4. 三态驱动器的建模"></a>4. 三态驱动器的建模</h3><p>当变量被赋值为z时，应建模三态逻辑。z的赋值可以是条件性的或无条件的。<strong>如果信号的任何驱动源包含对值z的赋值，则所有驱动源都应包含这样的赋值。</strong></p>

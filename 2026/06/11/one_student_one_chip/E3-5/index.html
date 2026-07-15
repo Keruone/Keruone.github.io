@@ -654,7 +654,7 @@
 <h2 id="git"><a href="#git" class="headerlink" title="git"></a>git</h2><h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611151445.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611151445.png"
                       alt="Pasted_image_20260611151445.png"
                 ></p>
 <ul>
@@ -731,13 +731,13 @@
 <li>远程跟踪分支是远程分支状态的引用。它们是你无法移动的本地引用。 <code>&lt;remote&gt;/&lt;branch&gt;</code>，就是远程分支所在位置。一旦你进行了网络通信， Git 就会为你移动它们以精确反映远程仓库的状态。比如这里：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611161343.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611161343.png"
                       alt="Pasted_image_20260611161343.png"
                 ></li>
 <li>git fetch 抓取并移动<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611161649.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611161649.png"
                       alt="Pasted_image_20260611161649.png"
                 ></li>
 <li><code>git push &lt;remote&gt; &lt;branch&gt;</code>  会将本地的 <code>&lt;branch&gt;</code> 分支（而非当前分支）推送到远程同名的分支。即使当前处于其他分支。<ul>
@@ -774,42 +774,42 @@
 <h3 id="分支开发流程"><a href="#分支开发流程" class="headerlink" title="分支开发流程"></a>分支开发流程</h3><p>长期分支<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611154518.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611154518.png"
                       alt="Pasted_image_20260611154518.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611154533.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611154533.png"
                       alt="Pasted_image_20260611154533.png"
                 ></p>
 <p>主题分支，一种短期分支<br>    考虑这样一个例子，你在 <code>master</code> 分支上工作到 <code>C1</code>，这时为了解决一个问题而新建 <code>iss91</code> 分支，在 <code>iss91</code> 分支上工作到 <code>C4</code>，然而对于那个问题你又有了新的想法，于是你再新建一个 <code>iss91v2</code> 分支试图用另一种方法解决那个问题，接着你回到 <code>master</code> 分支工作了一会儿，你又冒出了一个不太确定的想法，你便在 <code>C10</code> 的时候新建一个 <code>dumbidea</code> 分支，并在上面做些实验。 你的提交历史看起来像下面这个样子：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611155003.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611155003.png"
                       alt="Pasted_image_20260611155003.png"
                 ><br>    现在，我们假设两件事情：你决定使用第二个方案来解决那个问题，即使用在 <code>iss91v2</code> 分支中方案。 另外，你将 <code>dumbidea</code> 分支拿给你的同事看过之后，结果发现这是个惊人之举。 这时你可以抛弃 <code>iss91</code> 分支（即丢弃 <code>C5</code> 和 <code>C6</code> 提交），然后把另外两个分支合并入主干分支。 最终你的提交历史看起来像下面这个样子：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611155029.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611155029.png"
                       alt="Pasted_image_20260611155029.png"
                 ></p>
 <h3 id="rebase-变基-花活"><a href="#rebase-变基-花活" class="headerlink" title="rebase 变基 花活"></a>rebase 变基 花活</h3><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611165509.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611165509.png"
                       alt="Pasted_image_20260611165509.png"
                 ></p>
 <div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase --onto master server client</span><br></pre></td></tr></table></figure></div>
 <p>以上命令的意思是：“取出 <code>client</code> 分支，找出它从 <code>server</code> 分支分歧之后的补丁， 然后把这些补丁在 <code>master</code> 分支上重放一遍，让 <code>client</code> 看起来像直接基于 <code>master</code> 修改一样”。这理解起来有一点复杂，不过效果非常酷。<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611165519.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611165519.png"
                       alt="Pasted_image_20260611165519.png"
                 ><br>但是关于变基在合作中令人头疼的部分我就不详细列出，仅给出原文链接<a class="link"   target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/Git-%E5%88%86%E6%94%AF-%E5%8F%98%E5%9F%BA" >Git - 变基<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>不过注意：<strong>只对尚未推送的本地提交进行 rebase</strong>（即 fetch 之后本地新产生的提交），而不要去 rebase 已经推送到远程的提交（那些已经被别人共享的 commit）。这样既能保持本地历史的简洁，又不会干扰他人的工作，避免 force push 带来的混乱。</p>
 <p>一个简单的多人 Git 工作流程的通常事件顺序：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611195700.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611195700.png"
                       alt="Pasted_image_20260611195700.png"
                 ><a class="link"   target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/%E5%88%86%E5%B8%83%E5%BC%8F-Git-%E5%90%91%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE%E8%B4%A1%E7%8C%AE" >Git - 向一个项目贡献<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>的 <strong>私有管理团队</strong> 章节讲述的非常好！可以看看学习如何管理。<br>对于 rerere 、发布等内容就不细讲开，以后需要了自己看<a class="link"   target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/%E5%88%86%E5%B8%83%E5%BC%8F-Git-%E7%BB%B4%E6%8A%A4%E9%A1%B9%E7%9B%AE" >Git - 维护项目<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 <h3 id="过滤敏感信息"><a href="#过滤敏感信息" class="headerlink" title="过滤敏感信息"></a>过滤敏感信息</h3><ul>
@@ -825,7 +825,7 @@
 <li>将版本历史可视化并进行探索<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260611235801.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260611235801.png"
                       alt="Pasted_image_20260611235801.png"
                 ><div class="code-container" data-rel="Brainfuck"><figure class="iseeu highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">git log</span> <span class="literal">--</span><span class="comment">all</span> <span class="literal">--</span><span class="comment">graph</span> <span class="literal">--</span><span class="comment">decorate</span></span><br></pre></td></tr></table></figure></div></li>
 </ol>
@@ -841,12 +841,12 @@
 <li>最后一次修改 <code>_config.yml</code> 文件中 <code>collections:</code> 行时的提交信息是什么？（提示：使用 <code>git blame</code> 和 <code>git show</code>）<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260612000139.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260612000139.png"
                       alt="Pasted_image_20260612000139.png"
                 ><br>a884eac<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/03/09/cpp-study-note-1/hip/E3-5/Pasted_image_20260612000229.png"
+                     data-src="/2026/06/11/one_student_one_chip/E3-5/Pasted_image_20260612000229.png"
                       alt="Pasted_image_20260612000229.png"
                 ></li>
 </ol>
