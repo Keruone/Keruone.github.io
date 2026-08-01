@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo, 技术博客, 学习总结, Tech Blog, Notes">
+    
+    <meta name="author" content="Keruone">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://Keruone.github.io/2026/07/18/one_student_one_chip/e5-2/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/keruone-blog-logo.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/keruone-blog-logo.jpg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/keruone-blog-logo.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            E5 从RTL代码到可流片版图 (2) | Keruone&#39;s 个人小记
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"keruone.github.io","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":false,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Keruone's blog","subtitle":{"text":["一边想着一定要做点什么，另一边却烦恼着做点什么好，甚至担心什么都没干就这么长大了。 ——K-ON"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":"enable","version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"links":{"path":"/links","icon":"fa-solid fa-link"},"About":{"icon":"fa-regular fa-user","submenus":{"Github":"https://github.com/Keruone/Keruone.github.io","Blog":"https://blog.keruone.cn"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"原博客 blog.keruone.cn","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2026/1/12 13:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Keruone&#39;s 个人小记
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/links"
+                                        >
+                                    <i class="fa-solid fa-link fa-fw"></i>
+                                    链接
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.keruone.cn">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/links"
+                        >
+                            <span>
+                                链接
+                            </span>
+                            
+                                <i class="fa-solid fa-link fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.keruone.cn">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">74</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">E5 从RTL代码到可流片版图 (2)</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/keruone-myFavoritePhoto.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Keruone</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-07-18 12:32</span>
+        <span class="mobile">2026-07-18 12:32</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-08-01 17:52:06</span>
+            <span class="mobile">2026-08-01 17:52:06</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/">项目记录</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">一生一芯</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE/">项目</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">一生一芯</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>9.9k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>45 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<span id="more"></span>
+
+<h2 id="用开源-EDA-工具评估电路"><a href="#用开源-EDA-工具评估电路" class="headerlink" title="用开源 EDA 工具评估电路"></a>用开源 EDA 工具评估电路</h2><p>评判电路的维度：<br>    1. 性能（Performance）<br>    2. 功耗（Power）<br>    3. 面积（Area）<br>统称为 PPA</p>
+<h3 id="面积评估"><a href="#面积评估" class="headerlink" title="面积评估"></a>面积评估</h3><p><code>.lib</code> 文件已经给出 标准单元的 面积属性 ，综合器只需要统计实例化的次数，即可计算总面积</p>
+<h3 id="性能评估"><a href="#性能评估" class="headerlink" title="性能评估"></a>性能评估</h3><p>以<strong>频率</strong>来衡量，而下一个状态由组合逻辑电路得到，稳定要时间。而最大工作频率就不能超过这个时间的最大倒数，以便于接收到的数据都是稳定的。</p>
+<p>电路中的组合逻辑有很多, 而电路的工作频率受限于电路中<strong>延迟最长</strong>的一条<strong>组合逻辑路径</strong>, 这条路径称为电路的”<strong>关键路径</strong>“(critical path). 为了找到电路中的关键路径, EDA工具需要从<strong>标准单元库</strong>中读出<strong>标准单元的延迟信息</strong>, 然后对综合出的网表进行分析, 计算出组合逻辑路径上所有标准单元的<strong>总延迟</strong>, <strong>总延迟最长的路径即为电路的关键路径</strong>.<br>这个评估过程可以基于网表和标准单元库的延迟信息来开展, 不涉及电路工作的过程, 因此称为<strong>静态时序分析(STA, Static Timing Analysis).</strong></p>
+<table>
+<thead>
+<tr>
+<th>文件名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>abc.sdc</code></td>
+<td>由 ABC 工具（Yosys 调用的逻辑优化引擎）产生的时序约束文件（SDC 格式），通常包含时钟定义、输入&#x2F;输出延时等。</td>
+</tr>
+<tr>
+<td><code>gcd.cap</code></td>
+<td>电容信息文件，记录设计中各节点的负载电容，用于时序或功耗分析。</td>
+</tr>
+<tr>
+<td><code>gcd.fanout</code></td>
+<td>扇出信息文件，列出每个单元的扇出数量，用于检查驱动能力。</td>
+</tr>
+<tr>
+<td><code>gcd_hold.skew</code></td>
+<td>hold（保持时间）路径的时钟偏斜（clock skew）分析报告。</td>
+</tr>
+<tr>
+<td><code>gcd_instance.csv</code></td>
+<td>实例列表（CSV 格式），包含设计中所有实例的名称、类型、坐标（如果有布局信息）等。</td>
+</tr>
+<tr>
+<td><code>gcd_instance.pwr</code></td>
+<td>各实例的功耗详细数据，可能是动态功耗、漏电功耗等。</td>
+</tr>
+<tr>
+<td><code>gcd.netlist.v</code></td>
+<td>综合后生成的网表文件（Verilog 格式），包含逻辑门、触发器等标准单元连接。</td>
+</tr>
+<tr>
+<td><code>gcd.netlist.v.sim</code></td>
+<td>用于仿真的网表版本，可能保留了可读性或加入了仿真模型。</td>
+</tr>
+<tr>
+<td><code>gcd.pwr</code></td>
+<td>总功耗报告（可能为平均功耗、峰值功耗等）。</td>
+</tr>
+<tr>
+<td><code>gcd.rpt</code></td>
+<td>综合或时序分析的完整报告，通常包含面积、时序裕量、最差路径等汇总。</td>
+</tr>
+<tr>
+<td><code>gcd_setup.skew</code></td>
+<td>setup（建立时间）路径的时钟偏斜分析报告。</td>
+</tr>
+<tr>
+<td><code>gcd.trans</code></td>
+<td>信号转换时间（transition time）报告，记录每个端口的上升&#x2F;下降时间。</td>
+</tr>
+<tr>
+<td><code>gcd.v</code></td>
+<td>原始的 RTL 设计文件（Verilog），即 GCD 模块的源代码。</td>
+</tr>
+<tr>
+<td><code>sta.log</code></td>
+<td>静态时序分析工具（如 OpenSTA）的运行日志，包含命令执行过程和错误&#x2F;警告。</td>
+</tr>
+<tr>
+<td><code>synth_check.txt</code></td>
+<td>综合检查结果，可能列出未连接的端口、组合逻辑环等问题。</td>
+</tr>
+<tr>
+<td><code>synth_stat.txt</code></td>
+<td>综合统计信息，如 cell 数量、面积、使用的门类型等。</td>
+</tr>
+<tr>
+<td><code>yosys.log</code></td>
+<td>Yosys 综合流程的日志，记录每个命令的执行情况、优化步骤等。</td>
+</tr>
+</tbody></table>
+<ul>
+<li>文件当中的 <code>xxx r/ xxx f</code> 表示的是 上升沿（rasing）和 下降沿（falling）</li>
+</ul>
+<p>频率主要查看 gcd.rpt。</p>
+<div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">+---------------------------------+--------------------------+------------+------------+---------------+-------+-------+-----------+</span><br><span class="line">| Endpoint                        | Clock Group              | Delay Type | Path Delay | Path Required | CPPR  | Slack | Freq(MHz) |</span><br><span class="line">+---------------------------------+--------------------------+------------+------------+---------------+-------+-------+-----------+</span><br><span class="line">| dpath.a_lt_b$in0_10__reg_p:D    | core_clock               | max        | 0.688f     | 1.954         | 0.000 | 1.265 | 1361.048  |</span><br><span class="line">| dpath.a_lt_b$in0_0__reg_p:D     | core_clock               | max        | 0.686f     | 1.952         | 0.000 | 1.266 | 1362.424  |</span><br><span class="line">| dpath.a_lt_b$in0_0__reg_p:D     | core_clock               | max        | 0.694r     | 1.970         | 0.000 | 1.276 | 1381.004  |</span><br><span class="line">| dpath.a_lt_b$in0_4__reg_p:D     | core_clock               | max        | 0.693r     | 1.973         | 0.000 | 1.279 | 1387.829  |</span><br><span class="line">| dpath.a_lt_b$in0_11__reg_p:D    | core_clock               | max        | 0.693r     | 1.973         | 0.000 | 1.280 | 1388.037  |</span><br><span class="line">| ctrl$b_reg_en_0__ICGX0P5H7L_E:E | **clock_gating_default** | max        | 0.657r     | 1.947         | 0.000 | 1.290 | NA        |</span><br><span class="line">| ctrl$b_reg_en_0__ICGX0P5H7L_E:E | **clock_gating_default** | max        | 0.629f     | 1.968         | 0.000 | 1.338 | NA        |</span><br><span class="line">| ctrl$a_reg_en_0__ICGX0P5H7L_E:E | **clock_gating_default** | max        | 0.199r     | 1.946         | 0.000 | 1.747 | NA        |</span><br><span class="line">| ctrl$a_reg_en_0__ICGX0P5H7L_E:E | **clock_gating_default** | max        | 0.182f     | 1.967         | 0.000 | 1.785 | NA        |</span><br><span class="line">| dpath.a_lt_b$in1_12__reg_p:D    | core_clock               | min        | 0.116f     | -0.008        | 0.000 | 0.124 | NA        |</span><br><span class="line">| ctrl.state.out_1__reg_p:D       | core_clock               | min        | 0.117f     | -0.008        | 0.000 | 0.125 | NA        |</span><br><span class="line">| dpath.a_lt_b$in1_2__reg_p:D     | core_clock               | min        | 0.122f     | -0.008        | 0.000 | 0.130 | NA        |</span><br><span class="line">| dpath.a_lt_b$in1_3__reg_p:D     | core_clock               | min        | 0.123f     | -0.008        | 0.000 | 0.130 | NA        |</span><br><span class="line">| dpath.a_lt_b$in1_5__reg_p:D     | core_clock               | min        | 0.123f     | -0.008        | 0.000 | 0.131 | NA        |</span><br><span class="line">| ctrl$b_reg_en_0__ICGX0P5H7L_E:E | **clock_gating_default** | min        | 0.131f     | -0.004        | 0.000 | 0.135 | NA        |</span><br><span class="line">| ctrl$a_reg_en_0__ICGX0P5H7L_E:E | **clock_gating_default** | min        | 0.128f     | -0.008        | 0.000 | 0.136 | NA        |</span><br><span class="line">| ctrl$a_reg_en_0__ICGX0P5H7L_E:E | **clock_gating_default** | min        | 0.131r     | -0.013        | 0.000 | 0.144 | NA        |</span><br><span class="line">| ctrl$b_reg_en_0__ICGX0P5H7L_E:E | **clock_gating_default** | min        | 0.139r     | -0.012        | 0.000 | 0.151 | NA        |</span><br><span class="line">+---------------------------------+--------------------------+------------+------------+---------------+-------+-------+-----------+</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>功耗：</p>
+<div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/ysyx-workbench/yosys-sta/result/gcd-500MHz$ cat gcd.pwr</span><br><span class="line">Generate the report at 2026-07-20T15:23:52</span><br><span class="line">Report : Averaged Power</span><br><span class="line"> +---------------+----------------+--------------+---------------+-------------+-----------+</span><br><span class="line">| Power Group   | Internal Power | Switch Power | Leakage Power | Total Power | (%)       |</span><br><span class="line">+---------------+----------------+--------------+---------------+-------------+-----------+</span><br><span class="line">| combinational | 1.092e-03      | 0.000e+00    | 2.926e-07     | 1.092e-03   | (89.968%) |</span><br><span class="line">| sequential    | 1.215e-04      | 0.000e+00    | 2.428e-07     | 1.218e-04   | (10.032%) |</span><br><span class="line">+---------------+----------------+--------------+---------------+-------------+-----------+</span><br><span class="line">Net Switch Power   ==    0.000e+00 (0.000%)</span><br><span class="line">Cell Internal Power   ==    1.213e-03 (99.956%)</span><br><span class="line">Cell Leakage Power   ==    5.354e-07 (0.044%)</span><br><span class="line">Total Power   ==  1.214e-03 W</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><code>Internal Power</code>是内部功耗. 在晶体管翻转时, 由于nMOS和pMOS并非瞬间就完成状态切换, 因此在一段<strong>很短的时间</strong>内, nMOS和pMOS会<strong>同时处于导通状态</strong>, 导致形成了从电源端到地端的短路电流, 这部分电流所产生的功耗就是<strong>内部功耗</strong>, 也称短路功耗. <strong>内部功耗属于动态功耗</strong>(dynamic power)的一部分.</li>
+<li><code>Switch Power</code>是翻转功耗. CMOS电路翻转时, 为了完成从<code>0</code>到<code>1</code>或从<code>1</code>到<code>0</code>的变化, 需要对相应的等效电容进行充电或放电, 这个过程产生的功耗就是翻转功耗, 也称开关功耗. <strong>翻转功耗也属于动态功耗</strong>的一部分, 也即, 动态功耗由内部功耗和翻转功耗两部分组成.</li>
+<li><code>Leakage Power</code>是漏电功耗. 在理想情况下, 晶体管处于截止状态时, 源极和漏极之间没有任何电流通过. 但实际上并非如此, 真正的晶体管会因为多种原因, 导致在<strong>源极和漏极之间存在一定的微小电流</strong>, 称为<strong>漏电电流</strong>(leakage current). 由漏电电流形成的功耗就是漏电功耗. 由于漏电功耗在晶体管不翻转时也会存在, 因此也称为<strong>静态功耗</strong>.</li>
+</ul>
+<p>目前的报告中, 翻转功耗都是<code>0</code>. 这是因为评估翻转功耗需要先计算出相应的等效电容, 而等效电容不仅和标准单元本身有关, 也和走线的拓扑和长度相关. 进一步地, 要得到走线的拓扑和长度, 需要先完成后端物理设计的一系列步骤. <code>yosys-sta</code>没有开展这些步骤, 因此无法计算出等效电容, 从而无法评估翻转功耗.</p>
+<p>ASIC, Application-Specific Intergrated Circuit 专用集成电路。</p>
+<h2 id="PDK（Process-Design-Kit，工艺设计套件）和标准单元库"><a href="#PDK（Process-Design-Kit，工艺设计套件）和标准单元库" class="headerlink" title="PDK（Process Design Kit，工艺设计套件）和标准单元库"></a>PDK（Process Design Kit，工艺设计套件）和标准单元库</h2><p>ics55_LLSC_H7C_V1p10C100</p>
+<ul>
+<li>ics55：ICsprout55</li>
+<li>LLSC：Low Leakage Standard Cell</li>
+<li>H7：标准单元高度为 7 个轨道</li>
+<li>C：表示大版本号（还有A, B）</li>
+<li>V1p10C100：表示具体的小版本</li>
+</ul>
+<h3 id="工艺视角的芯片结构"><a href="#工艺视角的芯片结构" class="headerlink" title="工艺视角的芯片结构"></a>工艺视角的芯片结构</h3><p>例：</p>
+<div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">---------------------   M7    ------ 电源</span><br><span class="line">  | | | | | | | | |</span><br><span class="line">---------------------   M6    ------ 时钟</span><br><span class="line">  | | | | | | | | |</span><br><span class="line">---------------------   M5    --+</span><br><span class="line">  | | | | | | | | |             |</span><br><span class="line">---------------------   M4      |</span><br><span class="line">  | | | | | | | | |             +--- 标准单元间的连接</span><br><span class="line">---------------------   M3      |</span><br><span class="line">  | | | | | | | | |             |</span><br><span class="line">---------------------   M2    --+</span><br><span class="line">  | | | | | | | | |</span><br><span class="line">---------------------   M1    ------ 晶体管间的连接</span><br><span class="line">  | | | | | | | | | &lt;------- 通孔</span><br><span class="line">=====================  多晶硅  --+</span><br><span class="line">+++++++++++++++++++++  绝缘层    +--- 晶体管</span><br><span class="line">ooooooooooooooooooooo  硅衬底  --+</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>最底层是硅衬底(silicon substrate), 包含晶体管的源极和漏极; 其上是绝缘层(dielectric), 也称栅氧层, 通常使用二氧化硅作为材料; 再上方是多晶硅层(poly-silicon), 作为晶体管的栅极. 这三层用于<strong>实现晶体管的物理结构</strong>.</li>
+<li>多个金属层(metal), 连接不同的晶体管, 实现不同门电路或标准单元的功能. 连接方式有层内连接和跨层连接两种.<ul>
+<li>区分不同层，有进行编号，编号越大，层数越高</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>金属层</th>
+<th>线宽</th>
+<th>走线间距</th>
+<th>走线特性</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>低层</td>
+<td>小</td>
+<td>小</td>
+<td>电阻大, 传输距离短, 布线密度高</td>
+<td>连接不同的晶体管, 从而构成门电路和标准单元</td>
+</tr>
+<tr>
+<td>中层</td>
+<td>中</td>
+<td>中</td>
+<td>电阻中, 传输距离中等, 布线密度中</td>
+<td>连接不同的标准单元, 实现芯片的主要逻辑</td>
+</tr>
+<tr>
+<td>高层</td>
+<td>大</td>
+<td>大</td>
+<td>电阻小, 传输距离长, 布线密度低</td>
+<td>电源</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>制造工艺<br>    对于不同的制造工艺, 其金属层数量可能不同. 例如, 上图的工艺结构简称为<code>1P7M</code>, 其中<code>P</code>表示<code>Poly</code>, 即多晶硅层; <code>M</code>表示<code>Metal</code>, 即金属层; 因此<code>1P7M</code>表示1层多晶硅层和7层金属层. 在<code>1P7M</code>中, <code>M1</code>为低层金属层, <code>M2</code>-<code>M6</code>为中层金属层, <code>M7</code>为高层金属层. 可见, 在<code>1P7M</code>中, 有5层中层金属层专门用于实现标准单元之间的连接.</p>
+</blockquote>
+<blockquote>
+<p>LEF 文件（Library Exchange Format）<code>.lef</code><br>    库交换格式，是数字集成电路设计中一种用于描述<strong>物理库信息</strong>的标准文件格式，最初由 Cadence 定义。</p>
+</blockquote>
+<p>在早期的 <strong>门阵列（Gate Array）</strong> 或 <strong>半定制 ASIC</strong> 技术中：</p>
+<ul>
+<li><strong>Master Slice</strong> 指晶圆厂<strong>预先大批量生产</strong>的晶圆基础结构。</li>
+<li>上面已经布满了<strong>未互连的晶体管阵列</strong>（扩散层、多晶硅栅等已经固定）。</li>
+<li>客户只需要定制<strong>上层金属互连层</strong>的掩膜，把这些晶体管连成功能电路。</li>
+</ul>
+<p>因此，<strong>poly（多晶硅）、diffusion（扩散区）</strong> 这些无法通过后期金属层改变的底层，就被归类为 <strong>masterslice</strong>。</p>
+<div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> WIDTH</span><br><span class="line">   |</span><br><span class="line"> &lt;-+-&gt;</span><br><span class="line">|     |                          |     |</span><br><span class="line">|     |                          |     |</span><br><span class="line">|     |                          |     |</span><br><span class="line">|     |                          |     |</span><br><span class="line">|wire |                          |     |</span><br><span class="line">|     |                          |     |</span><br><span class="line">|     |                          |     |</span><br><span class="line">|     |                          |     |</span><br><span class="line">|     |                          |     |</span><br><span class="line">|     |                          |     |</span><br><span class="line">|     |           PITCH          |     |</span><br><span class="line">|     |             |            |     |</span><br><span class="line">|     |             |            |     |</span><br><span class="line">|     |             |            |     |</span><br><span class="line">   |&lt;---------------+--------------&gt;|</span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">LAYER MET1</span><br><span class="line">  TYPE ROUTING ;</span><br><span class="line">  DIRECTION HORIZONTAL ;</span><br><span class="line">  PITCH 0.2 0.2 ;</span><br><span class="line">  WIDTH 0.09 ;</span><br><span class="line">  OFFSET 0 0 ;</span><br><span class="line">  AREA 0.042 ;</span><br><span class="line">  SPACING 0.09 ;</span><br><span class="line">  MAXWIDTH 10 ;</span><br><span class="line">  MINENCLOSEDAREA 0.18 ;</span><br><span class="line">  RESISTANCE RPERSQ 0.1122 ;</span><br><span class="line">  DCCURRENTDENSITY AVERAGE 1.5 ;</span><br><span class="line">END MET1</span><br><span class="line"></span><br><span class="line">LAYER MET2</span><br><span class="line">  TYPE ROUTING ;</span><br><span class="line">  DIRECTION VERTICAL ;</span><br><span class="line">  PITCH 0.2 0.2 ;</span><br><span class="line">  WIDTH 0.1 ;</span><br><span class="line">  OFFSET 0 0 ;</span><br><span class="line">  AREA 0.052 ;</span><br><span class="line">  SPACING 0.1 ;</span><br><span class="line">  MAXWIDTH 10 ;</span><br><span class="line">  MINENCLOSEDAREA 0.18 ;</span><br><span class="line">  RESISTANCE RPERSQ 0.0914 ;</span><br><span class="line">  DCCURRENTDENSITY AVERAGE 1.7 ;</span><br><span class="line">END MET2</span><br><span class="line"></span><br><span class="line">LAYER MET3</span><br><span class="line">  TYPE ROUTING ;</span><br><span class="line">  DIRECTION HORIZONTAL ;</span><br><span class="line">  PITCH 0.2 0.2 ;</span><br><span class="line">  WIDTH 0.1 ;</span><br><span class="line">  OFFSET 0 0 ;</span><br><span class="line">  AREA 0.052 ;</span><br><span class="line">  SPACING 0.1 ;</span><br><span class="line">  MAXWIDTH 10 ;</span><br><span class="line">  MINENCLOSEDAREA 0.18 ;</span><br><span class="line">  RESISTANCE RPERSQ 0.0914 ;</span><br><span class="line">  DCCURRENTDENSITY AVERAGE 1.7 ;</span><br><span class="line">END MET3</span><br><span class="line"></span><br><span class="line">LAYER MET4</span><br><span class="line">  TYPE ROUTING ;</span><br><span class="line">  DIRECTION VERTICAL ;</span><br><span class="line">  PITCH 0.2 0.2 ;</span><br><span class="line">  WIDTH 0.1 ;</span><br><span class="line">  OFFSET 0 0 ;</span><br><span class="line">  AREA 0.052 ;</span><br><span class="line">  SPACING 0.1 ;</span><br><span class="line">  MAXWIDTH 10 ;</span><br><span class="line">  MINENCLOSEDAREA 0.18 ;</span><br><span class="line">  RESISTANCE RPERSQ 0.0914 ;</span><br><span class="line">  DCCURRENTDENSITY AVERAGE 1.7 ;</span><br><span class="line">END MET4</span><br><span class="line"></span><br><span class="line">LAYER MET5</span><br><span class="line">  TYPE ROUTING ;</span><br><span class="line">  DIRECTION HORIZONTAL ;</span><br><span class="line">  PITCH 0.2 0.2 ;</span><br><span class="line">  WIDTH 0.1 ;</span><br><span class="line">  OFFSET 0 0 ;</span><br><span class="line">  AREA 0.052 ;</span><br><span class="line">  SPACING 0.1 ;</span><br><span class="line">  MAXWIDTH 10 ;</span><br><span class="line">  MINENCLOSEDAREA 0.18 ;</span><br><span class="line">  RESISTANCE RPERSQ 0.0914 ;</span><br><span class="line">  DCCURRENTDENSITY AVERAGE 1.7 ;</span><br><span class="line">END MET5</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>M1 线宽最细，用来连接晶体管构成基础单元</li>
+<li>M2-M5 参数一致<ul>
+<li>M2-M4 可能用来连接标准单元</li>
+<li>M5 电源</li>
+</ul>
+</li>
+<li>这里的 <strong>HORIZONTAL</strong>（水平）和 <strong>VERTICAL</strong>（竖直），指的是该层金属走线的<strong>主导方向</strong>。</li>
+<li>方向交替 H-V-H-V-H 曼哈顿布线，相邻层正交</li>
+</ul>
+<h3 id="标准单元的属性"><a href="#标准单元的属性" class="headerlink" title="标准单元的属性"></a>标准单元的属性</h3><p>标准单元的命名遵循<code>功能+驱动能力+H+轨道数+阈值电压</code>的命名方式</p>
+<ul>
+<li>如 NAND2X1H7L<ul>
+<li>NAND2: 标准单元的功能为 二输入的与非门</li>
+<li>X1: 驱动能力 为 x1，即 1倍 标准驱动能力</li>
+<li>H7: 高度为 7 个轨道</li>
+<li>L: LVT ( Low Threshold Voltage) 低阈值电压 <ul>
+<li><strong>特点</strong>：栅极只需较小的电压就能让沟道导通，因此<strong>开关速度快</strong>，适合高频或高性能电路。</li>
+<li><strong>代价</strong>：阈值越低，关断时的漏电流（静态功耗）越大，<strong>能耗更高</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如 X0P5 中，P 表示小数点，所以这是 0.5 倍驱动能力</li>
+</ul>
+<h4 id="LIB-文件"><a href="#LIB-文件" class="headerlink" title="LIB 文件"></a>LIB 文件</h4><p><strong>Liberty Timing File</strong>（.lib 文件）是数字芯片设计中用于描述<strong>标准单元或宏单元时序特性</strong>的标准库文件。<br>它由晶圆厂（Foundry）或 IP 厂商提供，记录了每个单元在不同工艺、电压、温度（PVT）条件下的<strong>输入输出延迟、建立&#x2F;保持时间、信号转换时间、功耗及面积</strong>等参数。</p>
+<p>观察</p>
+<div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd yosys-sta/pdk/icsprout55/IP/STD_cell/ics55_LLSC_H7C_V1p10C100/</span><br><span class="line">vim ics55_LLSC_H7CL/liberty/ics55_LLSC_H7CL_typ_tt_1p2_25_nldm.lib</span><br></pre></td></tr></table></figure></div>
+<p>可以发现</p>
+<ul>
+<li>4 * 2 个 leakage_power，都只有 VDD 的有 power<ul>
+<li><strong>VDD 是电源引脚（power pin）</strong>：它提供能量，所以任何静态耗电都归到它名下。</li>
+<li><strong>VSS 是地引脚（ground pin）</strong>：它只是电流的回流参考点，本身不”消耗”功率。</li>
+</ul>
+</li>
+<li><strong>Internal Power（内部功耗）</strong> 是指标准单元在<strong>输入信号发生翻转</strong>时，<strong>单元内部自身消耗</strong>的动态功耗。<ul>
+<li><strong>短路电流功耗（Short-Circuit Power）</strong>      输入信号跳变瞬间，PMOS 和 NMOS 会<strong>短暂同时导通</strong>，形成从 VDD 到 VSS 的直接通路，产生瞬间浪涌电流。</li>
+<li><strong>内部节点开关功耗</strong>      信号翻转导致单元内部各节点（非输出引脚）的寄生电容反复充放电所消耗的能量。</li>
+</ul>
+</li>
+<li><strong><code>timing()</code> 就是“从哪个输入进来，经过多少延迟，产生什么输出，并消耗多少功耗”的一张行为清单。</strong></li>
+<li><strong><code>function</code></strong> 是一个<strong>逻辑功能表达式</strong>，用来声明<strong>输出引脚的布尔逻辑</strong>。它告诉 EDA 工具：这个输出等于哪些输入经过什么逻辑运算得到的。</li>
+</ul>
+<h4 id="Verilog-文件-行为模型"><a href="#Verilog-文件-行为模型" class="headerlink" title="Verilog 文件 - 行为模型"></a>Verilog 文件 - 行为模型</h4><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">`<span class="keyword">timescale</span> 1ns/1ps</span></span><br><span class="line"><span class="meta">`<span class="keyword">celldefine</span></span></span><br><span class="line"><span class="keyword">module</span> NAND2X1H7L (Y, A, B);</span><br><span class="line"><span class="keyword">output</span> Y;</span><br><span class="line"><span class="keyword">input</span> A, B;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">nand</span> (Y, A, B);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">`<span class="keyword">ifdef</span> functional </span><span class="comment">// functional //</span></span><br><span class="line"><span class="meta">`<span class="keyword">else</span> </span><span class="comment">// functional //</span></span><br><span class="line"><span class="keyword">specify</span></span><br><span class="line"><span class="keyword">if</span> (B==<span class="number">1&#x27;b1</span>)</span><br><span class="line">(A =&gt; Y) = (<span class="number">1</span><span class="variable">.0</span>,<span class="number">1</span><span class="variable">.0</span>);</span><br><span class="line"><span class="keyword">if</span> (A==<span class="number">1&#x27;b1</span>)</span><br><span class="line">(B =&gt; Y) = (<span class="number">1</span><span class="variable">.0</span>,<span class="number">1</span><span class="variable">.0</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">endspecify</span></span><br><span class="line"><span class="meta">`<span class="keyword">endif</span> </span><span class="comment">// functional //</span></span><br><span class="line"><span class="keyword">endmodule</span> <span class="comment">//NAND2X1H7L</span></span><br><span class="line"><span class="meta">`<span class="keyword">endcelldefine</span></span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="LEF-文件-物理集合信息"><a href="#LEF-文件-物理集合信息" class="headerlink" title="LEF 文件 - 物理集合信息"></a>LEF 文件 - 物理集合信息</h4><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">MACRO NAND2X1H7L</span><br><span class="line">  CLASS CORE ;</span><br><span class="line">  ORIGIN 0 0 ;</span><br><span class="line">  FOREIGN NAND2X1H7L 0 0 ;</span><br><span class="line">  SIZE 0.8 BY 1.4 ;</span><br><span class="line">  SYMMETRY X Y ;</span><br><span class="line">  SITE core7 ;</span><br><span class="line">  PIN A</span><br><span class="line">    DIRECTION INPUT ;</span><br><span class="line">    USE SIGNAL ;</span><br><span class="line">    PORT</span><br><span class="line">      LAYER MET1 ;</span><br><span class="line">        RECT 0.055 0.425 0.23 0.59 ;</span><br><span class="line">    END</span><br><span class="line">  END A</span><br><span class="line">  PIN B</span><br><span class="line">    DIRECTION INPUT ;</span><br><span class="line">    USE SIGNAL ;</span><br><span class="line">    PORT</span><br><span class="line">      LAYER MET1 ;</span><br><span class="line">        RECT 0.5 0.625 0.745 0.775 ;</span><br><span class="line">    END</span><br><span class="line">  END B</span><br><span class="line">  PIN VDD</span><br><span class="line">    DIRECTION INOUT ;</span><br><span class="line">    USE POWER ;</span><br><span class="line">    SHAPE ABUTMENT ;</span><br><span class="line">    PORT</span><br><span class="line">      LAYER MET1 ;</span><br><span class="line">        RECT 0 1.32 0.8 1.48 ;</span><br><span class="line">        RECT 0.555 1.075 0.695 1.48 ;</span><br><span class="line">        RECT 0.045 1.075 0.185 1.48 ;</span><br><span class="line">    END</span><br><span class="line">  END VDD</span><br><span class="line">  PIN VSS</span><br><span class="line">    DIRECTION INOUT ;</span><br><span class="line">    USE GROUND ;</span><br><span class="line">    SHAPE ABUTMENT ;</span><br><span class="line">    PORT</span><br><span class="line">      LAYER MET1 ;</span><br><span class="line">        RECT 0 -0.08 0.8 0.08 ;</span><br><span class="line">        RECT 0.045 -0.08 0.185 0.325 ;</span><br><span class="line">    END</span><br><span class="line">  END VSS</span><br><span class="line">  PIN Y</span><br><span class="line">    DIRECTION OUTPUT ;</span><br><span class="line">    USE SIGNAL ;</span><br><span class="line">    PORT</span><br><span class="line">      LAYER MET1 ;</span><br><span class="line">        RECT 0.32 0.285 0.685 0.375 ;</span><br><span class="line">        RECT 0.32 0.285 0.41 1.09 ;</span><br><span class="line">        RECT 0.255 0.825 0.41 0.975 ;</span><br><span class="line">    END</span><br><span class="line">  END Y</span><br><span class="line">END NAND2X1H7L</span><br></pre></td></tr></table></figure></div>
+
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MACRO</strong></td>
+<td>声明一个<strong>宏&#x2F;单元</strong>（标准单元或硬核模块）的开始，后跟单元名 <code>NAND2X1H7L</code>。</td>
+</tr>
+<tr>
+<td><strong>CLASS CORE</strong></td>
+<td>指定单元类别为<strong>核心逻辑单元</strong>（可放入标准单元行的逻辑门，区别于 I&#x2F;O PAD、电源环等）。</td>
+</tr>
+<tr>
+<td><strong>ORIGIN 0 0</strong></td>
+<td>定义单元内部几何图形的<strong>坐标原点</strong>为 (0, 0)，，所有内部坐标都相对该点。</td>
+</tr>
+<tr>
+<td><strong>FOREIGN NAND2X1H7L 0 0</strong></td>
+<td>指明该单元在 GDS 等<strong>外部版图数据库中的名称</strong>也是 <code>NAND2X1H7L</code>；后两个 0 表示外部数据与 LEF 原点<strong>无偏移</strong>、完全对齐。</td>
+</tr>
+<tr>
+<td><strong>SIZE 0.8 BY 1.4</strong></td>
+<td>单元的<strong>外形尺寸</strong>：宽 0.8、高 1.4（单位通常为微米），构成单元的边界框（Bounding Box）。（by 仅仅起分隔作用）</td>
+</tr>
+<tr>
+<td><strong>SYMMETRY X Y</strong></td>
+<td>允许布局工具将单元沿 <strong>X 轴（上下翻转）</strong> 或 <strong>Y 轴（左右翻转）</strong> 对称放置，以优化绕线。</td>
+</tr>
+<tr>
+<td><strong>SITE core7</strong></td>
+<td>绑定到一个名为 <code>core7</code> 的 <strong>Site</strong>（7 轨行高模板），告诉布局工具该单元应摆在哪种高度的标准单元行里。</td>
+</tr>
+<tr>
+<td><strong>PIN A</strong></td>
+<td>定义一个名为 <strong>A</strong> 的引脚（输入端口）。</td>
+</tr>
+<tr>
+<td><strong>DIRECTION INPUT</strong></td>
+<td>该引脚为<strong>输入</strong>方向。</td>
+</tr>
+<tr>
+<td><strong>USE SIGNAL</strong></td>
+<td>该引脚用于传输<strong>普通信号</strong>（区别于 POWER、GROUND、CLOCK 等）。</td>
+</tr>
+<tr>
+<td><strong>PORT</strong></td>
+<td>声明该引脚的<strong>物理几何端口</strong>开始（一个引脚可含多个 PORT 或图形）。</td>
+</tr>
+<tr>
+<td><strong>LAYER MET1</strong></td>
+<td>该端口形状绘制在 <strong>MET1（第一层金属）</strong> 上。</td>
+</tr>
+<tr>
+<td><strong>RECT 0.055 0.425 0.23 0.59</strong></td>
+<td>一个矩形：左下角 (0.055, 0.425) 到 右上角 (0.23, 0.59)，定义了 <strong>A 引脚在 MET1 上的可接触区域</strong>。</td>
+</tr>
+<tr>
+<td><strong>END</strong></td>
+<td>结束当前块（PORT &#x2F; PIN &#x2F; MACRO）。</td>
+</tr>
+<tr>
+<td><strong>END A</strong></td>
+<td>结束 <strong>PIN A</strong> 的定义。</td>
+</tr>
+<tr>
+<td><strong>END NAND2X1H7L</strong></td>
+<td>结束整个 <strong>MACRO</strong> 的定义。</td>
+</tr>
+</tbody></table>
+<h4 id="CDL-文件-晶体管结构描述"><a href="#CDL-文件-晶体管结构描述" class="headerlink" title="CDL 文件 - 晶体管结构描述"></a>CDL 文件 - 晶体管结构描述</h4><p>CDL文件以<code>.cdl</code>为后缀, 它其实是一种电路描述语言(Circuit Description Language), 以文本方式描述了标准单元的晶体管结构.</p>
+<div class="code-container" data-rel="Routeros"><figure class="iseeu highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.SUBCKT NAND2X1H7L A B VDD VSS Y</span><br><span class="line">*.PININFO A:I B:I Y:O VDD:B VSS:B</span><br><span class="line">MMN0 Y B net6 VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MMN1 net6 A VSS VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MMP1 Y B VDD VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MMP0 Y A VDD VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">.ENDS</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>在 SPICE 网表里，**<code>m=1</code>** 中的 <strong>m</strong> 是 <strong>multiplicity（并联倍数&#x2F;乘数）</strong> 的意思。它表示：<strong>这一个器件实例在电学上等效于多少个完全相同的晶体管并联。</strong></li>
+</ul>
+<p>可以发现就是一个与非门的晶体管<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/ff4f3ef65eaf53310e9bf163577ea69b.jpg"
+                      alt="ff4f3ef65eaf53310e9bf163577ea69b.jpg"
+                ></p>
+<h4 id="GDS文件-物理版图"><a href="#GDS文件-物理版图" class="headerlink" title="GDS文件 - 物理版图"></a>GDS文件 - 物理版图</h4><p>GDS文件以<code>.gds</code>为后缀, 它包含了制造某标准单元的所需的所有物理和工艺信息.</p>
+<h3 id="标准单元的分类"><a href="#标准单元的分类" class="headerlink" title="标准单元的分类"></a>标准单元的分类</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722221711.png"
+                      alt="Pasted_image_20260722221711.png"
+                ><br>OAI22X1H7L<br>Y &#x3D; ((A0 + A1) &amp; (B0 + B1))’<br> &#x3D; (A0 + A1)’ + (B0 + B1)’<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722222015.png"
+                      alt="Pasted_image_20260722222015.png"
+                ></p>
+<div class="code-container" data-rel="Routeros"><figure class="iseeu highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">************************************************************************</span><br><span class="line">* Library Name: ICSN55H7LVT</span><br><span class="line">* Cell Name:    OAI22X1H7L</span><br><span class="line">* View Name:    schematic</span><br><span class="line">************************************************************************</span><br><span class="line"></span><br><span class="line">.SUBCKT OAI22X1H7L A0 A1 B0 B1 VDD VSS Y</span><br><span class="line">*.PININFO A0:I A1:I B0:I B1:I Y:O VDD:B VSS:B</span><br><span class="line">MNM4 net8 A1 VSS VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MNM3 net8 A0 VSS VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MMN5 Y B0 net8 VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MNM5 Y B1 net8 VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MMP5 Y A1 net046 VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MPM3 net046 A0 VDD VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MPM5 Y B1 net049 VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MPM4 net049 B0 VDD VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">.ENDS</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>描述顺序： 漏、栅、源、衬底<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722224130.png"
+                      alt="Pasted_image_20260722224130.png"
+                ><br>其实就是两组 <strong>或非门</strong>，再<strong>或运算</strong></p>
+<p><code>OAI</code>表示<code>Or-And-Invert</code>, <code>22</code>表示两组输入信号, 每组各两个.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225148.png"
+                      alt="Pasted_image_20260722225148.png"
+                ><br>AOI221 表示先 And 再 Or，22 表示And两组各两输入，1表示或还有一个额外输入</p>
+<p>驱动能力更强，下游晶体管反转更快，不过需要更大或更多晶体管实现，功耗也更高。</p>
+<h4 id="理解驱动能力"><a href="#理解驱动能力" class="headerlink" title="理解驱动能力"></a>理解驱动能力</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225501.png"
+                      alt="Pasted_image_20260722225501.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225746.png"
+                      alt="Pasted_image_20260722225746.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225826.png"
+                      alt="Pasted_image_20260722225826.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225720.png"
+                      alt="Pasted_image_20260722225720.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225801.png"
+                      alt="Pasted_image_20260722225801.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225839.png"
+                      alt="Pasted_image_20260722225839.png"
+                ><br>可以很明显的看到，面积和静态功耗都随着 X 驱动能力提高了</p>
+<div class="code-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span><br><span class="line"><span class="bullet">*</span> Library Name: ICSN55H7LVT</span><br><span class="line"><span class="bullet">*</span> Cell Name:    NAND2X1H7L</span><br><span class="line"><span class="bullet">*</span> View Name:    schematic</span><br><span class="line"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span><br><span class="line"></span><br><span class="line">.SUBCKT NAND2X1H7L A B VDD VSS Y</span><br><span class="line"><span class="emphasis">*.PININFO A:I B:I Y:O VDD:B VSS:B</span></span><br><span class="line"><span class="emphasis">MMN0 Y B net6 VSS nm1p2_lvt_lp W=210n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMN1 net6 A VSS VSS nm1p2_lvt_lp W=210n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMP1 Y B VDD VDD pm1p2_lvt_lp W=270n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMP0 Y A VDD VDD pm1p2_lvt_lp W=270n L=60n m=1</span></span><br><span class="line"><span class="emphasis">.ENDS</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span></span><br><span class="line"><span class="emphasis">*</span> Library Name: ICSN55H7LVT</span><br><span class="line"><span class="bullet">*</span> Cell Name:    NAND2X2H7L</span><br><span class="line"><span class="bullet">*</span> View Name:    schematic</span><br><span class="line"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span><br><span class="line"></span><br><span class="line">.SUBCKT NAND2X2H7L A B VDD VSS Y</span><br><span class="line"><span class="emphasis">*.PININFO A:I B:I Y:O VDD:B VSS:B</span></span><br><span class="line"><span class="emphasis">MMN0 Y B net6 VSS nm1p2_lvt_lp W=300n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMN1 net6 A VSS VSS nm1p2_lvt_lp W=300n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMP1 Y B VDD VDD pm1p2_lvt_lp W=380n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMP0 Y A VDD VDD pm1p2_lvt_lp W=380n L=60n m=1</span></span><br><span class="line"><span class="emphasis">.ENDS</span></span><br></pre></td></tr></table></figure></div>
+<p>最直接可以发现 NAND2X2H7L 比 NAND2X1H7L 面积更大</p>
+<h4 id="时序单元"><a href="#时序单元" class="headerlink" title="时序单元"></a>时序单元</h4><div class="code-container" data-rel="Routeros"><figure class="iseeu highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">************************************************************************</span><br><span class="line">* Library Name: ICSCORE</span><br><span class="line">* Cell Name:    TSINV</span><br><span class="line">* View Name:    schematic</span><br><span class="line">************************************************************************</span><br><span class="line"></span><br><span class="line">.SUBCKT TSINV A CK CKN VDD VSS Y</span><br><span class="line">*.PININFO A:I CK:I CKN:I VDD:B VSS:B Y:B</span><br><span class="line">MMN0 Y CK net18 VSS nm1p2_lvt_lp <span class="attribute">W</span>=nw <span class="attribute">L</span>=nl <span class="attribute">m</span>=1</span><br><span class="line">MMN1 net18 A VSS VSS nm1p2_lvt_lp <span class="attribute">W</span>=nw <span class="attribute">L</span>=nl <span class="attribute">m</span>=1</span><br><span class="line">MMP1 net024 A VDD VDD pm1p2_lvt_lp <span class="attribute">W</span>=pw <span class="attribute">L</span>=pl <span class="attribute">m</span>=1</span><br><span class="line">MMP0 Y CKN net024 VDD pm1p2_lvt_lp <span class="attribute">W</span>=pw <span class="attribute">L</span>=pl <span class="attribute">m</span>=1</span><br><span class="line">.ENDS</span><br><span class="line"></span><br><span class="line">************************************************************************</span><br><span class="line">* Library Name: ICSN55H7LVT</span><br><span class="line">* Cell Name:    SDFFX1H7L</span><br><span class="line">* View Name:    schematic</span><br><span class="line">************************************************************************</span><br><span class="line"></span><br><span class="line">.SUBCKT SDFFX1H7L CK D Q QN SE SI VDD VSS</span><br><span class="line">*.PININFO CK:I D:I SE:I SI:I Q:O QN:O VDD:B VSS:B</span><br><span class="line">XXI14 net46 c cn VDD VSS net33 / TSINV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=150n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=150n</span><br><span class="line">XXI18 SI SE sen VDD VSS net050 / TSINV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=250n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=200n</span><br><span class="line">XXI16 D sen SE VDD VSS net050 / TSINV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=300n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=220n</span><br><span class="line">XXI9 net46 c cn VDD VSS net25 / TSINV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=300n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=220n</span><br><span class="line">XXI15 net9 cn c VDD VSS net25 / TSINV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=150n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=150n</span><br><span class="line">XXI19 SE VDD VSS sen / INV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=280n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=200n</span><br><span class="line">XXI7 net33 VDD VSS net46 / INV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=300n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=220n</span><br><span class="line">XXI13 cn VDD VSS c / INV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=280n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=200n</span><br><span class="line">XXI12 net25 VDD VSS Q / INV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=340n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=240n</span><br><span class="line">XXI10 net25 VDD VSS net9 / INV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=300n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=220n</span><br><span class="line">XXI5 net9 VDD VSS QN / INV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=340n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=240n</span><br><span class="line">XXI4 CK VDD VSS cn / INV <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=280n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=200n</span><br><span class="line">XXI17 cn c net050 net33 VDD VSS / TG <span class="attribute">pl</span>=60n <span class="attribute">pw</span>=300n <span class="attribute">nl</span>=60n <span class="attribute">nw</span>=220n</span><br><span class="line">.ENDS</span><br></pre></td></tr></table></figure></div>
+<p>TSINV:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722231042.png"
+                      alt="Pasted_image_20260722231042.png"
+                ></p>
+<ul>
+<li>当 A &#x3D; 0 <ul>
+<li>pMOS 导通，此时<ul>
+<li>当 CKN &#x3D; 0, Y &#x3D; 1</li>
+<li>当 CKN &#x3D; 1, Y &#x3D; Z</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>当 A &#x3D; 1<ul>
+<li>nMOS 导通，此时<ul>
+<li>当 CK &#x3D; 0, Y &#x3D; Z</li>
+<li>当 CK &#x3D; 1, Y &#x3D; 0</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>一般来讲，CK &#x3D; !CKN</li>
+</ul>
+<h4 id="I-O单元"><a href="#I-O单元" class="headerlink" title="I&#x2F;O单元"></a>I&#x2F;O单元</h4><div class="code-container" data-rel="Nix"><figure class="iseeu highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cell (<span class="string">&quot;P65_1233_PBMUX&quot;</span>) &#123;</span><br><span class="line">  <span class="params">cell_leakage_power :</span> <span class="number">0.000000</span>e<span class="operator">+</span><span class="number">00</span>;</span><br><span class="line">  <span class="params">area :</span> <span class="number">8450.000000</span>;</span><br><span class="line">  <span class="params">pad_cell :</span> <span class="literal">true</span>;</span><br><span class="line">  pin (OE) &#123;</span><br><span class="line">    <span class="params">direction :</span> <span class="string">&quot;input&quot;</span>;</span><br><span class="line">    <span class="params">fanout_load :</span> <span class="number">0.020000</span>;</span><br><span class="line">    <span class="params">fall_capacitance :</span> <span class="number">0.009299</span>;</span><br><span class="line">    <span class="params">capacitance :</span> <span class="number">0.007812</span>;</span><br><span class="line">    <span class="params">rise_capacitance :</span> <span class="number">0.008430</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure></div>
+<p>可以发现 面积是 8450<br>而<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260725180800.png"
+                      alt="Pasted_image_20260725180800.png"
+                ><br>可以发现，IO 面积远大于 NAND 面积<br>因为对于 IO：</p>
+<ul>
+<li>大尺寸输出驱动管（驱动电流可达 mA 级）</li>
+<li>ESD 保护结构（大二极管或 SCR）</li>
+<li>输入&#x2F;输出缓冲、电平转换、上拉&#x2F;下拉电阻</li>
+<li>满足封装焊盘物理尺寸（如间距 &gt; 40 µm）<br>  …其面积通常在 <strong>100–300 µm²</strong> 甚至更大（对于 3.3V I&#x2F;O）。以 65nm 工艺为例，一个常规的 GPIO 单元尺寸可能为 <strong>200 µm²</strong> 左右。</li>
+</ul>
+<h4 id="功能单元在不同文件里的含义"><a href="#功能单元在不同文件里的含义" class="headerlink" title="功能单元在不同文件里的含义"></a>功能单元在不同文件里的含义</h4><div class="code-container" data-rel="Console"><figure class="iseeu highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/ysyx-workbench/yosys-sta/pdk/icsprout55/IP$ grep -rE &quot;ADDHX1H7L&quot; ./</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/liberty/ics55_LLSC_H7CL_ss_rcworst_1p08_125_nldm.lib:  cell (ADDHX1H7L) &#123;</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/liberty/ics55_LLSC_H7CL_ss_rcworst_1p08_125_nldm.lib:    cell_footprint : &quot;ADDHX1H7L&quot;;</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/liberty/ics55_LLSC_H7CL_typ_tt_1p2_25_nldm.lib:  cell (ADDHX1H7L) &#123;</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/liberty/ics55_LLSC_H7CL_typ_tt_1p2_25_nldm.lib:    cell_footprint : &quot;ADDHX1H7L&quot;;</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL_ieda.lefMACRO ADDHX1H7L</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL_ieda.lef  FOREIGN ADDHX1H7L 0 0 ;</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL_ieda.lefEND ADDHX1H7L</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL_ant.lef:MACRO ADDHX1H7L</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL_ant.lef:  FOREIGN ADDHX1H7L 0 0 ;</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL_ant.lef:END ADDHX1H7L</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL.lef:MACRO ADDHX1H7L</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL.lef:  FOREIGN ADDHX1H7L 0 0 ;</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL.lef:END ADDHX1H7L</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/verilog/ics55_LLSC_H7CL.v:module ADDHX1H7L (CO, S, A, B);</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/verilog/ics55_LLSC_H7CL.v:endmodule //ADDHX1H7L</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/cell_list/ics55_LLSC_H7CL.txADDHX1H7L</span><br><span class="line">./STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/cdl/ics55_LLSC_H7CL.cdl:* Cell Name:    ADDHX1H7L</span><br></pre></td></tr></table></figure></div>
+
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内容</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LIB</strong> (<code>.lib</code>)</td>
+<td>时序、功耗、逻辑功能、输入电容</td>
+<td>综合、STA、功耗分析，主要用于仿真中的各项参数和关系</td>
+</tr>
+<tr>
+<td><strong>LEF</strong> (<code>.lef</code>)</td>
+<td>单元尺寸、引脚位置、障碍、:天线属性</td>
+<td>布局布线（Place &amp; Route），主要是布局位置尺寸</td>
+</tr>
+<tr>
+<td><strong>Verilog</strong> (<code>.v</code>)</td>
+<td>行为级&#x2F;结构级逻辑模型</td>
+<td>仿真、综合前仿真</td>
+</tr>
+<tr>
+<td><strong>CDL</strong> (<code>.cdl</code>)</td>
+<td><strong>晶体管级网表</strong>（PMOS&#x2F;NMOS 连接）</td>
+<td>电路仿真（HSPICE）、物理验证（LVS）</td>
+</tr>
+<tr>
+<td><strong>TXT</strong> (<code>.txt</code>)</td>
+<td>单元列表（纯文本）</td>
+<td>库索引、脚本调用</td>
+</tr>
+</tbody></table>
+<p><strong><code>_ant</code> 与 <code>_ieda</code> 后缀含义</strong></p>
+<ul>
+<li><strong><code>_ant.lef</code></strong> — 天线效应视图（antenna）。<br>  在标准 LEF 基础上<strong>补充了每个引脚的天线面积属性</strong>（如 <code>ANTENNAGATEAREA</code>），供布线工具进行天线比检查与修复。<br>  <em>使用建议：后端需天线修复时加载，可代替或叠加普通 LEF。</em></li>
+<li><strong><code>_ieda.lef</code></strong> — 针对开源布局布线工具 <strong>iEDA</strong> 的定制视图。<br>  为适配 iEDA 框架（其解析器可能对 LEF 格式有特殊要求）而调整坐标精度、补充或简化某些属性。<br>  <em>使用建议：若后端使用 iEDA，应选用此文件；其他工具用无后缀版本即可。</em></li>
+</ul>
+<h4 id="复杂单元的全定制电路"><a href="#复杂单元的全定制电路" class="headerlink" title="复杂单元的全定制电路"></a>复杂单元的全定制电路</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727162325.png"
+                      alt="Pasted_image_20260727162325.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164645.png"
+                      alt="Pasted_image_20260727164645.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165452.png"
+                      alt="Pasted_image_20260727165452.png"
+                ><br>总共 18 个晶体管<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727163042.png"
+                      alt="Pasted_image_20260727163042.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164726.png"
+                      alt="Pasted_image_20260727164726.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165304.png"
+                      alt="Pasted_image_20260727165304.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165156.png"
+                      alt="Pasted_image_20260727165156.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165239.png"
+                      alt="Pasted_image_20260727165239.png"
+                ><br>总共 16 个晶体管</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727163133.png"
+                      alt="Pasted_image_20260727163133.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164750.png"
+                      alt="Pasted_image_20260727164750.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727163934.png"
+                      alt="Pasted_image_20260727163934.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164814.png"
+                      alt="Pasted_image_20260727164814.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164010.png"
+                      alt="Pasted_image_20260727164010.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164838.png"
+                      alt="Pasted_image_20260727164838.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164443.png"
+                      alt="Pasted_image_20260727164443.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164904.png"
+                      alt="Pasted_image_20260727164904.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165119.png"
+                      alt="Pasted_image_20260727165119.png"
+                ><br>area：</p>
+<ul>
+<li>xor + and &#x3D; Area: 4.48 晶体管数量：16 + 6 &#x3D; 22 &gt; 18</li>
+<li>(3*nand + 2*not) + and &#x3D; Area: 6.72 晶体管数量：12 + 4 + 6 &#x3D; 22 &gt; 18</li>
+</ul>
+<h4 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h4><div class="code-container" data-rel="Applescript"><figure class="iseeu highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">├── IP</span><br><span class="line">│   ├── IO</span><br><span class="line">│   │   └── ICsprout_55LLULP1233_IO_251013   <span class="comment"># Specific IO library</span></span><br><span class="line">│   │       ├── cdl</span><br><span class="line">│   │       ├── cell_list</span><br><span class="line">│   │       ├── lef</span><br><span class="line">│   │       ├── liberty</span><br><span class="line">│   │       └── verilog</span><br><span class="line">│   └── STD_cell                             <span class="comment"># Standard cell library</span></span><br><span class="line">│       └── ics55_LLSC_H7C_V1p10C100         <span class="comment"># 55nm LLSC H7C standard cell library version 1.10</span></span><br><span class="line">│           ├── ics55_LLSC_H7CL              <span class="comment"># LVT standard cells</span></span><br><span class="line">│           │   ├── cdl</span><br><span class="line">│           │   ├── cell_list</span><br><span class="line">│           │   ├── doc</span><br><span class="line">│           │   ├── lef</span><br><span class="line">│           │   ├── liberty</span><br><span class="line">│           │   └── verilog</span><br><span class="line">│           └── ics55_LLSC_H7CR              <span class="comment"># RVT standard cells</span></span><br><span class="line">│               ├── cdl</span><br><span class="line">│               ├── cell_list</span><br><span class="line">│               ├── doc</span><br><span class="line">│               ├── lef</span><br><span class="line">│               ├── liberty</span><br><span class="line">│               └── verilog</span><br><span class="line">└── prtech                                   <span class="comment"># Place &amp; Route technology files</span></span><br><span class="line">    └── techLEF</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><strong>TechLEF（Technology LEF）</strong> 是物理设计库中的工艺技术文件，定义了金属层、通孔、设计规则（间距、最小宽度、Pitch 等），用于 EDA 工具布局布线。它与标准单元 LEF（Cell LEF）配合，前者描述工艺，后者描述单元。</li>
+</ul>
+<p><code>power_down_function : &quot;(!VDD) + (VSS)&quot;;</code><br><strong>含义</strong>：定义该单元的<strong>断电状态</strong>（Shut-down Condition）。这是一个布尔表达式，表示当 <strong>VDD 为逻辑 0（掉电）或者 VSS 为逻辑 1</strong> 时，该引脚处于断电&#x2F;高阻状态。</p>
+<p>liberty 中文件名解析：<code>[工艺库名]_[晶体管类型]_[晶体管角]_[连线角]_[电压]_[温度]_[延迟模型].lib</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">第一个文件 (H7CL)</th>
+<th align="left">第二个文件 (H7CR)</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>ics55_LLSC</code></strong></td>
+<td align="left">相同</td>
+<td align="left">相同</td>
+<td align="left"><strong>55nm ICsprout Low Leakage Standard Cell</strong>（低漏电标准单元库）</td>
+</tr>
+<tr>
+<td align="left"><strong><code>H7CL</code> &#x2F; <code>H7CR</code></strong></td>
+<td align="left"><strong>L</strong>VT（低阈值）</td>
+<td align="left"><strong>R</strong>VT（常规阈值）</td>
+<td align="left">对应你之前看到的目录，<code>H7CL</code> 速度快但漏电大；<code>H7CR</code> 更均衡。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>ss</code> &#x2F; <code>typ_tt</code></strong></td>
+<td align="left"><strong>ss</strong> (Slow-Slow)</td>
+<td align="left"><strong>typ</strong> + <strong>tt</strong> (Typical-Typical)</td>
+<td align="left"><strong>晶体管工艺角</strong>：%%BR%%• <code>ss</code>：NMOS和PMOS都是“慢”管子（载流子迁移率低，速度慢）。%%BR%%• <code>tt</code>：典型工艺角，代表晶圆厂统计意义上的平均性能。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>rcworst</code> &#x2F; (无)</strong></td>
+<td align="left"><strong>rcworst</strong></td>
+<td align="left">无</td>
+<td align="left"><strong>互连（RC）工艺角</strong>：%%BR%%• <code>rcworst</code>：导线电阻(R)和电容(C)处于使延迟<strong>最大</strong>的组合，代表后端连线最慢的情况。%%BR%%• 第二个文件没有标，通常表示在 TT 角下使用默认&#x2F;典型互连模型。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>1p08</code> &#x2F; <code>1p2</code></strong></td>
+<td align="left"><strong>1.08V</strong></td>
+<td align="left"><strong>1.2V</strong></td>
+<td align="left"><strong>电源电压</strong>：%%BR%%• <code>1p08</code> &#x3D; 1.08V（通常是标称1.2V的 <strong>-10% 降额</strong>，属于低电压最坏情况）。%%BR%%• <code>1p2</code> &#x3D; 1.2V（标称电压）。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>125</code> &#x2F; <code>25</code></strong></td>
+<td align="left"><strong>125°C</strong></td>
+<td align="left"><strong>25°C</strong></td>
+<td align="left"><strong>结温（Temperature）</strong>：%%BR%%• <code>125</code>：高温（结温125度，晶体管速度显著变慢）。%%BR%%• <code>25</code>：室温（25度，典型工作状态）。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>nldm</code></strong></td>
+<td align="left">相同</td>
+<td align="left">相同</td>
+<td align="left"><strong>Non-Linear Delay Model</strong>（非线性延迟模型）。工具通过查二维表（输入转换时间 × 输出负载）来计算延迟，是现代数字IC设计的主流格式。</td>
+</tr>
+</tbody></table>
+<h4 id="PVT-coner"><a href="#PVT-coner" class="headerlink" title="PVT coner"></a>PVT coner</h4><p>电路的延迟主要由 Process（工艺）、Voltage（电压）、Temperature（温度），三者统称 PVT 参数。<br>后端工程师一般会选取多个PVT参数的组合作为一系列环境, 并在设计阶段尽可能保证芯片将来能在这些环境下工作. 这些环境称为PVT角(PVT corner).</p>
+<p>为了测试电路在各种晶体管延迟下都能正确工作, 一般会根据晶体管的工作速度定义若干情况, 这些情况称为<strong>工艺角(process corner)</strong>. 工艺角通常用两个字母来命名, 第一个字母表示nMOS的工作速度, 第二个字母表示pMOS的工作速度. 工作速度分成三种情况: 典型(typical, 用字母<code>t</code>表示), 快速(fast, 用字母<code>f</code>表示)和慢速(slow, 用字母<code>s</code>表示). 其中, 快速和慢速都是相对与典型情况而言的. 因此, 根据晶体管的极性和工作速度, 可以组合出五种工艺角: <code>ss</code>, <code>tt</code>, <code>ff</code>, <code>sf</code>和<code>fs</code>. 例如, <code>fs</code>表示nMOS工作得比典型情况快, 但pMOS工作得比典型情况慢的延迟情况.</p>
+<div class="code-container" data-rel="Gherkin"><figure class="iseeu highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    pMOS</span><br><span class="line">     ^</span><br><span class="line">     |<span class="string">     sf            ff</span></span><br><span class="line"><span class="string">fast +    o-------------o</span></span><br><span class="line"><span class="string">     </span>|<span class="string">    </span>|<span class="string">             </span>|</span><br><span class="line">     |<span class="string">    </span>|<span class="string">       tt    </span>|</span><br><span class="line">     |<span class="string">    </span>|<span class="string">      o      </span>|</span><br><span class="line">     |<span class="string">    </span>|<span class="string">             </span>|</span><br><span class="line">     |<span class="string">    </span>|<span class="string">ss           </span>|fs</span><br><span class="line">slow +    o-------------o</span><br><span class="line">     |<span class="string"></span></span><br><span class="line"><span class="string">     +----+-------------+---&gt; nMOS</span></span><br><span class="line"><span class="string">         slow          fast</span></span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>对于 <strong>工艺角</strong><br>    在一个坐标轴中, 如果用X轴代表nMOS的工作速度, 用Y轴代表pMOS的工作速度, 那么<code>ss</code>, <code>ff</code>, <code>sf</code>和<code>fs</code>将分别落在一个矩形的四个角, 这也是”工艺角”的由来. 而<code>tt</code>其实落在矩形的中心, 严格来说它并不是一个”角”. 但作为典型情况, 后端工程师还是会把它归到”工艺角”的概念中.</p>
+</blockquote>
+<h4 id="工艺对比"><a href="#工艺对比" class="headerlink" title="工艺对比"></a>工艺对比</h4><ul>
+<li><strong><code>ics55_LLSC_H7CL_ss_rcworst_1p08_125_nldm</code></strong><ul>
+<li><p>gcd.pwr</p>
+<div class="code-container" data-rel="Gherkin"><figure class="iseeu highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Generate the report at 2026-07-27T21:07:53</span><br><span class="line">Report : Averaged Power</span><br><span class="line"> +---------------+----------------+--------------+---------------+-------------+-----------+</span><br><span class="line">|<span class="string"> Power Group   </span>|<span class="string"> Internal Power </span>|<span class="string"> Switch Power </span>|<span class="string"> Leakage Power </span>|<span class="string"> Total Power </span>|<span class="string"> (%)       </span>|</span><br><span class="line">+---------------+----------------+--------------+---------------+-------------+-----------+</span><br><span class="line">|<span class="string"> combinational </span>|<span class="string"> 1.279e-03      </span>|<span class="string"> 0.000e+00    </span>|<span class="string"> 1.311e-06     </span>|<span class="string"> 1.281e-03   </span>|<span class="string"> (93.407%) </span>|</span><br><span class="line">|<span class="string"> sequential    </span>|<span class="string"> 8.962e-05      </span>|<span class="string"> 0.000e+00    </span>|<span class="string"> 7.632e-07     </span>|<span class="string"> 9.038e-05   </span>|<span class="string"> (6.593%)  </span>|</span><br><span class="line">+---------------+----------------+--------------+---------------+-------------+-----------+</span><br><span class="line">Net Switch Power   ==    0.000e+00 (0.000%)</span><br><span class="line">Cell Internal Power   ==    1.369e-03 (99.849%)</span><br><span class="line">Cell Leakage Power   ==    2.074e-06 (0.151%)</span><br><span class="line">Total Power   ==  1.371e-03 W</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>gcd.rpt</p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="code-container" data-rel="Gherkin"><figure class="iseeu highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Generate the report at 2026-07-27T21:07:53, GitVersion: aa25008b3778a76ae1975c839d4cc459f7f7b3b7.</span><br><span class="line">+---------------------------------+--------------------------+------------+------------+---------------+-------+-------+-----------+</span><br><span class="line">|<span class="string"> Endpoint                        </span>|<span class="string"> Clock Group              </span>|<span class="string"> Delay Type </span>|<span class="string"> Path Delay </span>|<span class="string"> Path Required </span>|<span class="string"> CPPR  </span>|<span class="string"> Slack </span>|<span class="string"> Freq(MHz) </span>|</span><br><span class="line">+---------------------------------+--------------------------+------------+------------+---------------+-------+-------+-----------+</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_14__reg_p:D    </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 1.215f     </span>|<span class="string"> 1.926         </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.711 </span>|<span class="string"> 775.528   </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_10__reg_p:D    </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 1.202f     </span>|<span class="string"> 1.921         </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.720 </span>|<span class="string"> 781.007   </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_0__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 1.200f     </span>|<span class="string"> 1.921         </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.721 </span>|<span class="string"> 781.745   </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_11__reg_p:D    </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 1.231r     </span>|<span class="string"> 1.955         </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.724 </span>|<span class="string"> 783.393   </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_1__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 1.231r     </span>|<span class="string"> 1.955         </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.724 </span>|<span class="string"> 783.395   </span>|</span><br><span class="line">|<span class="string"> ctrl$b_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> max        </span>|<span class="string"> 1.162r     </span>|<span class="string"> 1.902         </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.740 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$b_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> max        </span>|<span class="string"> 1.093f     </span>|<span class="string"> 1.940         </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.847 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$a_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> max        </span>|<span class="string"> 0.267r     </span>|<span class="string"> 1.899         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.632 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$a_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> max        </span>|<span class="string"> 0.266f     </span>|<span class="string"> 1.938         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.672 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_12__reg_p:D    </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.207f     </span>|<span class="string"> -0.013        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.220 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl.state.out_1__reg_p:D       </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.207f     </span>|<span class="string"> -0.015        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.223 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_7__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.214f     </span>|<span class="string"> -0.014        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.228 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_9__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.215f     </span>|<span class="string"> -0.014        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.229 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_5__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.218f     </span>|<span class="string"> -0.013        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.231 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$a_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> min        </span>|<span class="string"> 0.230f     </span>|<span class="string"> -0.010        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.240 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$b_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> min        </span>|<span class="string"> 0.237f     </span>|<span class="string"> -0.007        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.244 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$a_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> min        </span>|<span class="string"> 0.227r     </span>|<span class="string"> -0.031        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.258 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$b_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> min        </span>|<span class="string"> 0.245r     </span>|<span class="string"> -0.028        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.273 </span>|<span class="string"> NA        </span>|</span><br><span class="line">+---------------------------------+--------------------------+------------+------------+---------------+-------+-------+-----------+</span><br></pre></td></tr></table></figure></div>
+<pre><code>- gcd.trans
+</code></pre>
+<div class="code-container" data-rel="Gherkin"><figure class="iseeu highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">+-----------------------------------------------------------------------------+---------------+---------------+---------------+-------------------+------+</span><br><span class="line">|<span class="string"> Net / Pin                                                                   </span>|<span class="string"> MaxSlewTime   </span>|<span class="string"> SlewTime      </span>|<span class="string"> SlewSlack     </span>|<span class="string"> LibCellPort       </span>|<span class="string"> Note </span>|</span><br><span class="line">+-----------------------------------------------------------------------------+---------------+---------------+---------------+-------------------+------+</span><br><span class="line">|<span class="string"> dpath.b_mux$out_5__OAI21X0P5H7L_Y_A1_OAI21X0P5H7L_A1_Y                      </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                   </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.b_mux$out_5__OAI21X0P5H7L_Y_A1_OAI21X0P5H7L_A1:Y                      </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.324r/0.181f </span>|<span class="string"> 0.472r/0.615f </span>|<span class="string"> OAI21X0P5H7L/Y    </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.b_mux$out_5__OAI21X0P5H7L_Y_A1_OAI21X0P5H7L_A1_Y                      </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                   </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_13__NAND2BX0P5H7L_B_Y_NAND4BX4H7L_D_B_OAI211X2H7L_Y:A0     </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.324r/0.181f </span>|<span class="string"> 0.472r/0.615f </span>|<span class="string"> OAI211X2H7L/A0    </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.b_mux$out_5__OAI21X0P5H7L_Y_A1_OAI21X0P5H7L_A1_Y                      </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                   </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.b_mux$out_6__OAI21X0P5H7L_Y_A1_AOI21X1P4H7L_A0_A1_OAI211X0P7H7L_Y:A0  </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.324r/0.181f </span>|<span class="string"> 0.472r/0.615f </span>|<span class="string"> OAI211X0P7H7L/A0  </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.b_mux$out_5__OAI21X0P5H7L_Y_A1_OAI21X0P5H7L_A1_Y                      </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                   </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.b_mux$out_6__OAI21X0P5H7L_Y_A1_AOI21X1P4H7L_A0_B0_OAOI211X0P5H7L_Y:A0 </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.324r/0.181f </span>|<span class="string"> 0.472r/0.615f </span>|<span class="string"> OAOI211X0P5H7L/A0 </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.b_mux$out_5__OAI21X0P5H7L_Y_A1_OAI21X0P5H7L_A1_Y                      </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                   </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_13__NAND2BX0P5H7L_B_Y_NAND4BX4H7L_D_C_OAI211X2H7L_Y:A0     </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.324r/0.181f </span>|<span class="string"> 0.472r/0.615f </span>|<span class="string"> OAI211X2H7L/A0    </span>|<span class="string">      </span>|</span><br><span class="line">+-----------------------------------------------------------------------------+---------------+---------------+---------------+-------------------+------+</span><br></pre></td></tr></table></figure></div>
+<pre><code>- gcd_hold.skew
+</code></pre>
+<div class="code-container" data-rel="Gherkin"><figure class="iseeu highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Generate the report at 2026-07-27T21:07:53, GitVersion: aa25008b3778a76ae1975c839d4cc459f7f7b3b7.</span><br><span class="line">Clock: core_clock</span><br><span class="line">+------------------------------------------+---------+-------+------+</span><br><span class="line">|<span class="string"> Clock Pin                                </span>|<span class="string"> Latency </span>|<span class="string"> Skew  </span>|<span class="string">      </span>|</span><br><span class="line">+------------------------------------------+---------+-------+------+</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_9__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_9__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_6__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_6__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_2__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_2__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_4__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_4__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> ctrl.state.out_2__reg_p:CK (DFFQX1H7L)   </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> ctrl.state.out_2__reg_p:CK (DFFQX1H7L)   </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">+------------------------------------------+---------+-------+------+</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><p><strong><code>ics55_LLSC_H7CL_typ_tt_1p2_25_nldm</code></strong></p>
+<ul>
+<li>gcd.pwr<div class="code-container" data-rel="Gherkin"><figure class="iseeu highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Generate the report at 2026-07-27T20:22:59</span><br><span class="line">Report : Averaged Power</span><br><span class="line"> +---------------+----------------+--------------+---------------+-------------+-----------+</span><br><span class="line">|<span class="string"> Power Group   </span>|<span class="string"> Internal Power </span>|<span class="string"> Switch Power </span>|<span class="string"> Leakage Power </span>|<span class="string"> Total Power </span>|<span class="string"> (%)       </span>|</span><br><span class="line">+---------------+----------------+--------------+---------------+-------------+-----------+</span><br><span class="line">|<span class="string"> combinational </span>|<span class="string"> 1.092e-03      </span>|<span class="string"> 0.000e+00    </span>|<span class="string"> 2.926e-07     </span>|<span class="string"> 1.092e-03   </span>|<span class="string"> (89.968%) </span>|</span><br><span class="line">|<span class="string"> sequential    </span>|<span class="string"> 1.215e-04      </span>|<span class="string"> 0.000e+00    </span>|<span class="string"> 2.428e-07     </span>|<span class="string"> 1.218e-04   </span>|<span class="string"> (10.032%) </span>|</span><br><span class="line">+---------------+----------------+--------------+---------------+-------------+-----------+</span><br><span class="line">Net Switch Power   ==    0.000e+00 (0.000%)</span><br><span class="line">Cell Internal Power   ==    1.213e-03 (99.956%)</span><br><span class="line">Cell Leakage Power   ==    5.354e-07 (0.044%)</span><br><span class="line">Total Power   ==  1.214e-03 W</span><br></pre></td></tr></table></figure></div></li>
+<li>gcd.rpt<div class="code-container" data-rel="Gherkin"><figure class="iseeu highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">+---------------------------------+--------------------------+------------+------------+---------------+-------+-------+-----------+</span><br><span class="line">|<span class="string"> Endpoint                        </span>|<span class="string"> Clock Group              </span>|<span class="string"> Delay Type </span>|<span class="string"> Path Delay </span>|<span class="string"> Path Required </span>|<span class="string"> CPPR  </span>|<span class="string"> Slack </span>|<span class="string"> Freq(MHz) </span>|</span><br><span class="line">+---------------------------------+--------------------------+------------+------------+---------------+-------+-------+-----------+</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_10__reg_p:D    </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 0.688f     </span>|<span class="string"> 1.954         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.265 </span>|<span class="string"> 1361.048  </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_0__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 0.686f     </span>|<span class="string"> 1.952         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.266 </span>|<span class="string"> 1362.424  </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_0__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 0.694r     </span>|<span class="string"> 1.970         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.276 </span>|<span class="string"> 1381.004  </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_4__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 0.693r     </span>|<span class="string"> 1.973         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.279 </span>|<span class="string"> 1387.829  </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_11__reg_p:D    </span>|<span class="string"> core_clock               </span>|<span class="string"> max        </span>|<span class="string"> 0.693r     </span>|<span class="string"> 1.973         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.280 </span>|<span class="string"> 1388.037  </span>|</span><br><span class="line">|<span class="string"> ctrl$b_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> max        </span>|<span class="string"> 0.657r     </span>|<span class="string"> 1.947         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.290 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$b_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> max        </span>|<span class="string"> 0.629f     </span>|<span class="string"> 1.968         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.338 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$a_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> max        </span>|<span class="string"> 0.199r     </span>|<span class="string"> 1.946         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.747 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$a_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> max        </span>|<span class="string"> 0.182f     </span>|<span class="string"> 1.967         </span>|<span class="string"> 0.000 </span>|<span class="string"> 1.785 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_12__reg_p:D    </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.116f     </span>|<span class="string"> -0.008        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.124 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl.state.out_1__reg_p:D       </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.117f     </span>|<span class="string"> -0.008        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.125 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_2__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.122f     </span>|<span class="string"> -0.008        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.130 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_3__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.123f     </span>|<span class="string"> -0.008        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.130 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_5__reg_p:D     </span>|<span class="string"> core_clock               </span>|<span class="string"> min        </span>|<span class="string"> 0.123f     </span>|<span class="string"> -0.008        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.131 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$b_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> min        </span>|<span class="string"> 0.131f     </span>|<span class="string"> -0.004        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.135 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$a_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> min        </span>|<span class="string"> 0.128f     </span>|<span class="string"> -0.008        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.136 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$a_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> min        </span>|<span class="string"> 0.131r     </span>|<span class="string"> -0.013        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.144 </span>|<span class="string"> NA        </span>|</span><br><span class="line">|<span class="string"> ctrl$b_reg_en_0__ICGX0P5H7L_E:E </span>|<span class="string"> **clock_gating_default** </span>|<span class="string"> min        </span>|<span class="string"> 0.139r     </span>|<span class="string"> -0.012        </span>|<span class="string"> 0.000 </span>|<span class="string"> 0.151 </span>|<span class="string"> NA        </span>|</span><br><span class="line">+---------------------------------+--------------------------+------------+------------+---------------+-------+-------+-----------+</span><br></pre></td></tr></table></figure></div></li>
+<li>gcd.trance<div class="code-container" data-rel="Gherkin"><figure class="iseeu highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+--------------------------------------------------------------------------------+---------------+---------------+---------------+--------------------+------+  |<span class="string"> Net / Pin                                                                      </span>|<span class="string"> MaxSlewTime   </span>|<span class="string"> SlewTime      </span>|<span class="string"> SlewSlack     </span>|<span class="string"> LibCellPort        </span>|<span class="string"> Note </span>|</span><br><span class="line">+--------------------------------------------------------------------------------+---------------+---------------+---------------+--------------------+------+  |<span class="string"> dpath.a_lt_b$in0_3__NOR2BX1H7L_AN_Z_OAOI211X0P5H7L_C0_Y                        </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                    </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_3__NOR2BX1H7L_AN_Z_OAOI211X0P5H7L_C0:Y                        </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.194r/0.079f </span>|<span class="string"> 0.602r/0.716f </span>|<span class="string"> OAOI211X0P5H7L/Y   </span>|<span class="string">      </span>|<span class="string">  </span>|<span class="string"> dpath.a_lt_b$in0_3__NOR2BX1H7L_AN_Z_OAOI211X0P5H7L_C0_Y                        </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                    </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_3__NOR2BX1H7L_AN_Z_OAOI211X0P5H7L_C0_Y_OAI21X0P5H7L_A1:A1     </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.194r/0.079f </span>|<span class="string"> 0.602r/0.716f </span>|<span class="string"> OAI21X0P5H7L/A1    </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_3__NOR2BX1H7L_AN_Z_OAOI211X0P5H7L_C0_Y                        </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                    </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_3__NOR2BX1H7L_AN_Z_OAOI211X0P5H7L_C0_Y_OAI2BB1X0P5H7L_A1N:A1N </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.194r/0.079f </span>|<span class="string"> 0.602r/0.716f </span>|<span class="string"> OAI2BB1X0P5H7L/A1N </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_3__NOR2BX1H7L_AN_Z_OAOI211X0P5H7L_C0_Y                        </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                    </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_3__NOR2BX1H7L_AN_Z_OAOI211X0P5H7L_C0_Y_XNOR2X0P5H7L_A:A       </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.194r/0.079f </span>|<span class="string"> 0.602r/0.716f </span>|<span class="string"> XNOR2X0P5H7L/A     </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.b_mux$out_5__OAI21X0P5H7L_Y_A1_OAI21X0P5H7L_A1_Y                         </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">               </span>|<span class="string">                    </span>|<span class="string">      </span>|</span><br><span class="line">|<span class="string"> dpath.b_mux$out_5__OAI21X0P5H7L_Y_A1_OAI21X0P5H7L_A1:Y                         </span>|<span class="string"> 0.796r/0.796f </span>|<span class="string"> 0.171r/0.091f </span>|<span class="string"> 0.625r/0.704f </span>|<span class="string"> OAI21X0P5H7L/Y     </span>|<span class="string">      </span>|</span><br><span class="line">+--------------------------------------------------------------------------------+---------------+---------------+---------------+--------------------+------+</span><br></pre></td></tr></table></figure></div></li>
+<li>gcd_hold.skew<div class="code-container" data-rel="Gherkin"><figure class="iseeu highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Clock: core_clock</span><br><span class="line">+-------------------------------------------+---------+-------+------+</span><br><span class="line">|<span class="string"> Clock Pin                                 </span>|<span class="string"> Latency </span>|<span class="string"> Skew  </span>|<span class="string">      </span>|</span><br><span class="line">+-------------------------------------------+---------+-------+------+</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_7__reg_p:CK (DFFQX1H7L)  </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_7__reg_p:CK (DFFQX1H7L)  </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_1__reg_p:CK (DFFQX1H7L)  </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_1__reg_p:CK (DFFQX1H7L)  </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_8__reg_p:CK (DFFQX1H7L)  </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_8__reg_p:CK (DFFQX1H7L)  </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_1__reg_p:CK (DFFQX1H7L)  </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_1__reg_p:CK (DFFQX1H7L)  </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in0_10__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string">       </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">|<span class="string"> dpath.a_lt_b$in1_10__reg_p:CK (DFFQX1H7L) </span>|<span class="string"> 0.000   </span>|<span class="string"> 0.000 </span>|<span class="string"> rp-+ </span>|</span><br><span class="line">+-------------------------------------------+---------+-------+------+</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+<li><p>对比可以发现：</p>
+<ul>
+<li>功耗明显 ss 比 tt更高</li>
+<li>频率也明显是 tt 比 ss 的更高，延迟是 tt 比 ss 的更短</li>
+<li>Slew Time 转换时间，表示 信号“爬升&#x2F;下降有多慢”的物理量；<strong>Slew Slack</strong> 则是判断这个“慢”是否超出了设计容忍度的裕量。可以看到， ss 转换时间比 tt 慢好多</li>
+<li>xxx_hold.skew skew表示时序概念，全称 <strong>Clock Skew（时钟偏斜&#x2F;时钟偏移）</strong>。简单来说：同一个时钟信号从时钟源（比如 PLL&#x2F;晶振）出发，到达芯片内<strong>不同触发器时钟引脚</strong>的时间不一样，这个<strong>到达时间的差值</strong>就是 Skew。可以发现，仿真中，ss 和 tt 的 时钟偏移一致。不过虽然观测到 tt 的 电容大于 ss 的电容，工艺厂在定义 <code>rcworst</code> 这个 corner 时，目标是让 <strong>RC 延迟乘积最大</strong>，而不是让电容最大。为了达到这个目的，它通常会取：<strong>线宽偏细（或电阻率偏高）</strong> → R 显著增大；细线顺带导致 <strong>对地电容减小</strong>。因此，<code>rcworst</code> 的 <strong>R 很大</strong>，但 <strong>C 可能比 nominal（tt）还小</strong>。在 gcd_setup.skew 中，也一样</li>
+</ul>
+</li>
+</ul>
+<h4 id="PVT角和超频"><a href="#PVT角和超频" class="headerlink" title="PVT角和超频"></a>PVT角和超频</h4><p>其实就是通过降温降低延迟</p>
+<h3 id="阈值电压"><a href="#阈值电压" class="headerlink" title="阈值电压"></a>阈值电压</h3><ul>
+<li>阈值电压较高的标准单元，需要花费更多的事件才能让晶体管从截止变成导通，所以延迟比较高</li>
+<li>对于 <strong>静态功耗</strong> 主要由漏电电流产生（占比最高的是 亚阈值电流）。晶体管从导通状态转换为截止状态时, 并非瞬间就进入完美的截止状态, 而是进入了”亚阈值”状态. 在这种状态下, 栅极附近仍然存在微弱的电场, 在其作用下仍然会吸引少量电子. 这些电子虽然不足以形成沟道连通源极和漏极, 但它们仍然会产生从漏极到源极的微小电流,即亚阈值电流。<br>$$I_{sub} \propto Ae^{-BV_T}$$</li>
+<li>所以 静态功耗可以近似看成<br>$$ P_{static} &#x3D; V_{DD} \cdot I_{leakage} \approx V_{DD} \cdot I_{sub} \propto V_{DD} \cdot Ae^{-BV_T} $$</li>
+<li>逻辑功能相同但阈值电压不同的标准单元面积通常相同，因为阈值电压的调整是通过改变衬底掺杂浓度、栅极绝缘层厚度等工艺参数实现的，而不影响晶体管的尺寸与排布。</li>
+</ul>
+<h4 id="轨道数"><a href="#轨道数" class="headerlink" title="轨道数"></a>轨道数</h4><ul>
+<li>标准单元的 <strong>高度</strong>（后端设计中的 “height”，对应 Y 轴方向）是 M1 pitch 的整数倍，这个倍数就是轨道数。</li>
+</ul>
+<h4 id="理解ICsprout55的轨道数"><a href="#理解ICsprout55的轨道数" class="headerlink" title="理解ICsprout55的轨道数"></a>理解ICsprout55的轨道数</h4><ul>
+<li>在 <code>/IP/STD_cell/ics55_LLSC_H7C_V1p10C100/ics55_LLSC_H7CL/lef/ics55_LLSC_H7CL.lef</code> 中可以发现，全部单元的 <code>SIZE xx BY yy</code> 中 yy 全为 1.4.</li>
+<li>而在 <code>prtech/techLEF/N551P6M.lef</code> 可以发现，PITCH 为 0.2 .那么对于 高度为 7 层lib 的标准单元， 即 <code>0.2*7 = 1.4</code></li>
+<li>所以可以发现，二者匹配</li>
+</ul>
+<h4 id="填充单元的尺寸"><a href="#填充单元的尺寸" class="headerlink" title="填充单元的尺寸"></a>填充单元的尺寸</h4><ul>
+<li><p>首先观察 N551P6M 可以发现</p>
+<div class="code-container" data-rel="Apache"><figure class="iseeu highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">SITE</span> CoreSite</span><br><span class="line">    <span class="attribute">SIZE</span> <span class="number">0</span>.<span class="number">2</span> BY <span class="number">1</span>.<span class="number">4</span> ;</span><br><span class="line">    <span class="attribute">SYMMETRY</span> Y ;</span><br><span class="line">    <span class="attribute">CLASS</span> CORE ;</span><br><span class="line"><span class="attribute">END</span> CoreSite</span><br><span class="line"></span><br><span class="line"><span class="attribute">SITE</span> core7</span><br><span class="line">    <span class="attribute">SIZE</span> <span class="number">0</span>.<span class="number">200</span> BY <span class="number">1</span>.<span class="number">400</span> ;</span><br><span class="line">    <span class="attribute">CLASS</span> CORE ;</span><br><span class="line">    <span class="attribute">SYMMETRY</span> Y  ;</span><br><span class="line"><span class="attribute">END</span> core7</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>再观察 ics55_LLSC_H7CL.lef 中的 FILLER1H7L</p>
+<div class="code-container" data-rel="Apache"><figure class="iseeu highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">MACRO</span> FILLER1H7L</span><br><span class="line">  <span class="attribute">CLASS</span> CORE ;</span><br><span class="line">  <span class="attribute">ORIGIN</span> <span class="number">0</span> <span class="number">0</span> ;</span><br><span class="line">  <span class="attribute">FOREIGN</span> FILLER1H7L <span class="number">0</span> <span class="number">0</span> ;</span><br><span class="line">  <span class="attribute">SIZE</span> <span class="number">0</span>.<span class="number">2</span> BY <span class="number">1</span>.<span class="number">4</span> ;</span><br><span class="line">  <span class="attribute">SYMMETRY</span> X Y ;</span><br><span class="line">  <span class="attribute">SITE</span> core7 ;</span><br><span class="line">  <span class="attribute">PIN</span> VDD</span><br><span class="line">    <span class="attribute">DIRECTION</span> INOUT ;</span><br><span class="line">    <span class="attribute">USE</span> POWER ;</span><br><span class="line">    <span class="attribute">SHAPE</span> ABUTMENT ;</span><br><span class="line">    <span class="attribute">PORT</span></span><br><span class="line">      <span class="attribute">LAYER</span> MET1 ;</span><br><span class="line">        <span class="attribute">RECT</span> <span class="number">0</span> <span class="number">1</span>.<span class="number">32</span> <span class="number">0</span>.<span class="number">2</span> <span class="number">1</span>.<span class="number">48</span> ;</span><br><span class="line">    <span class="attribute">END</span></span><br><span class="line">  <span class="attribute">END</span> VDD</span><br><span class="line">  <span class="attribute">PIN</span> VSS</span><br><span class="line">    <span class="attribute">DIRECTION</span> INOUT ;</span><br><span class="line">    <span class="attribute">USE</span> GROUND ;</span><br><span class="line">    <span class="attribute">SHAPE</span> ABUTMENT ;</span><br><span class="line">    <span class="attribute">PORT</span></span><br><span class="line">      <span class="attribute">LAYER</span> MET1 ;</span><br><span class="line">        <span class="attribute">RECT</span> <span class="number">0</span> -<span class="number">0</span>.<span class="number">08</span> <span class="number">0</span>.<span class="number">2</span> <span class="number">0</span>.<span class="number">08</span> ;</span><br><span class="line">    <span class="attribute">END</span></span><br><span class="line">  <span class="attribute">END</span> VSS</span><br><span class="line"><span class="attribute">END</span> FILLER1H7L</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>Site 是 LEF 中定义标准单元行高度、宽度单位及对称性的基本模板，所有引用同一 site 的单元（如 FILLER1H7L）必须在该行内对齐放置，以保证物理一致性和工艺规则。</p>
+</li>
+<li><p>所以 可以发现，FILLER 的尺寸和 SITE 的尺寸是呈倍数关系的。因为标准单元的摆放其实是按照 site 对齐的，那对于 空缺地方的尺寸，其实也是 按照 site 对齐的</p>
+</li>
+</ul>
+<h3 id="verilog-规范"><a href="#verilog-规范" class="headerlink" title="verilog 规范"></a>verilog 规范</h3><h4 id="verilog-本质"><a href="#verilog-本质" class="headerlink" title="verilog 本质"></a>verilog 本质</h4><p>*注意，以下是我个人的理解！</p>
+<ul>
+<li>在硬件描述语言中, “执行”的精确含义是什么?<ul>
+<li>执行是 Verilog 用 仿真器 按照事件驱动机制，模拟运行代码</li>
+</ul>
+</li>
+<li>是谁在执行Verilog的语句? 是电路，综合器，还是其它的?<ul>
+<li>执行verilog语句的是仿真器。综合器是解析代码并推断出等效的硬件电路（门级网表）.</li>
+</ul>
+</li>
+<li>if的条件满足, 就不执行else后的语句, 这里的”不执行”又是什么意思? 和描述电路有什么联系?<ul>
+<li>不执行 在 仿真层面，就是仿真器不会执行else分支内的语句，不会更新该分支对应的变量。</li>
+<li>电路上一般实现为 级联的 二选一MUX<ul>
+<li>在 时钟沿触发的 always 中，也可能会是 D触发器的 输入端 MUX</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>有”并发执行”, 又有”顺序执行”, 还有”任何一个变量发生变化就立即执行”, 以及”在任何情况下都执行”, 它们都是如何在设计出来的电路中体现的?<ul>
+<li>并发执行的语句对应电路中多个独立运行的模块或门，它们没有固定的先后关系，同时根据输入计算输出。</li>
+<li>顺序执行一般针对仿真器，可以使用阻塞赋值实现，一般就是局部组合电路的中间某个节点。但是对于实际电路，其实并没有顺序执行一说了（或者说就是 组合电路的依赖关系 ）。</li>
+<li>任何一个变量发生变化就立即执行，对应 <code>always @(*)</code>、<code>assign</code> 其实就是标准的组合逻辑电路</li>
+<li>任何情况下都执行，这个理解就有点歧义了。如果是说电路层面，那可能只能说就是组合电路；如果是 <code>always @(posedge clk)</code> 那其实就是普通的时序电路，且不带 if-else 这种</li>
+</ul>
+</li>
+</ul>
+<h4 id="尝试用-negedge-综合"><a href="#尝试用-negedge-综合" class="headerlink" title="尝试用 negedge 综合"></a>尝试用 negedge 综合</h4><p>对于 make， 修改 RTL_FILES 文件所对应的文件</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~/ysyx-workbench/yosys-sta$ make sta RTL_FILES=&quot;$(find ~/Desktop/ysyxstudy/E5/negedge_syn -name &#x27;*.v&#x27; | tr &#x27;\n&#x27; &#x27; &#x27;)&quot; DESIGN=test</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>然后切换上下沿后对比，可以发现：<br>test.trans<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728184032.png"
+                      alt="Pasted_image_20260728184032.png"
+                ><br>test.rpt<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728184224.png"
+                      alt="Pasted_image_20260728184224.png"
+                ></p>
+<p>很神奇，可以发现，更改为下降沿后，直接没有输出了</p>
+<h4 id="为什么-不要-latch（锁存器，即敏感事件表是电平）"><a href="#为什么-不要-latch（锁存器，即敏感事件表是电平）" class="headerlink" title="为什么 不要 latch（锁存器，即敏感事件表是电平）"></a>为什么 不要 latch（锁存器，即敏感事件表是电平）</h4><p>因为 Latch 是电平敏感的，数据在一段时间内都可能透明传输，数据的发射和捕获边界不明确，而 STA 主要依赖明确的时钟边沿来计算路径延迟。</p>
+<h3 id="完成数字电路实验"><a href="#完成数字电路实验" class="headerlink" title="完成数字电路实验"></a>完成数字电路实验</h3><p>已完成，代码略。最后实验八结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260801175054.png"
+                      alt="Pasted_image_20260801175054.png"
+                ></p>
+<h3 id="用-RTL-实现-sCPU"><a href="#用-RTL-实现-sCPU" class="headerlink" title="用 RTL 实现 sCPU"></a>用 RTL 实现 sCPU</h3><p>sCPU.v</p>
+<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> sCPU(</span><br><span class="line">	<span class="keyword">input</span> clk,</span><br><span class="line">	<span class="keyword">input</span> rst,</span><br><span class="line">	<span class="keyword">output</span>[<span class="number">15</span>:<span class="number">0</span>] led</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">wire</span>[<span class="number">7</span>:<span class="number">0</span>] instr;</span><br><span class="line">	<span class="keyword">wire</span>[<span class="number">7</span>:<span class="number">0</span>] rd_data, rs1_data, rs2_data;</span><br><span class="line">	<span class="keyword">wire</span>[<span class="number">1</span>:<span class="number">0</span>] rd_addr, rs1_addr, rs2_addr;</span><br><span class="line">	<span class="keyword">wire</span>[<span class="number">3</span>:<span class="number">0</span>] PC_set;</span><br><span class="line">	<span class="keyword">reg</span>[<span class="number">3</span>:<span class="number">0</span>] PC_cur;</span><br><span class="line">	<span class="keyword">wire</span> PC_jump_flag, ram_w_en;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">reg</span>[<span class="number">7</span>:<span class="number">0</span>] Ram [<span class="number">0</span>:<span class="number">3</span>];</span><br><span class="line">	Rom rom_inst(instr, PC_cur);</span><br><span class="line">	execute execute_inst(instr, rs1_data, rs2_data, Ram[<span class="number">0</span>], rd_addr, rs1_addr, rs2_addr, rd_data, PC_set, PC_jump_flag, ram_w_en);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">assign</span> rs1_data = Ram[rs1_addr];</span><br><span class="line">	<span class="keyword">assign</span> rs2_data = Ram[rs2_addr];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">assign</span> led = &#123;<span class="number">8&#x27;b0</span>, Ram[<span class="number">2</span>]&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">always</span>@(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">if</span>(rst)<span class="keyword">begin</span></span><br><span class="line">			PC_cur &lt;= <span class="number">4&#x27;b0</span>;</span><br><span class="line">			Ram[<span class="number">0</span>] &lt;= <span class="number">8&#x27;b0</span>;</span><br><span class="line">			Ram[<span class="number">1</span>] &lt;= <span class="number">8&#x27;b0</span>;</span><br><span class="line">			Ram[<span class="number">2</span>] &lt;= <span class="number">8&#x27;b0</span>;</span><br><span class="line">			Ram[<span class="number">3</span>] &lt;= <span class="number">8&#x27;b0</span>;</span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">			<span class="keyword">if</span>(ram_w_en) Ram[rd_addr] &lt;= rd_data;</span><br><span class="line">			PC_cur &lt;= (PC_jump_flag) ? PC_set : PC_cur + <span class="number">4&#x27;d1</span>;	</span><br><span class="line">			<span class="built_in">$strobe</span>(<span class="string">&quot;R0: %d, R1: %d, R2: %d, R3: %d\n&quot;</span>, Ram[<span class="number">0</span>], Ram[<span class="number">1</span>], Ram[<span class="number">2</span>], Ram[<span class="number">3</span>]);</span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure></div>
+<p>instruction.v</p>
+<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> execute(</span><br><span class="line">	<span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] instr,</span><br><span class="line">	<span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] rs1_data, rs2_data, R0_data,</span><br><span class="line">	<span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] rd_addr, rs1_addr, rs2_addr,</span><br><span class="line">	<span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] rd_data,</span><br><span class="line">	<span class="keyword">output</span> [<span class="number">3</span>:<span class="number">0</span>] PC_index,</span><br><span class="line">	<span class="keyword">output</span> PC_jump_flag,</span><br><span class="line">	<span class="keyword">output</span> ram_w_en</span><br><span class="line">);</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">7</span>:<span class="number">0</span>] rd_data_from_add, rd_data_from_li;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] rs1_addr_from_add;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] rs2_addr_from_add, rs2_addr_from_bner0;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] rd_addr_from_add, rd_addr_from_li;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] opcode = instr[<span class="number">7</span>:<span class="number">6</span>];</span><br><span class="line"></span><br><span class="line">	instr_add add_inst(instr, rs1_data, rs2_data, rd_data_from_add, rd_addr_from_add, rs1_addr_from_add, rs2_addr_from_add);</span><br><span class="line">	instr_li li_inst(instr, rd_data_from_li, rd_addr_from_li);</span><br><span class="line">	instr_bner0 bner0_inst(instr, R0_data, rs2_data, PC_index, PC_jump_flag, rs2_addr_from_bner0);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">assign</span> ram_w_en = (opcode == <span class="number">2&#x27;b00</span> || opcode == <span class="number">2&#x27;b10</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">case</span>(opcode)</span><br><span class="line">			<span class="number">2&#x27;b00</span>: rs1_addr = rs1_addr_from_add;</span><br><span class="line">			<span class="keyword">default</span>: rs1_addr = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">endcase</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">case</span>(opcode)</span><br><span class="line">			<span class="number">2&#x27;b00</span>: rs2_addr = rs2_addr_from_add;</span><br><span class="line">			<span class="number">2&#x27;b11</span>: rs2_addr = rs2_addr_from_bner0;</span><br><span class="line">			<span class="keyword">default</span>: rs2_addr = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">endcase</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">case</span>(opcode)</span><br><span class="line">			<span class="number">2&#x27;b00</span>: rd_addr = rd_addr_from_add;</span><br><span class="line">			<span class="number">2&#x27;b10</span>: rd_addr = rd_addr_from_li;</span><br><span class="line">			<span class="keyword">default</span>: rd_addr = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">endcase</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">case</span>(opcode)</span><br><span class="line">			<span class="number">2&#x27;b00</span>: rd_data = rd_data_from_add;</span><br><span class="line">			<span class="number">2&#x27;b10</span>: rd_data = rd_data_from_li;</span><br><span class="line">			<span class="keyword">default</span>: rd_data = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">endcase</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> instr_add(</span><br><span class="line">	<span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] instr,</span><br><span class="line">	<span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] rs1_data, rs2_data,</span><br><span class="line">	<span class="keyword">output</span> [<span class="number">7</span>:<span class="number">0</span>] rd_data,</span><br><span class="line">	<span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] rd_addr, rs1_addr, rs2_addr</span><br><span class="line">);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">assign</span> &#123;rd_addr, rs1_addr, rs2_addr&#125; = instr[<span class="number">5</span>:<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">assign</span> rd_data = rs1_data + rs2_data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> instr_li(</span><br><span class="line">	<span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] instr,</span><br><span class="line">	<span class="keyword">output</span> [<span class="number">7</span>:<span class="number">0</span>] rd_data,</span><br><span class="line">	<span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] rd_addr</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">7</span>:<span class="number">0</span>] imm;</span><br><span class="line">	<span class="keyword">assign</span> imm = &#123;<span class="number">4&#x27;b0</span>, instr[<span class="number">3</span>:<span class="number">0</span>]&#125;;</span><br><span class="line">	<span class="keyword">assign</span> rd_addr = instr[<span class="number">5</span>:<span class="number">4</span>];</span><br><span class="line">	<span class="keyword">assign</span> rd_data = imm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> instr_bner0(</span><br><span class="line">	<span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] instr,</span><br><span class="line">	<span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] R0_data, rs2_data,</span><br><span class="line">	<span class="keyword">output</span> [<span class="number">3</span>:<span class="number">0</span>] PC_index,</span><br><span class="line">	<span class="keyword">output</span> PC_jump_flag,</span><br><span class="line">	<span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] rs2_addr</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">assign</span> PC_index = instr[<span class="number">5</span>:<span class="number">2</span>];</span><br><span class="line">	<span class="keyword">assign</span> rs2_addr = instr[<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">assign</span> PC_jump_flag = (R0_data != rs2_data &amp;&amp; instr[<span class="number">7</span>:<span class="number">6</span>] == <span class="number">2&#x27;b11</span>); </span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure></div>
+<p>rom.v</p>
+<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> Rom(</span><br><span class="line">	<span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] out_data,</span><br><span class="line">	<span class="keyword">input</span> [<span class="number">3</span>:<span class="number">0</span>] PC_index</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">always</span>@(*)</span><br><span class="line">		<span class="keyword">case</span>(PC_index) </span><br><span class="line">			<span class="number">4&#x27;d0</span>: out_data = <span class="number">8&#x27;b10001011</span>;</span><br><span class="line">			<span class="number">4&#x27;d1</span>: out_data = <span class="number">8&#x27;b10010001</span>;</span><br><span class="line">			<span class="number">4&#x27;d2</span>: out_data = <span class="number">8&#x27;b10100000</span>;</span><br><span class="line">			<span class="number">4&#x27;d3</span>: out_data = <span class="number">8&#x27;b10110001</span>;</span><br><span class="line">			<span class="number">4&#x27;d4</span>: out_data = <span class="number">8&#x27;b00101001</span>;</span><br><span class="line">			<span class="number">4&#x27;d5</span>: out_data = <span class="number">8&#x27;b00010111</span>;</span><br><span class="line">			<span class="number">4&#x27;d6</span>: out_data = <span class="number">8&#x27;b11010001</span>;</span><br><span class="line">			<span class="number">4&#x27;d7</span>: out_data = <span class="number">8&#x27;b11011111</span>;</span><br><span class="line">			<span class="keyword">default</span>: out_data = <span class="number">8&#x27;b0</span>;</span><br><span class="line">		<span class="keyword">endcase</span>			</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure></div>
+<p>不截全了，不过可以看到，我的 RTL 是可以正常仿真的<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225429.png"
+                      alt="Pasted_image_20260728225429.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225207.png"
+                      alt="Pasted_image_20260728225207.png"
+                ></p>
+<h3 id="对比sEMU和sCPU"><a href="#对比sEMU和sCPU" class="headerlink" title="对比sEMU和sCPU"></a>对比sEMU和sCPU</h3><p>sEMU 用软件流程模拟硬件行为，而 sCPU 用硬件电路直接实现指令功能</p>
+<h3 id="完整仿真结果"><a href="#完整仿真结果" class="headerlink" title="完整仿真结果"></a>完整仿真结果</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225832.png"
+                      alt="Pasted_image_20260728225832.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225851.png"
+                      alt="Pasted_image_20260728225851.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225814.png"
+                      alt="Pasted_image_20260728225814.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225923.png"
+                      alt="Pasted_image_20260728225923.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225946.png"
+                      alt="Pasted_image_20260728225946.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728230007.png"
+                      alt="Pasted_image_20260728230007.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728230023.png"
+                      alt="Pasted_image_20260728230023.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728230053.png"
+                      alt="Pasted_image_20260728230053.png"
+                ></p>
+<h4 id="桶型移位器"><a href="#桶型移位器" class="headerlink" title="桶型移位器"></a>桶型移位器</h4>
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> E5 从RTL代码到可流片版图 (2)</li>
+        <li><strong>作者:</strong> Keruone</li>
+        <li><strong>创建于
+                :</strong> 2026-07-18 12:32:00</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2026-08-01 17:52:06
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://keruone.github.io/2026/07/18/one_student_one_chip/E5-2/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E9%A1%B9%E7%9B%AE/">#项目</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">#一生一芯</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2026/07/09/one_student_one_chip/E5-1/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">E5 从RTL代码到可流片版图 (1)</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Keruone/Keruone.github.io',
+                'data-repo-id': 'R_kgDOQ4GXyQ',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDOQ4GXyc4C04nb',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'zh-CN',
+                'data-input-position': 'top',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">E5 从RTL代码到可流片版图 (2)</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E5%BC%80%E6%BA%90-EDA-%E5%B7%A5%E5%85%B7%E8%AF%84%E4%BC%B0%E7%94%B5%E8%B7%AF"><span class="nav-text">用开源 EDA 工具评估电路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E7%A7%AF%E8%AF%84%E4%BC%B0"><span class="nav-text">面积评估</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E8%AF%84%E4%BC%B0"><span class="nav-text">性能评估</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PDK%EF%BC%88Process-Design-Kit%EF%BC%8C%E5%B7%A5%E8%89%BA%E8%AE%BE%E8%AE%A1%E5%A5%97%E4%BB%B6%EF%BC%89%E5%92%8C%E6%A0%87%E5%87%86%E5%8D%95%E5%85%83%E5%BA%93"><span class="nav-text">PDK（Process Design Kit，工艺设计套件）和标准单元库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E8%89%BA%E8%A7%86%E8%A7%92%E7%9A%84%E8%8A%AF%E7%89%87%E7%BB%93%E6%9E%84"><span class="nav-text">工艺视角的芯片结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%8D%95%E5%85%83%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-text">标准单元的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%8D%95%E5%85%83%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-text">标准单元的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%88%E5%80%BC%E7%94%B5%E5%8E%8B"><span class="nav-text">阈值电压</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#verilog-%E8%A7%84%E8%8C%83"><span class="nav-text">verilog 规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AF%E5%AE%9E%E9%AA%8C"><span class="nav-text">完成数字电路实验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8-RTL-%E5%AE%9E%E7%8E%B0-sCPU"><span class="nav-text">用 RTL 实现 sCPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94sEMU%E5%92%8CsCPU"><span class="nav-text">对比sEMU和sCPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%BF%E7%9C%9F%E7%BB%93%E6%9E%9C"><span class="nav-text">完整仿真结果</span></a></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2026</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Keruone</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 74 篇文章
+                    </span>
+                    
+                        <span>
+                            共 174.3k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+        
+<script src="/js/build/libs/mermaid.min.js"></script>
+
+    
+    
+<script src="/js/build/plugins/mermaid.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>
