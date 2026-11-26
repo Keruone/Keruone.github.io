@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo, 技术博客, 学习总结, Tech Blog, Notes">
+    
+    <meta name="author" content="Keruone">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://Keruone.github.io/2026/10/21/one_student_one_chip/d5/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/keruone-blog-logo.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/keruone-blog-logo.jpg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/keruone-blog-logo.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            D5 学习 | Keruone&#39;s 个人小记
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"keruone.github.io","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":false,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Keruone's blog","subtitle":{"text":["一边想着一定要做点什么，另一边却烦恼着做点什么好，甚至担心什么都没干就这么长大了。 ——K-ON"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":"enable","version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"links":{"path":"/links","icon":"fa-solid fa-link"},"About":{"icon":"fa-regular fa-user","submenus":{"Github":"https://github.com/Keruone/Keruone.github.io","Blog":"https://blog.keruone.cn"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"原博客 blog.keruone.cn","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2026/1/12 13:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Keruone&#39;s 个人小记
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/links"
+                                        >
+                                    <i class="fa-solid fa-link fa-fw"></i>
+                                    链接
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.keruone.cn">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/links"
+                        >
+                            <span>
+                                链接
+                            </span>
+                            
+                                <i class="fa-solid fa-link fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/Keruone/Keruone.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.keruone.cn">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">83</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">D5 学习</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/keruone-myFavoritePhoto.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Keruone</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-10-21 19:22</span>
+        <span class="mobile">2026-10-21 19:22</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-11-24 22:20:21</span>
+            <span class="mobile">2026-11-24 22:20:21</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/">项目记录</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">一生一芯</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE/">项目</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">一生一芯</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>7.4k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>34 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p><a class="link"   target="_blank" rel="noopener" href="https://ysyx.oscc.cc/docs/ics-pa/2.5.html#%E8%AE%BE%E5%A4%87%E4%B8%8Ecpu" >输入输出 | 官方文档<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<hr>
+<span id="more"></span>
+<h2 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h2><h3 id="设备与CPU"><a href="#设备与CPU" class="headerlink" title="设备与CPU"></a>设备与CPU</h3><ul>
+<li>访问设备 &#x3D; 读出数据 + 写入数据 + 控制状态</li>
+<li>而控制状态本质上也是读写设备寄存器的操作，所以<strong>访问设备 &#x3D; 读&#x2F;写操作</strong></li>
+</ul>
+<h3 id="端口-I-O"><a href="#端口-I-O" class="headerlink" title="端口 I&#x2F;O"></a>端口 I&#x2F;O</h3><p>端口I&#x2F;O是CPU通过独立的<strong>地址空间</strong>和<strong>专用指令</strong>（如<code>in/out</code>），直接与硬件设备寄存器进行数据交换的底层通信机制。</p>
+<blockquote>
+<p><em>端口映射I&#x2F;O所能访问的I&#x2F;O地址空间的大小, 在设计I&#x2F;O指令的那一刻就已经决定下来了</em></p>
+</blockquote>
+<h3 id="内存映射-I-O"><a href="#内存映射-I-O" class="headerlink" title="内存映射 I&#x2F;O"></a>内存映射 I&#x2F;O</h3><p>内存映射I&#x2F;O是将<strong>硬件设备的寄存器</strong>直接映射到<strong>CPU的内存地址空间</strong>，使CPU使用<strong>普通的内存读写指令</strong>（而非专用指令）即可<strong>访问和控制</strong>外部设备。</p>
+<blockquote>
+<p><em>物理内存的地址空间和CPU的位宽都会不断增长, 内存映射I&#x2F;O从来不需要担心I&#x2F;O地址空间耗尽的问题.</em></p>
+</blockquote>
+<blockquote>
+<ol>
+<li>MMIO 位于<strong>物理地址空间</strong>，归属<strong>内核态</strong>管理。用户态程序想要操控硬件，<strong>必须通过陷阱（系统调用）陷入内核</strong>交由驱动处理（除非内核通过特殊机制如 <code>mmap</code> 显式下放了权限）。</li>
+<li>用户态通过 <strong><code>fd</code></strong> 这一统一逻辑接口发起 I&#x2F;O 请求，触发<strong>系统调用（Trap）</strong>陷入内核；内核驱动接管后，通过 <strong>MMIO&#x2F;PMIO</strong> 操作硬件寄存器下达指令，最终由 <strong>DMA</strong> 负责在内存与硬件之间直接搬运庞大的业务数据。</li>
+</ol>
+</blockquote>
+<hr>
+<h2 id="NEMU-中的输入输出"><a href="#NEMU-中的输入输出" class="headerlink" title="NEMU 中的输入输出"></a>NEMU 中的输入输出</h2><ul>
+<li><p><code>nemu/include/device/map.h</code></p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">  <span class="type">const</span> <span class="type">char</span> *name;</span><br><span class="line">  <span class="comment">// we treat ioaddr_t as paddr_t here</span></span><br><span class="line">  <span class="type">paddr_t</span> low;</span><br><span class="line">  <span class="type">paddr_t</span> high;</span><br><span class="line">  <span class="type">void</span> *space;</span><br><span class="line">  <span class="type">io_callback_t</span> callback;</span><br><span class="line">&#125; IOMap;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>在结构体中，会记录：</p>
+<ul>
+<li><code>[Guest视角]</code> 客户机物理地址的起始位置</li>
+<li><code>[Guest视角]</code> 客户机物理地址的结束位置</li>
+<li><code>[Host视角]</code> 宿主机分配的真实内存起始地址（用来冒充硬件寄存器）</li>
+<li><code>驱动回调函数</code>（模拟硬件读写时的真实副作用，如打印字符或更新状态）</li>
+</ul>
+</li>
+<li><p><code>nemu/include/memory/vaddr.h</code></p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> __MEMORY_VADDR_H__</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __MEMORY_VADDR_H__</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;common.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">word_t</span> <span class="title function_">vaddr_ifetch</span><span class="params">(<span class="type">vaddr_t</span> addr, <span class="type">int</span> len)</span>;</span><br><span class="line"><span class="type">word_t</span> <span class="title function_">vaddr_read</span><span class="params">(<span class="type">vaddr_t</span> addr, <span class="type">int</span> len)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">vaddr_write</span><span class="params">(<span class="type">vaddr_t</span> addr, <span class="type">int</span> len, <span class="type">word_t</span> data)</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PAGE_SHIFT        12</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PAGE_SIZE         (1ul &lt;&lt; PAGE_SHIFT)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PAGE_MASK         (PAGE_SIZE - 1)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<p><code>nemu/src/device/io/map.c</code></p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;isa.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory/host.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory/vaddr.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;device/map.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IO_SPACE_MAX (32 * 1024 * 1024)</span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">uint8_t</span> *io_space = <span class="literal">NULL</span>; <span class="comment">// io 内存映射的起始位置</span></span><br><span class="line"><span class="type">static</span> <span class="type">uint8_t</span> *p_space = <span class="literal">NULL</span>; <span class="comment">// 当前空余空间的起始位置</span></span><br><span class="line"></span><br><span class="line"><span class="type">uint8_t</span>* <span class="title function_">new_space</span><span class="params">(<span class="type">int</span> size)</span> &#123;</span><br><span class="line">  <span class="type">uint8_t</span> *p = p_space;</span><br><span class="line">  <span class="comment">// page aligned;</span></span><br><span class="line">  size = (size + (PAGE_SIZE - <span class="number">1</span>)) &amp; ~PAGE_MASK; <span class="comment">// 向上取整，确保分配的地址都是 4KB 的整倍数</span></span><br><span class="line">  p_space += size;</span><br><span class="line">  assert(p_space - io_space &lt; IO_SPACE_MAX);</span><br><span class="line">  <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">check_bound</span><span class="params">(IOMap *<span class="built_in">map</span>, <span class="type">paddr_t</span> addr)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">map</span> == <span class="literal">NULL</span>) &#123;</span><br><span class="line">    Assert(<span class="built_in">map</span> != <span class="literal">NULL</span>, <span class="string">&quot;address (&quot;</span> FMT_PADDR <span class="string">&quot;) is out of bound at pc = &quot;</span> FMT_WORD, addr, cpu.pc);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    Assert(addr &lt;= <span class="built_in">map</span>-&gt;high &amp;&amp; addr &gt;= <span class="built_in">map</span>-&gt;low,</span><br><span class="line">        <span class="string">&quot;address (&quot;</span> FMT_PADDR <span class="string">&quot;) is out of bound &#123;%s&#125; [&quot;</span> FMT_PADDR <span class="string">&quot;, &quot;</span> FMT_PADDR <span class="string">&quot;] at pc = &quot;</span> FMT_WORD,</span><br><span class="line">        addr, <span class="built_in">map</span>-&gt;name, <span class="built_in">map</span>-&gt;low, <span class="built_in">map</span>-&gt;high, cpu.pc);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">invoke_callback</span><span class="params">(<span class="type">io_callback_t</span> c, <span class="type">paddr_t</span> offset, <span class="type">int</span> len, <span class="type">bool</span> is_write)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (c != <span class="literal">NULL</span>) &#123; c(offset, len, is_write); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">init_map</span><span class="params">()</span> &#123;</span><br><span class="line">  io_space = <span class="built_in">malloc</span>(IO_SPACE_MAX);</span><br><span class="line">  assert(io_space);</span><br><span class="line">  p_space = io_space;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">word_t</span> <span class="title function_">map_read</span><span class="params">(<span class="type">paddr_t</span> addr, <span class="type">int</span> len, IOMap *<span class="built_in">map</span>)</span> &#123;</span><br><span class="line">  assert(len &gt;= <span class="number">1</span> &amp;&amp; len &lt;= <span class="number">8</span>);</span><br><span class="line">  check_bound(<span class="built_in">map</span>, addr);</span><br><span class="line">  <span class="type">paddr_t</span> offset = addr - <span class="built_in">map</span>-&gt;low;</span><br><span class="line">  invoke_callback(<span class="built_in">map</span>-&gt;callback, offset, len, <span class="literal">false</span>); <span class="comment">// prepare data to read</span></span><br><span class="line">  <span class="type">word_t</span> ret = host_read(<span class="built_in">map</span>-&gt;space + offset, len);</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">map_write</span><span class="params">(<span class="type">paddr_t</span> addr, <span class="type">int</span> len, <span class="type">word_t</span> data, IOMap *<span class="built_in">map</span>)</span> &#123;</span><br><span class="line">  assert(len &gt;= <span class="number">1</span> &amp;&amp; len &lt;= <span class="number">8</span>);</span><br><span class="line">  check_bound(<span class="built_in">map</span>, addr);</span><br><span class="line">  <span class="type">paddr_t</span> offset = addr - <span class="built_in">map</span>-&gt;low;</span><br><span class="line">  host_write(<span class="built_in">map</span>-&gt;space + offset, len, data);</span><br><span class="line">  invoke_callback(<span class="built_in">map</span>-&gt;callback, offset, len, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><strong><code>new_space</code></strong>: <code>new_space</code> 是一个极简的**“向上取整页对齐”的线性内存分配器（Bump Allocator）。</li>
+<li><strong><code>check_bound</code></strong>: 校验 CPU 访问的物理地址是否落在指定设备的合法映射区间 <code>[low, high]</code> 内，越界或未映射则触发断言报错并打印引发错误的 PC 指针。</li>
+<li><strong><code>invoke_callback</code></strong>: 是一个<strong>安全调用回调函数的包装器（Wrapper）</strong>。由驱动提供。</li>
+<li><strong><code>init_map()</code></strong> : 初始化 I&#x2F;O 空间：申请一块最大 32MB 的内存池，并将分配指针指向起始位置。<strong>纯粹是为了软件仿真（模拟）而设计的</strong>（因为实际上这里早给映射到实际的硬件寄存器去了）。</li>
+<li><strong><code>map_read()</code></strong> : 处理读请求：校验边界并计算偏移量后，先触发读回调（准备数据），再从映射的宿主内存中读取指定长度的数据返回。</li>
+<li><strong><code>map_write()</code></strong> : 处理写请求：校验边界并计算偏移量后，先将数据写入映射的宿主内存，再触发写回调（模拟硬件接收动作）。</li>
+</ul>
+<hr>
+<h2 id="将输入输出抽象为-IOE"><a href="#将输入输出抽象为-IOE" class="headerlink" title="将输入输出抽象为 IOE"></a>将输入输出抽象为 IOE</h2><p>因为 访问设备 &#x3D; 读&#x2F;写操作</p>
+<p>设备访问的具体实现是架构相关的，但是具体的访问地址其实内存中是一个<strong>非法区间</strong>，所以，程序需要通过别的方式实现类似功能。</p>
+<p>自然地, 设备访问这一架构相关的功能, 应该归入AM中. 与TRM不同, 设备访问是为计算机提供输入输出的功能, 因此我们把它们划入一类新的API, 名字叫**IOE(I&#x2F;O Extension)**。</p>
+<p>所以IOE提供三个API:</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">ioe_init</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">ioe_read</span><span class="params">(<span class="type">int</span> reg, <span class="type">void</span> *buf)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">ioe_write</span><span class="params">(<span class="type">int</span> reg, <span class="type">void</span> *buf)</span>;</span><br></pre></td></tr></table></figure></div>
+<p>这个<code>reg</code>其实是一个功能编号, 我们约定在不同的架构中, 同一个功能编号的含义也是相同的, 这样就实现了设备寄存器的抽象.</p>
+<blockquote>
+<p>[!tip] 已有的 <code>IOE</code> 代码实现</p>
+<ul>
+<li>具体代码实现在 <code>abstract-machine/am/src/platform/nemu/ioe/ioe.c</code></li>
+<li>设备抽象在 <code>abstract-machine/am/include/amdev.h</code></li>
+<li>上层 <code>io_read</code> 和 <code>io_write</code> 的便利性宏封装（语法糖）则位于 <code>./klib/include/klib-macros.h</code></li>
+</ul>
+</blockquote>
+<h3 id="串口"><a href="#串口" class="headerlink" title="串口"></a>串口</h3><p><code>nemu/src/device/serial.c</code></p>
+<blockquote>
+<p>[!example]+ 代码追踪：<code>putch</code> → <code>outb</code> → <code>SERIAL_PORT</code></p>
+<p><strong>① 定位 <code>putch</code></strong></p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ grep -nrw putch ../abstract-machine/</span><br><span class="line">···</span><br><span class="line">../abstract-machine/am/src/riscv/npc/trm.c:14:void putch(char ch) &#123;</span><br><span class="line">../abstract-machine/am/src/riscv/spike/trm.c:19:void putch(char ch) &#123;</span><br><span class="line">···</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>② 定位 <code>outb</code></strong></p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ grep -nrw outb ../abstract-machine/</span><br><span class="line">...</span><br><span class="line">../abstract-machine/am/src/platform/nemu/trm.c:11:  outb(SERIAL_PORT, ch);</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>③ 查看 <code>putch</code> 实现</strong></p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ vim ../abstract-machine/am/src/platform/nemu/trm.c</span><br><span class="line">...</span><br><span class="line">   10 void putch(char ch) &#123;</span><br><span class="line">&gt;&gt; 11   outb(SERIAL_PORT, ch);</span><br><span class="line">   12 &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>④ 查看 <code>outb</code> 定义</strong></p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ vim ../abstract-machine/am/src/riscv/riscv.h</span><br><span class="line">...</span><br><span class="line"> 10 static inline void outb(uintptr_t addr, uint8_t  data) &#123; *(volatile uint8_t  *)addr = data;     &#125;</span><br><span class="line"> 11 static inline void outw(uintptr_t addr, uint16_t data) &#123; *(volatile uint16_t *)addr = data;     &#125;</span><br><span class="line"> 12 static inline void outl(uintptr_t addr, uint32_t data) &#123; *(volatile uint32_t *)addr = data;     &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>⑤ 追溯 <code>SERIAL_PORT</code> 的来源</strong></p>
+<div class="code-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vim(gd SERIAL_PORT)-&gt; abstract-machine/am/src/platform/nemu/include/nemu.h</span><br><span class="line">...</span><br><span class="line">   21 #if defined(__ARCH_X86_NEMU)</span><br><span class="line">   22 # define DEVICE_BASE 0x0</span><br><span class="line">   23 #else</span><br><span class="line">   24 # define DEVICE_BASE 0xa0000000</span><br><span class="line">   25 #endif</span><br><span class="line">   26</span><br><span class="line">   27 #define MMIO_BASE 0xa0000000</span><br><span class="line">   28</span><br><span class="line">   29 #define SERIAL_PORT     (DEVICE_BASE + 0x00003f8)</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<h4 id="运行-Hello-World"><a href="#运行-Hello-World" class="headerlink" title="运行 Hello World"></a>运行 Hello World</h4><p><strong>现象复现</strong><br>运行 <code>make ARCH=riscv32-nemu run</code> 后，出现地址错误（读串口的地址超出范围）。</p>
+<p><strong>源码排查</strong><br>查看源码，发现是 <code>putch</code> 和 <code>putstr</code>，其中 <code>putstr</code> 本质还是调用 <code>putch</code>：</p>
+<blockquote>
+<p>文件：<code>abstract-machine/klib/include/klib-macros.h</code></p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">15</span> <span class="meta">#<span class="keyword">define</span> putstr(s) \</span></span><br><span class="line"><span class="meta">16   (&#123; for (const char *p = s; *p; p++) putch(*p); &#125;)</span></span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<p>这很显然，应该是在写的时候出了什么问题。</p>
+<p><strong>问题定位</strong><br>对此，在 <code>vim src/memory/paddr.c</code> 中，可以看到：</p>
+<blockquote>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">75</span>   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); <span class="keyword">return</span>);</span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<p>然后发现匹配不到 <code>CONFIG_DEVICE</code>，那问题就很明显了。</p>
+<p><strong>解决方案</strong><br>注意，要在 <code>make menuconfig</code> 中，开启 Devices 选项。</p>
+<h4 id="理解-mainargs"><a href="#理解-mainargs" class="headerlink" title="理解 mainargs"></a>理解 mainargs</h4><p><strong>RISC-V (NEMU) 平台：二进制注入机制</strong><br>在 <code>abstract-machine/am/src/riscv/npc/trm.c</code> 中，<code>mainargs</code> 被定义为一个静态常量数组：</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *args)</span>;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">char</span> mainargs[MAINARGS_MAX_LEN] = TOSTRING(MAINARGS_PLACEHOLDER); <span class="comment">// defined in CFLAGS</span></span><br></pre></td></tr></table></figure></div>
+
+<p>结合 <code>abstract-machine/scripts/platform/nemu.mk</code> 中的构建规则：</p>
+<div class="code-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">17 MAINARGS_MAX_LEN = 64</span><br><span class="line">18 MAINARGS_PLACEHOLDER = the_insert-arg_rule_in_Makefile_will_insert_mainargs_here</span><br><span class="line">19 CFLAGS += -DMAINARGS_MAX_LEN=<span class="variable">$(MAINARGS_MAX_LEN)</span> -DMAINARGS_PLACEHOLDER=<span class="variable">$(MAINARGS_PLACEHOLDER)</span></span><br><span class="line"></span><br><span class="line">21 insert-arg: image</span><br><span class="line">22 	@python <span class="variable">$(AM_HOME)</span>/tools/insert-arg.py <span class="variable">$(IMAGE)</span>.bin <span class="variable">$(MAINARGS_MAX_LEN)</span> <span class="variable">$(MAINARGS_PLACEHOLDER)</span> <span class="string">&quot;<span class="variable">$(mainargs)</span>&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><strong>实现原理：</strong><br>编译阶段，使用预设的占位符字符串替换 <code>mainargs</code> 的实际内容。在 <code>insert-arg</code> 阶段，Python 脚本读取二进制文件，定位该占位符的位置，并使用用户指定的 <code>mainargs</code> 进行覆盖。</p>
+<p><strong>边界容错机制：</strong><br>若未传入 <code>mainargs</code>（长度为 0），Python 脚本将使用 64 字节的 <code>\0</code> 进行填充。在 C 语言底层视角下，这构成一个合法的空字符串，从而跳过输出逻辑。此机制确保了无参数场景下的安全性，属于框架的显式容错设计。</p>
+<p><strong>Native 平台：环境变量传递机制</strong><br>在 <code>native</code> 平台中，<code>native.mk</code> 未包含任何关于 <code>mainargs</code> 的显式处理逻辑，既未作为 <code>argv</code> 传递，也未在 Makefile 中显式声明。为定位其传递链路，使用全局搜索：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keroune@keroune-virtual-machine:~/ysyx-workbench/abstract-machine$ grep -rn mainargs .</span><br></pre></td></tr></table></figure></div>
+
+<p>搜索结果显示，在 <code>./am/src/native/platform.c:174</code> 中存在如下代码：</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span> *args = getenv(<span class="string">&quot;mainargs&quot;</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>实现原理：</strong><br><code>native</code> 平台运行于 Linux 用户态，直接利用操作系统的环境变量机制。执行 <code>make ARCH=native run mainargs=I-love-PA</code> 时，Make 工具将 <code>mainargs=I-love-PA</code> 注入为子进程的环境变量。程序启动后，<code>platform.c</code> 通过 <code>getenv</code> 函数读取该环境变量，并将其作为参数传递给 <code>main</code> 函数。整个过程无需修改二进制文件。</p>
+<p><strong>机制对比总结</strong><br>同一套上层接口 <code>main(const char *args)</code>，在不同平台下的底层实现存在根本性差异：</p>
+<ul>
+<li><strong>NEMU 平台</strong>：运行于无操作系统的裸机环境，通过编译期占位符与运行前的二进制注入（<code>insert-arg.py</code>）实现参数传递。</li>
+<li><strong>Native 平台</strong>：运行于 Linux 用户态，依赖操作系统提供的环境变量机制（<code>getenv</code>）实现参数传递。</li>
+</ul>
+<h4 id="实现-printf"><a href="#实现-printf" class="headerlink" title="实现 printf"></a>实现 printf</h4><p>为了避免使用 Copy-paste。我和ai进行了讨论，决定把核心的解码单独提取出来，然后根据printf 或sprintf决定输出的方向不同，即采用不同的回调函数。</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;am.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;klib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;klib-macros.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span><span class="params">(*<span class="type">out_func_t</span>)</span><span class="params">(<span class="type">char</span> c, <span class="type">void</span>* ctx_p)</span>;</span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">out_to_str</span><span class="params">(<span class="type">char</span> c, <span class="type">void</span>* ctx_p)</span>&#123;</span><br><span class="line">	<span class="type">char</span> **p = (<span class="type">char</span>**) ctx_p; <span class="comment">//ctx_p -&gt; out -&gt; 存储字符的位置</span></span><br><span class="line">	**p = c;</span><br><span class="line">	(*p)++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">out_to_putch</span><span class="params">(<span class="type">char</span> c, <span class="type">void</span>* ctx_p)</span>&#123;</span><br><span class="line">	putch(c);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">vprintfmt</span><span class="params">(<span class="type">out_func_t</span> out_func, <span class="type">void</span>* ctx_p, <span class="type">const</span> <span class="type">char</span> *fmt, va_list ap)</span> &#123;</span><br><span class="line">	<span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(*fmt)&#123;</span><br><span class="line">		<span class="keyword">if</span>(*fmt != <span class="string">&#x27;%&#x27;</span>)&#123;</span><br><span class="line">			out_func(*fmt++, ctx_p);</span><br><span class="line">			count++;</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		fmt++;</span><br><span class="line">		<span class="keyword">switch</span>(*fmt++)&#123;</span><br><span class="line">			<span class="keyword">case</span> <span class="string">&#x27;s&#x27;</span>:&#123;</span><br><span class="line">				<span class="type">char</span>* s = va_arg(ap, <span class="type">char</span>*);</span><br><span class="line">				<span class="keyword">while</span>(*s)&#123;</span><br><span class="line">					out_func(*s++, ctx_p);</span><br><span class="line">					count++;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">case</span> <span class="string">&#x27;d&#x27;</span>:&#123;</span><br><span class="line">				<span class="type">int</span> d = va_arg(ap, <span class="type">int</span>);</span><br><span class="line">				<span class="type">int</span> neg = d &lt; <span class="number">0</span>;</span><br><span class="line">				<span class="type">unsigned</span> u = neg ? -(<span class="type">unsigned</span>)d : (<span class="type">unsigned</span>)d; <span class="comment">// 用于处理 INT_MIN</span></span><br><span class="line">				<span class="type">char</span> buf[<span class="number">32</span>];</span><br><span class="line">				<span class="type">int</span> num_len = <span class="number">0</span>;</span><br><span class="line">				<span class="keyword">do</span>&#123;</span><br><span class="line">					buf[num_len++] = <span class="string">&#x27;0&#x27;</span> + u%<span class="number">10</span>;</span><br><span class="line">					u /= <span class="number">10</span>;</span><br><span class="line">				&#125;<span class="keyword">while</span>(u);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span>(neg)&#123;</span><br><span class="line">					out_func(<span class="string">&#x27;-&#x27;</span>, ctx_p);</span><br><span class="line">					count++;</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">				<span class="keyword">while</span>(num_len)&#123;</span><br><span class="line">					out_func(buf[--num_len], ctx_p);</span><br><span class="line">					count++;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">case</span> <span class="string">&#x27;%&#x27;</span>:</span><br><span class="line">				out_func(<span class="string">&#x27;%&#x27;</span>, ctx_p);</span><br><span class="line">				count++;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">default</span>:</span><br><span class="line">				out_func(<span class="string">&#x27;%&#x27;</span>, ctx_p);</span><br><span class="line">				out_func(*(fmt - <span class="number">1</span>), ctx_p);</span><br><span class="line">				count += <span class="number">2</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *fmt, ...)</span> &#123;</span><br><span class="line">  <span class="comment">// panic(&quot;Not implemented&quot;);</span></span><br><span class="line">	va_list ap;</span><br><span class="line">	va_start(ap, fmt);</span><br><span class="line">	<span class="type">int</span> ret = vprintfmt(out_to_putch, <span class="literal">NULL</span>, fmt, ap);</span><br><span class="line">	va_end(ap);</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">vsprintf</span><span class="params">(<span class="type">char</span> *out, <span class="type">const</span> <span class="type">char</span> *fmt, va_list ap)</span> &#123;</span><br><span class="line">  <span class="comment">// panic(&quot;Not implemented&quot;);</span></span><br><span class="line">	<span class="type">int</span> ret = vprintfmt(out_to_str, &amp;out, fmt, ap); <span class="comment">// ctx_p -&gt; out -&gt; 实际存储位置</span></span><br><span class="line">	*out = <span class="string">&#x27;\0&#x27;</span>; <span class="comment">// 因为在 out_to_str 中，out 指向的位置会多往后挪一格，所以此处可直接赋值</span></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">sprintf</span><span class="params">(<span class="type">char</span> *out, <span class="type">const</span> <span class="type">char</span> *fmt, ...)</span> &#123;</span><br><span class="line">	va_list ap;</span><br><span class="line">	va_start(ap, fmt);</span><br><span class="line">	<span class="type">int</span> ret = <span class="built_in">vsprintf</span>(out, fmt, ap);</span><br><span class="line">	va_end(ap);</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">snprintf</span><span class="params">(<span class="type">char</span> *out, <span class="type">size_t</span> n, <span class="type">const</span> <span class="type">char</span> *fmt, ...)</span> &#123;</span><br><span class="line">  panic(<span class="string">&quot;Not implemented&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">vsnprintf</span><span class="params">(<span class="type">char</span> *out, <span class="type">size_t</span> n, <span class="type">const</span> <span class="type">char</span> *fmt, va_list ap)</span> &#123;</span><br><span class="line">  panic(<span class="string">&quot;Not implemented&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+<h4 id="运行-alu-tests"><a href="#运行-alu-tests" class="headerlink" title="运行 alu-tests"></a>运行 alu-tests</h4><p>在运行 <code>alu-tests</code> 时，初步观察到终端没有任何输出，这一现象起初令人困惑。经过排查发现，程序并非没有执行打印，而是其 <code>printf</code> 的输出目标并非终端屏幕，而是被写入了文件。</p>
+<p>查看其 <code>Makefile</code> 即可明确这一机制：</p>
+<div class="code-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">10 <span class="variable">$(SRCS)</span>: <span class="variable">$(GENERATOR)</span></span><br><span class="line">11   <span class="variable">$^</span> &gt; <span class="variable">$@</span></span><br></pre></td></tr></table></figure></div>
+<p>这里的 <code>&gt;</code> 是 Shell 的重定向符号。该规则执行时，会将运行生成器 <code>gen_alu_test.c</code> 所产生的标准输出（大量的 C 源代码文本），全盘重定向并保存到 <code>build/alu_test.c</code> 文件中。这也解释了为什么直接运行测试程序时终端是静默的——它本质上是一个“代码生成器”，只负责“打印”代码，而不负责“运行”代码。</p>
+<p>为了验证这一机制，并确认生成的测试代码确实被装载进了裸机环境，我们在生成器源码 <code>gen_alu_test.c</code> 的 <code>main</code> 函数中添加了一行测试输出：</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">119</span> <span class="built_in">printf</span>(<span class="string">&quot;printf(\&quot;ssssssss\\n\&quot;);\n&quot;</span>);</span><br></pre></td></tr></table></figure></div>
+<p>这行代码的作用是在生成的 <code>alu_test.c</code> 中，硬编码插入一句 <code>printf(&quot;ssssssss\n&quot;);</code>。重新编译并在 NEMU 中运行后，终端成功输出了预期结果，并顺利触发了 <code>HIT GOOD TRAP</code>：</p>
+<div class="code-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[src/monitor/monitor.c:32 welcome] Build time: 21:45:42, Nov 17 2026</span><br><span class="line">Welcome to riscv32-NEMU!</span><br><span class="line">For help, type &quot;help&quot;</span><br><span class="line">ssssssss</span><br><span class="line">[src/cpu/cpu-exec.c:135 cpu_exec] nemu: HIT GOOD TRAP at pc = 0x800ebb44</span><br></pre></td></tr></table></figure></div>
+<p>这一实验不仅验证了构建脚本的重定向流程，也再次证明了自定义的 <code>printf</code> 已经在 NEMU 裸机环境中正常工作。</p>
+<h3 id="运行流程"><a href="#运行流程" class="headerlink" title="运行流程"></a>运行流程</h3><pre class="mermaid">flowchart LR
+    subgraph AM["AM"]
+        direction TB
+        A1["am start"] --> A2["putch"]
+        A2 --> A3["outb"]
+        A3 --> A4["对应地址赋值"]
+        A4 --> A5["am end"]
+    end
+
+    subgraph NEMU["NEMU"]
+        direction TB
+        N1["nemu start"] --> N2["sw、sb"]
+        N2 --> N3["vaddr_write（虚拟地址）"]
+        N3 --> N4["paddr_write（MMU 翻译后分派）"]
+        N4 --> N5{"in_pmem?"}
+        N5 -- "否" --> N6["mmio"]
+        N6 --> N7["map_write"]
+        N7 --> N8["调用对应回调函数，触发硬件模拟效果"]
+        N5 -- "是" --> N9["直接写入 pmem，pmem_write"]
+        N8 --> N10["nemu end"]
+        N9 --> N10
+    end
+
+    AM -->|"二进制指令"| NEMU</pre>
+<hr>
+<h3 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h3><p><code>pio</code>: 在 0x84 处长度为8Byte的端口 （64bit）<br><code>mmio</code>:  在 0xa0000084 处长度为 8Byte的 MMIO 空间<br>都映射到 两个 32bit的 RTC 寄存器</p>
+<blockquote>
+<p>为了解耦：一个64位的功能拆分成两个32位的设备寄存器, 可同时支持接入32位和64位CPU</p>
+</blockquote>
+<p>在 abstract-machine&#x2F;am&#x2F;include&#x2F;amdev.h<br> 14 AM_DEVREG( 5, TIMER_RTC,    RD, int year, month, day, hour, minute, second);<br> 15 AM_DEVREG( 6, TIMER_UPTIME, RD, uint64_t us);</p>
+<ul>
+<li><code>AM_TIMER_RTC</code>, AM实时时钟(RTC, Real Time Clock), 可读出当前的年月日时分秒. PA中暂不使用.</li>
+<li><code>AM_TIMER_UPTIME</code>, AM系统启动时间, 可读出系统启动后的微秒数.</li>
+</ul>
+<p>注意，在 <code>nemu/src/device/timer.c</code> 中，不是实际的物理芯片，而是对于它的行为仿真代码</p>
+<h4 id="实现-IOE"><a href="#实现-IOE" class="headerlink" title="实现 IOE"></a>实现 IOE</h4><p>这个函数很关键：<br> 22 static void rtc_io_handler(uint32_t offset, int len, bool is_write) {<br> 23   assert(offset &#x3D;&#x3D; 0 || offset &#x3D;&#x3D; 4);<br> 24   if (!is_write &amp;&amp; offset &#x3D;&#x3D; 4) {                                                             25     uint64_t us &#x3D; get_time();<br> 26     rtc_port_base[0] &#x3D; (uint32_t)us;<br> 27     rtc_port_base[1] &#x3D; us &gt;&gt; 32;<br> 28   }<br> 29 }<br>这里对读取顺序做了要求，要先读取高4字节，再读取低4字节。因为在读取高四位的时候会刷新，但是读取第四字节的时候不能刷新</p>
+<blockquote>
+<p>[!bug] 找不到 inb、inl、outb等<br>注意，在使用 vim 的 coc 时候，发现 outb 识别不到<br>后来意识到，这是在<br><code>&gt;&gt;  6 #include ISA_H</code><br>会把 riscv.h 包含进来，而这里就有 inl 和 outb 了</p>
+</blockquote>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;am.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;nemu.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">uint64_t</span> boot_time = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">uint64_t</span> <span class="title function_">get_rtc_time</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">	<span class="type">uint32_t</span> hi = inl(RTC_ADDR + <span class="number">4</span>);</span><br><span class="line">	<span class="type">uint32_t</span> lo = inl(RTC_ADDR);</span><br><span class="line">	<span class="keyword">return</span> ((<span class="type">uint64_t</span>)hi &lt;&lt; <span class="number">32</span>) | lo;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> __am_timer_init() &#123;</span><br><span class="line">	boot_time = get_rtc_time();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p>阅读 am-kernel&#x2F;tests&#x2F;am-tests&#x2F;src&#x2F;main.c 后，很自然就可以发现，需要添加参数 mainargs&#x3D;t，才可以运行 real-time clock test 的测试<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261118231910.png"
+                      alt="Pasted_image_20261118231910.png"
+                ></p>
+<h4 id="看看-NEMU跑多块"><a href="#看看-NEMU跑多块" class="headerlink" title="看看 NEMU跑多块"></a>看看 NEMU跑多块</h4><p><strong>一、 补充未实现指令（<code>mulhu</code>）</strong><br>在运行 <code>am-kernels/benchmarks/microbench</code> 时，程序遇到了未实现指令报错，机器码为 <code>0x02f535b3</code>。<br>起初怀疑是 <code>sltu</code> 指令，但对比后发现其 <code>funct7</code> 段并非 <code>0000000</code> 而是 <code>0000001</code>。查阅 RISC-V 规范后，确认该指令为 <code>mulhu</code>。据此在 NEMU 的译码逻辑中补充实现：</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSTPAT(<span class="string">&quot;0000001 ????? ????? 011 ????? 01100 11&quot;</span>, mulhu, R, R(rd) = (<span class="type">uint64_t</span>)((<span class="type">uint64_t</span>)(<span class="type">uint32_t</span>)src1 * (<span class="type">uint64_t</span>)(<span class="type">uint32_t</span>)src2) &gt;&gt; <span class="number">32</span> ); <span class="comment">// RV32M</span></span><br></pre></td></tr></table></figure></div>
+
+<p><strong>二、 排查 15pz 越界崩溃（核心过程）</strong><br>在运行 <code>microbench</code> 的 <code>15pz</code> 基准测试时，程序因访问非法极小地址发生崩溃：</p>
+<div class="code-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[15pz] A* 15-puzzle search: address (0x00000014) is out of bound at pc = 0x800031dc</span><br></pre></td></tr></table></figure></div>
+<p>由于为了运行效率关闭了 Trace 功能，无法直接回溯指令流。</p>
+<p>询问AI后，结合反汇编结果分析后，决定在 NEMU 的 <code>exec_once</code> 源码中插入一段<strong>条件打印</strong>代码（仅在触发崩溃前那次特定的 PC 执行时打印）：</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">exec_once</span><span class="params">(Decode *s, <span class="type">vaddr_t</span> pc)</span> &#123;</span><br><span class="line">  s-&gt;pc = pc;</span><br><span class="line">  s-&gt;snpc = pc;</span><br><span class="line">  isa_exec_once(s);</span><br><span class="line">  <span class="comment">// 拦截崩溃前一刻的状态</span></span><br><span class="line">  <span class="keyword">if</span> (s-&gt;dnpc == <span class="number">0x800031dcu</span> &amp;&amp; cpu.gpr[<span class="number">24</span>] == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;before fault: prev_pc=0x%08x s8=0x%08x a0=0x%08x\n&quot;</span>,</span><br><span class="line">            (<span class="type">unsigned</span>)s-&gt;pc, (<span class="type">unsigned</span>)cpu.gpr[<span class="number">24</span>], (<span class="type">unsigned</span>)cpu.gpr[<span class="number">10</span>]);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>重新运行后得到线索：<code>before fault: prev_pc=0x80003820 s8=0x00000000 a0=0x8000eebc</code>。</p>
+<p>查看 <code>prev_pc = 0x80003820</code> 处的反汇编代码，指令如下：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3682 80003820: 1ae78ee3 beq a5,a4,800041dc &lt;bench_15pz_run+0xa0c&gt;</span><br></pre></td></tr></table></figure></div>
+<p><strong>疑点浮现</strong>：该 <code>beq</code> 指令的条件分支预期跳转目标为 <code>0x800041dc</code>，但实际却跳向了 <code>0x800031dc</code>。这说明<strong>分支指令的跳转目标计算逻辑出现了严重错误</strong>。</p>
+<p>追踪至 NEMU 的译码代码，检查负责解析 B 型指令（Branch）立即数的 <code>immB</code> 宏：</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> immB() do &#123; *imm = SEXT(BITS(i, 31, 31) &lt;&lt; 12 | BITS(i, 7, 7) &lt;&lt; 11 | BITS(i, 30, 25) &lt;&lt; 5 | BITS(i, 11, 8) &lt;&lt; 1, 12);&#125; while(0)</span></span><br></pre></td></tr></table></figure></div>
+<p><strong>根因定位</strong>：通过核对 RISC-V 手册，B 型指令的立即数构成中，各段拼接后（包含最低位补 0），实际有效位宽为 <strong>13 bit</strong>。而代码中 <code>SEXT</code> 的符号扩展长度错写为了 <strong>12</strong>，导致高位被错误截断，计算出的跳转偏移量发生错误。</p>
+<p>修正 <code>immB</code> 宏的位宽参数后，问题彻底解决。再次运行 <code>microbench</code>，所有测试项全部顺利通过，并成功触发 <code>HIT GOOD TRAP</code>：</p>
+<div class="code-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[15pz] A* 15-puzzle search: * Passed.</span><br><span class="line">  min time: 1763.298 ms [303]</span><br><span class="line">...</span><br><span class="line">==================================================</span><br><span class="line">MicroBench PASS        300 Marks</span><br><span class="line">...</span><br><span class="line">[src/cpu/cpu-exec.c:135 cpu_exec] nemu: HIT GOOD TRAP at pc = 0x80004e1c</span><br></pre></td></tr></table></figure></div>
+
+<p>最终各项测试结果：</p>
+<ul>
+<li>dhrystone：117&#x2F;100000</li>
+<li>coremark</li>
+<li>microbench</li>
+</ul>
+<div class="code-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Welcome</span> <span class="string">to</span> <span class="string">riscv32-NEMU!</span></span><br><span class="line"><span class="string">For</span> <span class="string">help,</span> <span class="string">type</span> <span class="string">&quot;help&quot;</span></span><br><span class="line"><span class="string">Dhrystone</span> <span class="string">Benchmark,</span> <span class="string">Version</span> <span class="string">C,</span> <span class="string">Version</span> <span class="number">2.2</span></span><br><span class="line"><span class="string">Trying</span> <span class="number">500000</span> <span class="string">runs</span> <span class="string">through</span> <span class="string">Dhrystone.</span></span><br><span class="line"><span class="string">Finished</span> <span class="string">in</span> <span class="number">7500 </span><span class="string">ms</span></span><br><span class="line"><span class="string">==================================================</span></span><br><span class="line"><span class="string">Dhrystone</span> <span class="string">PASS</span>         <span class="number">117</span> <span class="string">Marks</span></span><br><span class="line">                   <span class="string">vs.</span> <span class="number">100000</span> <span class="string">Marks</span> <span class="string">(i7-7700K</span> <span class="string">@</span> <span class="number">4.</span><span class="string">20GHz)</span></span><br><span class="line">[<span class="string">src/cpu/cpu-exec.c:135</span> <span class="string">cpu_exec</span>] <span class="attr">nemu:</span> <span class="string">HIT</span> <span class="string">GOOD</span> <span class="string">TRAP</span> <span class="string">at</span> <span class="string">pc</span> <span class="string">=</span> <span class="number">0x80000d60</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">Welcome</span> <span class="string">to</span> <span class="string">riscv32-NEMU!</span></span><br><span class="line"><span class="string">For</span> <span class="string">help,</span> <span class="string">type</span> <span class="string">&quot;help&quot;</span></span><br><span class="line"><span class="string">Running</span> <span class="string">CoreMark</span> <span class="string">for</span> <span class="number">1000 </span><span class="string">iterations</span></span><br><span class="line"><span class="string">2K</span> <span class="string">performance</span> <span class="string">run</span> <span class="string">parameters</span> <span class="string">for</span> <span class="string">coremark.</span></span><br><span class="line"><span class="attr">CoreMark Size    :</span> <span class="number">666</span></span><br><span class="line"><span class="attr">Total time (ms)  :</span> <span class="number">11921</span></span><br><span class="line"><span class="attr">Iterations       :</span> <span class="number">1000</span></span><br><span class="line"><span class="attr">Compiler version :</span> <span class="string">GCC11.4.0</span></span><br><span class="line"><span class="attr">seedcrc          :</span> <span class="string">0x%04x</span></span><br><span class="line">[<span class="number">0</span>]<span class="attr">crclist       :</span> <span class="string">0x%04x</span></span><br><span class="line">[<span class="number">0</span>]<span class="attr">crcmatrix     :</span> <span class="string">0x%04x</span></span><br><span class="line">[<span class="number">0</span>]<span class="attr">crcstate      :</span> <span class="string">0x%04x</span></span><br><span class="line">[<span class="number">0</span>]<span class="attr">crcfinal      :</span> <span class="string">0x%04x</span></span><br><span class="line"><span class="string">Finised</span> <span class="string">in</span> <span class="number">11921</span> <span class="string">ms.</span></span><br><span class="line"><span class="string">==================================================</span></span><br><span class="line"><span class="string">CoreMark</span> <span class="string">PASS</span>       <span class="number">245</span> <span class="string">Marks</span></span><br><span class="line">                <span class="string">vs.</span> <span class="number">100000</span> <span class="string">Marks</span> <span class="string">(i7-7700K</span> <span class="string">@</span> <span class="number">4.</span><span class="string">20GHz)</span></span><br><span class="line">[<span class="string">src/cpu/cpu-exec.c:135</span> <span class="string">cpu_exec</span>] <span class="attr">nemu:</span> <span class="string">HIT</span> <span class="string">GOOD</span> <span class="string">TRAP</span> <span class="string">at</span> <span class="string">pc</span> <span class="string">=</span> <span class="number">0x800022c4</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">Welcome</span> <span class="string">to</span> <span class="string">riscv32-NEMU!</span></span><br><span class="line"><span class="string">For</span> <span class="string">help,</span> <span class="string">type</span> <span class="string">&quot;help&quot;</span></span><br><span class="line"><span class="string">=======</span> <span class="string">Running</span> <span class="string">MicroBench</span> [<span class="string">input</span> <span class="string">*test*</span>] <span class="string">=======</span></span><br><span class="line">[<span class="string">qsort</span>] <span class="attr">Quick sort:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">[<span class="string">queen</span>] <span class="attr">Queen placement:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">[<span class="string">bf</span>] <span class="attr">Brainf**k interpreter:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">[<span class="string">fib</span>] <span class="attr">Fibonacci number:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">[<span class="string">sieve</span>] <span class="attr">Eratosthenes sieve:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">[<span class="string">15pz</span>] <span class="attr">A* 15-puzzle search:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">[<span class="string">dinic</span>] <span class="string">Dinic&#x27;s</span> <span class="attr">maxflow algorithm:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">[<span class="string">lzip</span>] <span class="attr">Lzip compression:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">[<span class="string">ssort</span>] <span class="attr">Suffix sort:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">[<span class="string">md5</span>] <span class="attr">MD5 digest:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line"><span class="string">==================================================</span></span><br><span class="line"><span class="string">MicroBench</span> <span class="string">PASS</span></span><br><span class="line"><span class="attr">Scored time:</span> <span class="number">11.306</span> <span class="string">ms</span></span><br><span class="line"><span class="attr">Total  time:</span> <span class="number">16.023</span> <span class="string">ms</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">Welcome</span> <span class="string">to</span> <span class="string">riscv32-NEMU!</span></span><br><span class="line"><span class="string">For</span> <span class="string">help,</span> <span class="string">type</span> <span class="string">&quot;help&quot;</span></span><br><span class="line"><span class="string">=======</span> <span class="string">Running</span> <span class="string">MicroBench</span> [<span class="string">input</span> <span class="string">*train*</span>] <span class="string">=======</span></span><br><span class="line">[<span class="string">qsort</span>] <span class="attr">Quick sort:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">174.129</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line">[<span class="string">queen</span>] <span class="attr">Queen placement:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">262.913</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line">[<span class="string">bf</span>] <span class="attr">Brainf**k interpreter:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">319.181</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line">[<span class="string">fib</span>] <span class="attr">Fibonacci number:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">236.202</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line">[<span class="string">sieve</span>] <span class="attr">Eratosthenes sieve:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">363.213</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line">[<span class="string">15pz</span>] <span class="attr">A* 15-puzzle search:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">201.441</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line">[<span class="string">dinic</span>] <span class="string">Dinic&#x27;s</span> <span class="attr">maxflow algorithm:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">106.524</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line">[<span class="string">lzip</span>] <span class="attr">Lzip compression:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">115.735</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line">[<span class="string">ssort</span>] <span class="attr">Suffix sort:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">92.730</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line">[<span class="string">md5</span>] <span class="attr">MD5 digest:</span> <span class="string">*</span> <span class="string">Passed.</span></span><br><span class="line">  <span class="attr">min time:</span> <span class="number">289.122</span> <span class="string">ms</span> [<span class="number">0</span>]</span><br><span class="line"><span class="string">==================================================</span></span><br><span class="line"><span class="string">MicroBench</span> <span class="string">PASS</span></span><br><span class="line"><span class="attr">Scored time:</span> <span class="number">2161.190 </span><span class="string">ms</span></span><br><span class="line"><span class="attr">Total  time:</span> <span class="number">2524.996 </span><span class="string">ms</span></span><br><span class="line">[<span class="string">src/cpu/cpu-exec.c:135</span> <span class="string">cpu_exec</span>] <span class="attr">nemu:</span> <span class="string">HIT</span> <span class="string">GOOD</span> <span class="string">TRAP</span> <span class="string">at</span> <span class="string">pc</span> <span class="string">=</span> <span class="number">0x80004e1c</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="bump-allocator"><a href="#bump-allocator" class="headerlink" title="bump allocator"></a>bump allocator</h4><div class="code-container" data-rel="Css"><figure class="iseeu highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">堆起点                                              堆终点</span><br><span class="line">  ↓                                                   ↓</span><br><span class="line"><span class="selector-attr">[ 已分配 ]</span><span class="selector-attr">[ 已分配 ]</span><span class="selector-attr">[ 下一块可用空间 ...               ]</span></span><br><span class="line">                        ↑</span><br><span class="line">                       addr</span><br></pre></td></tr></table></figure></div>
+
+<p>在这里先找到堆的起始</p>
+<div class="code-container" data-rel="Gradle"><figure class="iseeu highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:~<span class="regexp">/ysyx-workbench/</span><span class="keyword">abstract</span>-machine$ <span class="keyword">grep</span> -rn heap .</span><br><span class="line">...</span><br><span class="line">.<span class="regexp">/am/i</span>nclude/am.h:<span class="number">47</span>:extern   Area        heap;</span><br><span class="line">...</span><br><span class="line">.<span class="regexp">/am/</span>src<span class="regexp">/platform/</span>nemu/trm.c:<span class="number">4</span>:extern <span class="keyword">char</span> _heap_start;</span><br><span class="line">.<span class="regexp">/am/</span>src<span class="regexp">/platform/</span>nemu/trm.c:<span class="number">7</span>:Area heap = RANGE(&amp;_heap_start, PMEM_END);</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Erlang"><figure class="iseeu highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">keruone@keruone-virtual-machine:<span class="string">~/ysyx-workbench/</span>abstract-machine<span class="string">$ </span>grep -rn Area .</span><br><span class="line">...</span><br><span class="line">./am/src/platform/nemu/trm.c:<span class="number">7</span>:Area heap = RANGE(&amp;_heap_start, PMEM_END);</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+
+<p>RETURN VALUE<br>       The malloc() and calloc() functions return a pointer to the allocated memory, which is  suit‐<br>       ably aligned for any built-in type.  On error, these functions return NULL.  NULL may also be<br>       returned by a successful call to malloc() with a size of zero, or by  a  successful  call  to<br>       calloc() with nmemb or size equal to zero.</p>
+<p><code>malloc()</code> 和 <code>calloc()</code> 函数返回一个指向已分配内存的指针，该指针已进行适当对齐，可用于任何内置类型。出错时，这些函数返回 <code>NULL</code>。另外，如果成功调用 <code>malloc()</code> 时 <code>size</code> 为 0，或者成功调用 <code>calloc()</code> 时 <code>nmemb</code> 或 <code>size</code> 等于 0，这些函数也可能返回 <code>NULL</code>。</p>
+<blockquote>
+<p>[!tips] 适当对齐<br>“适当对齐（Suitably aligned）”是一个硬件层面的硬性要求。简单来说，<strong>它的意思是：你 <code>malloc</code> 返回的指针地址，必须是某个特定字节数（通常是 8 字节或 16 字节）的整数倍。</strong></p>
+<ul>
+<li><strong>C 标准的规定</strong>：必须满足 <code>max_align_t</code> 类型的对齐要求。在大多数架构上，这通常是 <code>long double</code> 或 <code>uint64_t</code> 的大小。</li>
+<li><strong>在 32 位 RISC-V (NEMU) 上</strong>：虽然基础字长是 32 位（4字节），但由于你需要支持 64 位整数（<code>uint64_t</code>）和双精度浮点数（<code>double</code>），为了兼容这些 8 字节数据类型，<strong>最安全的做法是强制 8 字节对齐</strong>。</li>
+<li>在 NEMU 的 RISC-V 内存模型中，地址是<strong>按字节编址</strong>的：一个地址对应一个字节，也就是 <strong>8 bit</strong>。</li>
+</ul>
+</blockquote>
+<p>所以综上，进行了8Byte对齐。</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">+  <span class="number">32</span> <span class="keyword">extern</span> Area heap;</span><br><span class="line">+  <span class="number">33</span></span><br><span class="line">   <span class="number">34</span> <span class="type">void</span> *<span class="title function_">malloc</span><span class="params">(<span class="type">size_t</span> size)</span> &#123;</span><br><span class="line">   <span class="number">35</span>   <span class="comment">// On native, malloc() will be called during initializaion of C runtime.</span></span><br><span class="line">   <span class="number">36</span>   <span class="comment">// Therefore do not call panic() here, else it will yield a dead recursion:</span></span><br><span class="line">~  <span class="number">37</span>   <span class="comment">/*//   panic() -&gt; putchar() -&gt; (glibc) -&gt; malloc() -&gt; panic()*/</span></span><br><span class="line">~  <span class="number">38</span> <span class="comment">/*#if !(defined(__ISA_NATIVE__) &amp;&amp; defined(__NATIVE_USE_KLIB__))*/</span></span><br><span class="line">~  <span class="number">39</span>   <span class="comment">/*panic(&quot;Not implemented&quot;);*/</span></span><br><span class="line">~  <span class="number">40</span> <span class="comment">/*#endif*/</span></span><br><span class="line">~  <span class="number">41</span>   <span class="type">static</span> <span class="type">uintptr_t</span> cursor;</span><br><span class="line">+  <span class="number">42</span>   <span class="type">static</span> <span class="type">int</span> initialized = <span class="number">0</span>;</span><br><span class="line">+  <span class="number">43</span></span><br><span class="line">+  <span class="number">44</span>   <span class="keyword">if</span>(!initialized)&#123;</span><br><span class="line">+  <span class="number">45</span>     cursor = (<span class="type">uintptr_t</span>)heap.start;</span><br><span class="line">+  <span class="number">46</span>     initialized = <span class="number">1</span>;</span><br><span class="line">+  <span class="number">47</span>   &#125;</span><br><span class="line">+  <span class="number">48</span></span><br><span class="line">+  <span class="number">49</span>   <span class="type">uintptr_t</span> start = (cursor + <span class="number">7u</span>) &amp; ~(<span class="type">uintptr_t</span>)<span class="number">7u</span>; <span class="comment">// 8 对齐</span></span><br><span class="line">+  <span class="number">50</span>   <span class="type">uintptr_t</span> limit = (<span class="type">uintptr_t</span>)heap.end;</span><br><span class="line">+  <span class="number">51</span>   <span class="keyword">if</span>(start &gt; limit || start + size &gt; limit)</span><br><span class="line">+  <span class="number">52</span>     <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">+  <span class="number">53</span>   cursor = start + size;</span><br><span class="line">+  <span class="number">54</span></span><br><span class="line">+  <span class="number">55</span>   <span class="keyword">return</span> (<span class="type">void</span>*)start;</span><br><span class="line">   <span class="number">56</span> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+<h4 id="Bad-Apple"><a href="#Bad-Apple" class="headerlink" title="Bad Apple!!"></a>Bad Apple!!</h4><p>阅读 Makefile，可以发现，做的比较特殊的处理就是取出了视频和音频文件单独保存，其中 视频文件以黑白二进制（monow）保存，通过 image2pipe 来输出到文件中</p>
+<div class="code-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">VIDEO_ROW = 25</span><br><span class="line">VIDEO_COL = 80</span><br><span class="line">AUDIO_FREQ = 44100</span><br><span class="line">AUDIO_CHANNEL = 1</span><br><span class="line"></span><br><span class="line">VIDEO_SRC = bad-apple.mp4</span><br><span class="line">VIDEO = build/video.frame</span><br><span class="line">AUDIO = build/audio.pcm</span><br><span class="line"></span><br><span class="line">NAME = bad-apple</span><br><span class="line">SRCS = bad-apple.c resources.S</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(AM_HOME)</span>/Makefile</span><br><span class="line"></span><br><span class="line">CFLAGS  += -DVIDEO_ROW=<span class="variable">$(VIDEO_ROW)</span> -DVIDEO_COL=<span class="variable">$(VIDEO_COL)</span> \</span><br><span class="line">           -DAUDIO_FREQ=<span class="variable">$(AUDIO_FREQ)</span> -DAUDIO_CHANNEL=<span class="variable">$(AUDIO_CHANNEL)</span></span><br><span class="line">ASFLAGS += -DVIDEO_FILE=\<span class="string">&quot;$(abspath <span class="variable">$(VIDEO)</span>)\&quot; -DAUDIO_FILE=\&quot;$(abspath <span class="variable">$(AUDIO)</span>)\&quot;</span></span><br><span class="line"><span class="string"><span class="variable">$(VIDEO)</span>:</span></span><br><span class="line"><span class="string">	ffmpeg -i <span class="variable">$(VIDEO_SRC)</span> -f image2pipe -s <span class="variable">$(VIDEO_COL)</span>x<span class="variable">$(VIDEO_ROW)</span> -vcodec rawvideo -pix_fmt monow <span class="variable">$@</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="variable">$(AUDIO)</span>:</span></span><br><span class="line"><span class="string">	ffmpeg -i <span class="variable">$(VIDEO_SRC)</span> -vn -acodec pcm_s16le -f s16le -ac <span class="variable">$(AUDIO_CHANNEL)</span> -ar <span class="variable">$(AUDIO_FREQ)</span> <span class="variable">$@</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">resources.S: <span class="variable">$(VIDEO)</span> <span class="variable">$(AUDIO)</span></span></span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> 1 .section .data</span><br><span class="line"> 2 .global video_payload, video_payload_end</span><br><span class="line"> 3 .p2align 3</span><br><span class="line"> 4 video_payload:</span><br><span class="line"> 5 .incbin VIDEO_FILE</span><br><span class="line"> 6 video_payload_end:</span><br><span class="line"> 7</span><br><span class="line"> 8 .global audio_payload, audio_payload_end</span><br><span class="line"> 9 .p2align 3</span><br><span class="line">10 audio_payload:</span><br><span class="line">11 .incbin AUDIO_FILE</span><br><span class="line">12 audio_payload_end:</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>在代码中觉得奇怪，video&#x2F;audio_payload 和 video&#x2F;audio_payload_end 在哪里，一看在 .S 文件中：</p>
+<ul>
+<li>这里 incbin 会将视频文件以 2^3 对齐的形式，塞入到数据段中</li>
+<li>然后此时，video_payload的位置和 video_payload_end 位置就是视频的开头结尾</li>
+<li>audio 同理<br>再然后 c 代码中做的就很简单了：</li>
+<li>读取对应一帧大小的数据</li>
+<li>重置光标</li>
+<li>循环行列写完一帧数据</li>
+<li>有音频放音频</li>
+<li>等待对应帧率的时间</li>
+<li>循环</li>
+</ul>
+<h4 id="native和klib"><a href="#native和klib" class="headerlink" title="native和klib"></a>native和klib</h4><p>这部分我没细看，先进行了 ai 询问，得到如下结果</p>
+<blockquote>
+<p>在 <code>native</code> 上，SDL 调用的是 glibc 的 <code>malloc/free</code>。如果 klib 也直接导出同名的 <code>malloc/free</code>，动态链接时可能发生符号覆盖，SDL 就可能误用 klib 的实现。</p>
+<p>这类构建技巧通常是让用户程序调用 klib 的替代符号，而保留标准 <code>malloc/free</code> 给 SDL&#x2F;glibc。具体可能通过编译时宏重命名 klib 符号，或通过链接器选项实现；要确认你看到的这份代码用了哪一种，需要检查 <code>native</code> 的构建参数和 klib 的符号定义。你可以搜索：</p>
+</blockquote>
+<h4 id="设备访问踪迹-dtrace"><a href="#设备访问踪迹-dtrace" class="headerlink" title="设备访问踪迹 - dtrace"></a>设备访问踪迹 - dtrace</h4><p>在 Kconfig添加如下内容：</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@@ <span class="number">-166</span>,<span class="number">6</span> +<span class="number">166</span>,<span class="number">11</span> @@ config MTRACE_NO_FETCH</span><br><span class="line">        <span class="type">bool</span> <span class="string">&quot;Filter the pmem_read about ifetch&quot;</span></span><br><span class="line">        <span class="keyword">default</span> y</span><br><span class="line"></span><br><span class="line">+config DTRACE</span><br><span class="line">+       depends on TRACE</span><br><span class="line">+       <span class="type">bool</span> <span class="string">&quot;Enable device tracer&quot;</span></span><br><span class="line">+       <span class="keyword">default</span> y</span><br><span class="line">+</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>在 <code>map_read</code> <code>map_write</code> 添加 Log 信息</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@@ <span class="number">-58</span>,<span class="number">12</span> +<span class="number">58</span>,<span class="number">18</span> @@ <span class="type">word_t</span> <span class="title function_">map_read</span><span class="params">(<span class="type">paddr_t</span> addr, <span class="type">int</span> len, IOMap *<span class="built_in">map</span>)</span> &#123;</span><br><span class="line">   <span class="type">paddr_t</span> offset = addr - <span class="built_in">map</span>-&gt;low;</span><br><span class="line">   invoke_callback(<span class="built_in">map</span>-&gt;callback, offset, len, <span class="literal">false</span>); <span class="comment">// prepare data to read</span></span><br><span class="line">   <span class="type">word_t</span> ret = host_read(<span class="built_in">map</span>-&gt;space + offset, len);</span><br><span class="line">+<span class="meta">#<span class="keyword">ifdef</span> CONFIG_DTRACE</span></span><br><span class="line">+       Log(<span class="string">&quot;[DTRACE] Read  %s at addr = 0x%08x, len = %d, data = 0x%08x&quot;</span>, <span class="built_in">map</span>-&gt;name, addr, len, ret);</span><br><span class="line">+<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">   <span class="keyword">return</span> ret;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="type">void</span> <span class="title function_">map_write</span><span class="params">(<span class="type">paddr_t</span> addr, <span class="type">int</span> len, <span class="type">word_t</span> data, IOMap *<span class="built_in">map</span>)</span> &#123;</span><br><span class="line">   assert(len &gt;= <span class="number">1</span> &amp;&amp; len &lt;= <span class="number">8</span>);</span><br><span class="line">   check_bound(<span class="built_in">map</span>, addr);</span><br><span class="line">+<span class="meta">#<span class="keyword">ifdef</span> CONFIG_DTRACE</span></span><br><span class="line">+       Log(<span class="string">&quot;[DTRACE] Write %s at addr = 0x%08x, len = %d, data = 0x%08x&quot;</span>, <span class="built_in">map</span>-&gt;name, addr, len, data);</span><br><span class="line">+<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">   <span class="type">paddr_t</span> offset = addr - <span class="built_in">map</span>-&gt;low;</span><br><span class="line">   host_write(<span class="built_in">map</span>-&gt;space + offset, len, data);</span><br><span class="line">   invoke_callback(<span class="built_in">map</span>-&gt;callback, offset, len, <span class="literal">true</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+<h4 id="键盘"><a href="#键盘" class="headerlink" title="键盘"></a>键盘</h4><ul>
+<li><code>nemu/src/device/keyboard.c</code><div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">24</span> <span class="comment">// Note that this is not the standard</span></span><br><span class="line"><span class="number">25</span> <span class="meta">#<span class="keyword">define</span> NEMU_KEYS(f) \</span></span><br><span class="line"><span class="meta">26   f(ESCAPE) f(F1) f(F2) f(F3) f(F4) f(F5) f(F6) f(F7) f(F8) f(F9) f(F10) f(F11) f(F12) \</span></span><br><span class="line"><span class="meta">27 f(GRAVE) f(1) f(2) f(3) f(4) f(5) f(6) f(7) f(8) f(9) f(0) f(MINUS) f(EQUALS) f(BACKSPACE) \</span></span><br><span class="line"><span class="meta">28 f(TAB) f(Q) f(W) f(E) f(R) f(T) f(Y) f(U) f(I) f(O) f(P) f(LEFTBRACKET) f(RIGHTBRACKET) f(BACKSLASH) \</span></span><br><span class="line"><span class="meta">29 f(CAPSLOCK) f(A) f(S) f(D) f(F) f(G) f(H) f(J) f(K) f(L) f(SEMICOLON) f(APOSTROPHE) f(RETURN) \</span></span><br><span class="line"><span class="meta">30 f(LSHIFT) f(Z) f(X) f(C) f(V) f(B) f(N) f(M) f(COMMA) f(PERIOD) f(SLASH) f(RSHIFT) \</span></span><br><span class="line"><span class="meta">31 f(LCTRL) f(APPLICATION) f(LALT) f(SPACE) f(RALT) f(RCTRL) \</span></span><br><span class="line"><span class="meta">32 f(UP) f(DOWN) f(LEFT) f(RIGHT) f(INSERT) f(DELETE) f(HOME) f(END) f(PAGEUP) f(PAGEDOWN)</span></span><br><span class="line"><span class="number">33</span></span><br><span class="line"><span class="number">34</span> <span class="meta">#<span class="keyword">define</span> NEMU_KEY_NAME(k) NEMU_KEY_ ## k,</span></span><br><span class="line"><span class="number">35</span></span><br><span class="line"><span class="number">36</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line"><span class="number">37</span>   NEMU_KEY_NONE = <span class="number">0</span>,</span><br><span class="line"><span class="number">38</span>   MAP(NEMU_KEYS, NEMU_KEY_NAME)</span><br><span class="line"><span class="number">39</span> &#125;;</span><br><span class="line"><span class="number">40</span></span><br><span class="line"><span class="number">41</span> <span class="meta">#<span class="keyword">define</span> SDL_KEYMAP(k) keymap[SDL_SCANCODE_ ## k] = NEMU_KEY_ ## k;</span></span><br><span class="line"><span class="number">42</span> <span class="type">static</span> <span class="type">uint32_t</span> keymap[<span class="number">256</span>] = &#123;&#125;;</span><br><span class="line"><span class="number">43</span></span><br><span class="line"><span class="number">44</span> <span class="type">static</span> <span class="type">void</span> <span class="title function_">init_keymap</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="number">45</span>   MAP(NEMU_KEYS, SDL_KEYMAP)</span><br><span class="line"><span class="number">46</span> &#125;</span><br><span class="line"><span class="number">47</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+<li>这里把 所有的按键，都绑定到 enmu 上面去了</li>
+</ul>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">48</span> <span class="meta">#<span class="keyword">define</span> KEY_QUEUE_LEN 1024</span></span><br><span class="line"><span class="number">49</span> <span class="type">static</span> <span class="type">int</span> key_queue[KEY_QUEUE_LEN] = &#123;&#125;;</span><br><span class="line"><span class="number">50</span> <span class="type">static</span> <span class="type">int</span> key_f = <span class="number">0</span>, key_r = <span class="number">0</span>;</span><br><span class="line"><span class="number">51</span></span><br><span class="line"><span class="number">52</span> <span class="type">static</span> <span class="type">void</span> <span class="title function_">key_enqueue</span><span class="params">(<span class="type">uint32_t</span> am_scancode)</span> &#123;</span><br><span class="line"><span class="number">53</span>   key_queue[key_r] = am_scancode;</span><br><span class="line"><span class="number">54</span>   key_r = (key_r + <span class="number">1</span>) % KEY_QUEUE_LEN;</span><br><span class="line"><span class="number">55</span>   Assert(key_r != key_f, <span class="string">&quot;key queue overflow!&quot;</span>);</span><br><span class="line"><span class="number">56</span> &#125;</span><br><span class="line"><span class="number">57</span></span><br><span class="line"><span class="number">58</span> <span class="type">static</span> <span class="type">uint32_t</span> <span class="title function_">key_dequeue</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="number">59</span>   <span class="type">uint32_t</span> key = NEMU_KEY_NONE;</span><br><span class="line"><span class="number">60</span>   <span class="keyword">if</span> (key_f != key_r) &#123;</span><br><span class="line"><span class="number">61</span>     key = key_queue[key_f];</span><br><span class="line"><span class="number">62</span>     key_f = (key_f + <span class="number">1</span>) % KEY_QUEUE_LEN;</span><br><span class="line"><span class="number">63</span>   &#125;</span><br><span class="line"><span class="number">64</span>   <span class="keyword">return</span> key;</span><br><span class="line"><span class="number">65</span> &#125;</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>环形队列</li>
+<li><code>key_r</code> ，Rear，表示队尾，入队在此</li>
+<li><code>key_f</code> ，Front，表示队首，出队在此</li>
+</ul>
+<p>此外还会有一个非常自然的疑问：对于这种不知道用户什么时候按键按下的设备，嵌入式可以是中断，那么nemu是如何处理的呢？</p>
+<ul>
+<li>所以不妨以 send_key 进行 grep 搜索，然后发现在 nemu&#x2F;src&#x2F;device&#x2F;device.c 下，有 device_update 函数，这里会检查 sdl 的按键信息。当配置 keyboard 时，就会读取并发送到队列中</li>
+</ul>
+<p>但还会有个问题，读取呢？读取时什么时候读取按键呢？</p>
+<ul>
+<li>读取在 am代码中访问 KBD_ADDR 的时候会调用 nemu 的 map，再往里回调函数调用 dequeue，完成回调</li>
+</ul>
+<p>最终代码</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;am.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;nemu.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEYDOWN_MASK 0x8000</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) &#123;</span><br><span class="line">	<span class="type">uint32_t</span> kbd_data = inl(KBD_ADDR);</span><br><span class="line">  kbd-&gt;keydown = (kbd_data &amp; KEYDOWN_MASK) != <span class="number">0</span>;</span><br><span class="line">  kbd-&gt;keycode = kbd_data &amp; (KEYDOWN_MASK<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>[!bug] ssh 没有输出<br><strong>问题描述</strong>：我在开发过程中，中断无论怎么输入按键，都没有readkey_test 里的按键信息，很奇怪<br><strong>找到原因</strong>：一开始怎么查都查不到，后来一次偶然的ai谈话中，它提及 sdl 一般会打开新窗口。我突然意识到我仅仅只开了ssh，而没有开 xlaunch。于是我立刻打开 xlaunch，结果马上就有了。然后测试顺利完成。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123171424.png"
+                      alt="Pasted_image_20261123171424.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123171449.png"
+                      alt="Pasted_image_20261123171449.png"
+                ></p>
+</blockquote>
+<p>接着在 fceux-am 中就可以正常运行游戏了<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123194437.png"
+                      alt="Pasted_image_20261123194437.png"
+                ></p>
+<h3 id="VGA"><a href="#VGA" class="headerlink" title="VGA"></a>VGA</h3><div class="code-container" data-rel="Css"><figure class="iseeu highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">     <span class="attribute">x</span> → </span><br><span class="line">   ┌─────────────────── W ───────────────────┐</span><br><span class="line">   │ (<span class="number">0</span>,<span class="number">0</span>)                                   │</span><br><span class="line"><span class="attribute">y</span>  │    ┌─────────┐                          │</span><br><span class="line">↓  │    │(<span class="attribute">x</span>,<span class="attribute">y</span>)    │                          │</span><br><span class="line">   │    │   w × h │                          │</span><br><span class="line">   │    └─────────┘                          │</span><br><span class="line">   │                                         │</span><br><span class="line">   └─────────────────────────────────────────┘</span><br></pre></td></tr></table></figure></div>
+
+<p>注意，要先补充：<br>nemu&#x2F;src&#x2F;device&#x2F;vga.c 中的 update</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">   <span class="number">74</span> <span class="type">void</span> <span class="title function_">vga_update_screen</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="number">75</span>   <span class="comment">// <span class="doctag">TODO:</span> call `update_screen()` when the sync register is non-zero,</span></span><br><span class="line">   <span class="number">76</span>   <span class="comment">// then zero out the sync register</span></span><br><span class="line">+  <span class="number">77</span>   <span class="keyword">if</span>(vgactl_port_base[<span class="number">1</span>])&#123;</span><br><span class="line">+  <span class="number">78</span>     update_screen();</span><br><span class="line">+  <span class="number">79</span>     vgactl_port_base[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">+  <span class="number">80</span>   &#125;</span><br><span class="line">   <span class="number">81</span> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>值得注意的是，由于 sync 是针对单帧的所以 sync 信号需要用后清零。</p>
+<blockquote>
+<p>阅读源码可以发现，<code>vgactl_port_base[1]</code> 对应的正是 sync 信号。</p>
+</blockquote>
+<p>然后再编写 <code>__am_gpu_init</code></p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __am_gpu_init() &#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="type">uint32_t</span> width_height = inl(VGACTL_ADDR);</span><br><span class="line">	<span class="type">int</span> w = (width_height &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xffff</span>;</span><br><span class="line">	<span class="type">int</span> h = width_height &amp; <span class="number">0xffff</span>;</span><br><span class="line">	<span class="type">uint32_t</span> *fb = (<span class="type">uint32_t</span>*)(<span class="type">uintptr_t</span>)FB_ADDR;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; w * h; i++) fb[i] = i;</span><br><span class="line">	outl(SYNC_ADDR, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123220543.png"
+                      alt="Pasted_image_20261123220543.png"
+                ><br>在编写玩 <code>__am_gpu_fbdraw</code> 后遇到问题，发现不会显示，经检查，发现时 <code>__am_gpu_config</code> 忘记进行 参数的设置导致的。</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="type">void</span> <span class="title function_">redraw</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> w = io_read(AM_GPU_CONFIG).width / N;</span><br><span class="line">  <span class="type">int</span> h = io_read(AM_GPU_CONFIG).height / N;</span><br><span class="line">  <span class="type">int</span> block_size = w * h;</span><br><span class="line">  assert((<span class="type">uint32_t</span>)block_size &lt;= LENGTH(color_buf));</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+<p>可以发现，参数的读取全部来自 AM_GPU_CONFIG，所以需要先堆这个函数进行合理配置。</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __am_gpu_config(AM_GPU_CONFIG_T *cfg) &#123;</span><br><span class="line">	<span class="type">uint32_t</span> width_height = inl(VGACTL_ADDR);</span><br><span class="line">	<span class="type">int</span> w = (width_height &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xffff</span>;</span><br><span class="line">	<span class="type">int</span> h = width_height &amp; <span class="number">0xffff</span>;</span><br><span class="line">  *cfg = (AM_GPU_CONFIG_T) &#123;</span><br><span class="line">    .present = <span class="literal">true</span>, .has_accel = <span class="literal">false</span>,</span><br><span class="line">    .width = w, </span><br><span class="line">    .height = h,</span><br><span class="line">    .vmemsz = w * h * <span class="keyword">sizeof</span>(<span class="type">uint32_t</span>)</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>最后再配置 <code>__am_gpu_fbdraw</code></p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) &#123;</span><br><span class="line">	<span class="type">int</span> W = inl(VGACTL_ADDR) &gt;&gt; <span class="number">16</span> &amp; <span class="number">0xffff</span>;</span><br><span class="line">	<span class="type">int</span> i, j;</span><br><span class="line">	<span class="type">uint32_t</span> *fb = (<span class="type">uint32_t</span>*)(<span class="type">uintptr_t</span>)FB_ADDR;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; ctl-&gt;h; i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; ctl-&gt;w; j++)&#123;</span><br><span class="line">			fb[(ctl-&gt;y + i) * W + ctl-&gt;x + j] = ((<span class="type">uint32_t</span>*)ctl-&gt;pixels)[i * ctl-&gt;w + j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="keyword">if</span> (ctl-&gt;sync) &#123;</span><br><span class="line">    outl(SYNC_ADDR, <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123220003.png"
+                      alt="Pasted_image_20261123220003.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123222316.png"
+                      alt="Pasted_image_20261123222316.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123222349.png"
+                      alt="Pasted_image_20261123222349.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123222402.png"
+                      alt="Pasted_image_20261123222402.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123222415.png"
+                      alt="Pasted_image_20261123222415.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123222431.png"
+                      alt="Pasted_image_20261123222431.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123223459.png"
+                      alt="Pasted_image_20261123223459.png"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2026/10/21/one_student_one_chip/D5/Pasted_image_20261123222500.png"
+                      alt="Pasted_image_20261123222500.png"
+                ></p>
+<h3 id="声卡"><a href="#声卡" class="headerlink" title="声卡"></a>声卡</h3><p>这部分由于是选作内容，且目前时间比较紧张，就没有考虑实现。<br>对此，我仅仅进行了体验，就不展开描述了。</p>
+<h2 id="冯诺依曼计算机系统"><a href="#冯诺依曼计算机系统" class="headerlink" title="冯诺依曼计算机系统"></a>冯诺依曼计算机系统</h2><div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">  等待新的一帧();  <span class="comment">// AM_TIMER_UPTIME</span></span><br><span class="line">  处理用户按键();  <span class="comment">// AM_INPUT_KEYBRD</span></span><br><span class="line">  更新游戏逻辑();  <span class="comment">// TRM</span></span><br><span class="line">  绘制新的屏幕();  <span class="comment">// AM_GPU_FBDRAW</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="打字游戏解析"><a href="#打字游戏解析" class="headerlink" title="打字游戏解析"></a>打字游戏解析</h3><h4 id="文件组成"><a href="#文件组成" class="headerlink" title="文件组成"></a>文件组成</h4><ol>
+<li>基础配置<ol>
+<li><code>FPS</code> 帧率</li>
+<li><code>CPS</code> 每秒单词数</li>
+<li><code>CHAR_W/_H</code>  字符宽高</li>
+<li><code>NCHAR</code> 字符保存数组的长度</li>
+<li>color颜色配置</li>
+<li>颜色 enum 与 chars 结构体</li>
+<li>screen_w screen_h hit miss wrong</li>
+<li><code>texture[3种颜色颜色][26个字符][CHAR_W*CHAR_H]</code> <code>blank[CHAR_W*CHAR_H]</code></li>
+</ol>
+</li>
+<li>辅助函数<ol>
+<li>min randint</li>
+<li>new_char</li>
+</ol>
+</li>
+<li>逻辑核心<ol>
+<li>FPS&#x2F;CPS&#x3D;帧&#x2F;字符，算出每生成一个字符等几帧</li>
+<li><code>当前帧%(FPS/CPS)==0</code> 生成新的帧</li>
+<li>循环 chars 数组<ol>
+<li>如果有信息<ol>
+<li>如果在底端的倒计时阶段，则减时间。如果时间到0，字符记作空字符</li>
+<li>更新移动位置<ol>
+<li>如果超出上界，则消失，记作空字符</li>
+<li>如果超出下界，放到最底下位置，标记 miss，标记消失倒计帧数</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>渲染函数<ol>
+<li>先将原来已经绘制的用 blank 覆盖</li>
+<li>再将新的字符进行绘制，并存入static x数组（用于下一帧的清除）</li>
+</ol>
+</li>
+<li>点击判定<ol>
+<li>匹配按键和最下方的字母，如果有就 hit++并速度取反，颜色变绿，否则错误就wrong++</li>
+</ol>
+</li>
+<li>视频初始化函数</li>
+<li>主函数 <div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">	更新当前帧;</span><br><span class="line">	执行字符变换的逻辑判断;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">		获取按键;</span><br><span class="line">		检测按键并执行 退出 或者 点击判断;</span><br><span class="line">	&#125;</span><br><span class="line">	更新渲染;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> D5 学习</li>
+        <li><strong>作者:</strong> Keruone</li>
+        <li><strong>创建于
+                :</strong> 2026-10-21 19:22:00</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2026-11-24 22:20:21
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://keruone.github.io/2026/10/21/one_student_one_chip/D5/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E9%A1%B9%E7%9B%AE/">#项目</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF/">#一生一芯</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2026/10/21/one_student_one_chip/C1/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">C1 学习</span>
+						<span class="post-nav-item">上一篇</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2026/10/11/one_student_one_chip/D4/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">D4 学习</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'Keruone/Keruone.github.io',
+                'data-repo-id': 'R_kgDOQ4GXyQ',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDOQ4GXyc4C04nb',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'zh-CN',
+                'data-input-position': 'top',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">D5 学习</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA"><span class="nav-text">输入输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E4%B8%8ECPU"><span class="nav-text">设备与CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3-I-O"><span class="nav-text">端口 I&#x2F;O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84-I-O"><span class="nav-text">内存映射 I&#x2F;O</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NEMU-%E4%B8%AD%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA"><span class="nav-text">NEMU 中的输入输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%8A%BD%E8%B1%A1%E4%B8%BA-IOE"><span class="nav-text">将输入输出抽象为 IOE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3"><span class="nav-text">串口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-text">运行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F"><span class="nav-text">时钟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VGA"><span class="nav-text">VGA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E5%8D%A1"><span class="nav-text">声卡</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F"><span class="nav-text">冯诺依曼计算机系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%AD%97%E6%B8%B8%E6%88%8F%E8%A7%A3%E6%9E%90"><span class="nav-text">打字游戏解析</span></a></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2026</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Keruone</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 83 篇文章
+                    </span>
+                    
+                        <span>
+                            共 199.7k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+        
+<script src="/js/build/libs/mermaid.min.js"></script>
+
+    
+    
+<script src="/js/build/plugins/mermaid.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

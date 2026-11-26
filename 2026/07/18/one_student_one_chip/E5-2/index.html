@@ -521,7 +521,7 @@
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">80</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">83</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -938,66 +938,66 @@
 <p>可以发现就是一个与非门的晶体管<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/ff4f3ef65eaf53310e9bf163577ea69b.jpg"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/ff4f3ef65eaf53310e9bf163577ea69b.jpg"
                       alt="ff4f3ef65eaf53310e9bf163577ea69b.jpg"
                 ></p>
 <h4 id="GDS文件-物理版图"><a href="#GDS文件-物理版图" class="headerlink" title="GDS文件 - 物理版图"></a>GDS文件 - 物理版图</h4><p>GDS文件以<code>.gds</code>为后缀, 它包含了制造某标准单元的所需的所有物理和工艺信息.</p>
 <h3 id="标准单元的分类"><a href="#标准单元的分类" class="headerlink" title="标准单元的分类"></a>标准单元的分类</h3><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722221711.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722221711.png"
                       alt="Pasted_image_20260722221711.png"
                 ><br>OAI22X1H7L<br>Y &#x3D; ((A0 + A1) &amp; (B0 + B1))’<br> &#x3D; (A0 + A1)’ + (B0 + B1)’<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722222015.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722222015.png"
                       alt="Pasted_image_20260722222015.png"
                 ></p>
 <div class="code-container" data-rel="Routeros"><figure class="iseeu highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">************************************************************************</span><br><span class="line">* Library Name: ICSN55H7LVT</span><br><span class="line">* Cell Name:    OAI22X1H7L</span><br><span class="line">* View Name:    schematic</span><br><span class="line">************************************************************************</span><br><span class="line"></span><br><span class="line">.SUBCKT OAI22X1H7L A0 A1 B0 B1 VDD VSS Y</span><br><span class="line">*.PININFO A0:I A1:I B0:I B1:I Y:O VDD:B VSS:B</span><br><span class="line">MNM4 net8 A1 VSS VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MNM3 net8 A0 VSS VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MMN5 Y B0 net8 VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MNM5 Y B1 net8 VSS nm1p2_lvt_lp <span class="attribute">W</span>=210n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MMP5 Y A1 net046 VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MPM3 net046 A0 VDD VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MPM5 Y B1 net049 VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">MPM4 net049 B0 VDD VDD pm1p2_lvt_lp <span class="attribute">W</span>=270n <span class="attribute">L</span>=60n <span class="attribute">m</span>=1</span><br><span class="line">.ENDS</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
 <p>描述顺序： 漏、栅、源、衬底<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722224130.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722224130.png"
                       alt="Pasted_image_20260722224130.png"
                 ><br>其实就是两组 <strong>或非门</strong>，再<strong>或运算</strong></p>
 <p><code>OAI</code>表示<code>Or-And-Invert</code>, <code>22</code>表示两组输入信号, 每组各两个.</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225148.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722225148.png"
                       alt="Pasted_image_20260722225148.png"
                 ><br>AOI221 表示先 And 再 Or，22 表示And两组各两输入，1表示或还有一个额外输入</p>
 <p>驱动能力更强，下游晶体管反转更快，不过需要更大或更多晶体管实现，功耗也更高。</p>
 <h4 id="理解驱动能力"><a href="#理解驱动能力" class="headerlink" title="理解驱动能力"></a>理解驱动能力</h4><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225501.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722225501.png"
                       alt="Pasted_image_20260722225501.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225746.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722225746.png"
                       alt="Pasted_image_20260722225746.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225826.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722225826.png"
                       alt="Pasted_image_20260722225826.png"
                 ></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225720.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722225720.png"
                       alt="Pasted_image_20260722225720.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225801.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722225801.png"
                       alt="Pasted_image_20260722225801.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722225839.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722225839.png"
                       alt="Pasted_image_20260722225839.png"
                 ><br>可以很明显的看到，面积和静态功耗都随着 X 驱动能力提高了</p>
 <div class="code-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span><br><span class="line"><span class="bullet">*</span> Library Name: ICSN55H7LVT</span><br><span class="line"><span class="bullet">*</span> Cell Name:    NAND2X1H7L</span><br><span class="line"><span class="bullet">*</span> View Name:    schematic</span><br><span class="line"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span><br><span class="line"></span><br><span class="line">.SUBCKT NAND2X1H7L A B VDD VSS Y</span><br><span class="line"><span class="emphasis">*.PININFO A:I B:I Y:O VDD:B VSS:B</span></span><br><span class="line"><span class="emphasis">MMN0 Y B net6 VSS nm1p2_lvt_lp W=210n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMN1 net6 A VSS VSS nm1p2_lvt_lp W=210n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMP1 Y B VDD VDD pm1p2_lvt_lp W=270n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMP0 Y A VDD VDD pm1p2_lvt_lp W=270n L=60n m=1</span></span><br><span class="line"><span class="emphasis">.ENDS</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span></span><br><span class="line"><span class="emphasis">*</span> Library Name: ICSN55H7LVT</span><br><span class="line"><span class="bullet">*</span> Cell Name:    NAND2X2H7L</span><br><span class="line"><span class="bullet">*</span> View Name:    schematic</span><br><span class="line"><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span><span class="strong">****</span></span><br><span class="line"></span><br><span class="line">.SUBCKT NAND2X2H7L A B VDD VSS Y</span><br><span class="line"><span class="emphasis">*.PININFO A:I B:I Y:O VDD:B VSS:B</span></span><br><span class="line"><span class="emphasis">MMN0 Y B net6 VSS nm1p2_lvt_lp W=300n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMN1 net6 A VSS VSS nm1p2_lvt_lp W=300n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMP1 Y B VDD VDD pm1p2_lvt_lp W=380n L=60n m=1</span></span><br><span class="line"><span class="emphasis">MMP0 Y A VDD VDD pm1p2_lvt_lp W=380n L=60n m=1</span></span><br><span class="line"><span class="emphasis">.ENDS</span></span><br></pre></td></tr></table></figure></div>
@@ -1006,7 +1006,7 @@
 <p>TSINV:<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260722231042.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260722231042.png"
                       alt="Pasted_image_20260722231042.png"
                 ></p>
 <ul>
@@ -1032,7 +1032,7 @@
 <p>可以发现 面积是 8450<br>而<img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260725180800.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260725180800.png"
                       alt="Pasted_image_20260725180800.png"
                 ><br>可以发现，IO 面积远大于 NAND 面积<br>因为对于 IO：</p>
 <ul>
@@ -1085,89 +1085,89 @@
 <h4 id="复杂单元的全定制电路"><a href="#复杂单元的全定制电路" class="headerlink" title="复杂单元的全定制电路"></a>复杂单元的全定制电路</h4><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727162325.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727162325.png"
                       alt="Pasted_image_20260727162325.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164645.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727164645.png"
                       alt="Pasted_image_20260727164645.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165452.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727165452.png"
                       alt="Pasted_image_20260727165452.png"
                 ><br>总共 18 个晶体管<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727163042.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727163042.png"
                       alt="Pasted_image_20260727163042.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164726.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727164726.png"
                       alt="Pasted_image_20260727164726.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165304.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727165304.png"
                       alt="Pasted_image_20260727165304.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165156.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727165156.png"
                       alt="Pasted_image_20260727165156.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165239.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727165239.png"
                       alt="Pasted_image_20260727165239.png"
                 ><br>总共 16 个晶体管</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727163133.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727163133.png"
                       alt="Pasted_image_20260727163133.png"
                 ></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164750.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727164750.png"
                       alt="Pasted_image_20260727164750.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727163934.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727163934.png"
                       alt="Pasted_image_20260727163934.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164814.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727164814.png"
                       alt="Pasted_image_20260727164814.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164010.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727164010.png"
                       alt="Pasted_image_20260727164010.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164838.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727164838.png"
                       alt="Pasted_image_20260727164838.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164443.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727164443.png"
                       alt="Pasted_image_20260727164443.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727164904.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727164904.png"
                       alt="Pasted_image_20260727164904.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260727165119.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260727165119.png"
                       alt="Pasted_image_20260727165119.png"
                 ><br>area：</p>
 <ul>
@@ -1333,12 +1333,12 @@
 <p>然后切换上下沿后对比，可以发现：<br>test.trans<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728184032.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728184032.png"
                       alt="Pasted_image_20260728184032.png"
                 ><br>test.rpt<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728184224.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728184224.png"
                       alt="Pasted_image_20260728184224.png"
                 ></p>
 <p>很神奇，可以发现，更改为下降沿后，直接没有输出了</p>
@@ -1346,7 +1346,7 @@
 <h3 id="完成数字电路实验"><a href="#完成数字电路实验" class="headerlink" title="完成数字电路实验"></a>完成数字电路实验</h3><p>已完成，代码略。最后实验八结果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260801175054.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260801175054.png"
                       alt="Pasted_image_20260801175054.png"
                 ></p>
 <h3 id="用-RTL-实现-sCPU"><a href="#用-RTL-实现-sCPU" class="headerlink" title="用 RTL 实现 sCPU"></a>用 RTL 实现 sCPU</h3><p>sCPU.v</p>
@@ -1358,54 +1358,54 @@
 <p>不截全了，不过可以看到，我的 RTL 是可以正常仿真的<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225429.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728225429.png"
                       alt="Pasted_image_20260728225429.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225207.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728225207.png"
                       alt="Pasted_image_20260728225207.png"
                 ></p>
 <h3 id="对比sEMU和sCPU"><a href="#对比sEMU和sCPU" class="headerlink" title="对比sEMU和sCPU"></a>对比sEMU和sCPU</h3><p>sEMU 用软件流程模拟硬件行为，而 sCPU 用硬件电路直接实现指令功能</p>
 <h3 id="完整仿真结果"><a href="#完整仿真结果" class="headerlink" title="完整仿真结果"></a>完整仿真结果</h3><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225832.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728225832.png"
                       alt="Pasted_image_20260728225832.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225851.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728225851.png"
                       alt="Pasted_image_20260728225851.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225814.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728225814.png"
                       alt="Pasted_image_20260728225814.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225923.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728225923.png"
                       alt="Pasted_image_20260728225923.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728225946.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728225946.png"
                       alt="Pasted_image_20260728225946.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728230007.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728230007.png"
                       alt="Pasted_image_20260728230007.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728230023.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728230023.png"
                       alt="Pasted_image_20260728230023.png"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2026/01/18/Graphics-Learning-Outline/Pasted_image_20260728230053.png"
+                     data-src="/2026/07/18/one_student_one_chip/E5-2/Pasted_image_20260728230053.png"
                       alt="Pasted_image_20260728230053.png"
                 ></p>
 <h4 id="桶型移位器"><a href="#桶型移位器" class="headerlink" title="桶型移位器"></a>桶型移位器</h4>
@@ -1582,11 +1582,11 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共撰写了 80 篇文章
+                        共撰写了 83 篇文章
                     </span>
                     
                         <span>
-                            共 189.5k 字
+                            共 199.7k 字
                         </span>
                     
                 </p>
